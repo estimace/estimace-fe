@@ -1,37 +1,32 @@
-import { Player, Room } from '@/types'
-
-type StoragePlayer = Pick<Player, 'name' | 'email'>
-type OwnedRoom = Pick<Room, 'id' | 'ownerSecret'>
+import { PlayerInStorage, RoomInStorage } from '@/types'
 
 const KEYS = {
   PLAYER: 'player',
-  OWNED_ROOMS: 'ownedRooms',
+  PLANNING_ROOMS: 'planningRooms',
 }
 
-export function setPlayer(player: StoragePlayer) {
-  localStorage.setItem(
-    KEYS.PLAYER,
-    JSON.stringify({ name: player.name, email: player.email }),
-  )
+export function setPlayer(player: PlayerInStorage) {
+  localStorage.setItem(KEYS.PLAYER, JSON.stringify(player))
 }
 
-export function getPlayer(): StoragePlayer | null {
+export function getPlayer(): PlayerInStorage | null {
   const item = localStorage.getItem(KEYS.PLAYER)
   return item ? JSON.parse(item) : null
 }
 
-export function addRoomToOwnedRooms(ownedRoom: OwnedRoom) {
-  const rooms = getOwnedRooms()
-  rooms[ownedRoom.id] = ownedRoom.ownerSecret
-  localStorage.setItem(KEYS.OWNED_ROOMS, JSON.stringify(rooms))
+export function getRoomInStorage(slug: string): RoomInStorage | null {
+  const rooms = getStoredRooms()
+  return rooms[slug] ? { slug: rooms[slug] } : null
 }
 
-export function getOwnedRoomSecret(roomId: string): string | null {
-  const rooms = getOwnedRooms()
-  return rooms[roomId] ?? null
+export function addRoomToStorageRooms(slug: string, secretKey: string) {
+  localStorage.setItem(
+    KEYS.PLANNING_ROOMS,
+    JSON.stringify({ ...getStoredRooms(), [slug]: secretKey }),
+  )
 }
 
-function getOwnedRooms(): Record<OwnedRoom['id'], OwnedRoom['ownerSecret']> {
-  const roomsInStorage = localStorage.getItem(KEYS.OWNED_ROOMS)
+function getStoredRooms(): Record<string, string> {
+  const roomsInStorage = localStorage.getItem(KEYS.PLANNING_ROOMS)
   return roomsInStorage ? JSON.parse(roomsInStorage) : {}
 }

@@ -1,28 +1,54 @@
-import { FC } from 'react'
-import { UseMutationResult } from '@tanstack/react-query'
+import { FC, useState } from 'react'
 
-import { Room, Technique } from './types'
+import { Technique } from './types'
 
 type Props = {
-  useCreateRoomMutation: UseMutationResult<
-    Room,
-    unknown,
-    React.FormEvent<HTMLFormElement>,
-    unknown
-  >
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleSelect: (e: React.FormEvent<HTMLSelectElement>) => void
+  onSubmit: SubmitHandler
+  isError: boolean
+  isLoading: boolean
+  error: Error
   techniques: Technique[]
+  ownerName?: string
+  ownerEmail?: string
+}
+
+export type SubmitHandler = (item: SubmitHandlerParam) => void
+
+export type SubmitHandlerParam = {
   ownerName: string
   ownerEmail: string
-  technique: string
+  technique: Technique
 }
 
 export const NewRoomForm: FC<Props> = (props: Props) => {
-  const { mutate, isLoading, isError, error } = props.useCreateRoomMutation
+  const [ownerName, setOwnerName] = useState(props.ownerName ?? '')
+  const [ownerEmail, setOwnerEmail] = useState(props.ownerEmail ?? '')
+  const [technique, setTechnique] = useState<Technique>('fibonacci')
+
+  const { onSubmit, isLoading, isError, error } = props
+
+  const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.name) {
+      case 'ownerName':
+        setOwnerName(e.target.value)
+        break
+      case 'ownerEmail':
+        setOwnerEmail(e.target.value)
+        break
+    }
+  }
+
+  const handleSelectOptionChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    setTechnique(e.currentTarget.value as Technique)
+  }
 
   return (
-    <form onSubmit={mutate}>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault()
+        onSubmit({ ownerName, ownerEmail, technique })
+      }}
+    >
       {isError && <div>Error happened: {(error as Error).toString()}</div>}
 
       <label>
@@ -31,9 +57,9 @@ export const NewRoomForm: FC<Props> = (props: Props) => {
           name="ownerName"
           type="text"
           required={true}
-          value={props.ownerName}
+          value={ownerName}
           placeholder="your name"
-          onChange={props.handleChange}
+          onChange={handleFormInputChange}
         ></input>
       </label>
 
@@ -43,9 +69,9 @@ export const NewRoomForm: FC<Props> = (props: Props) => {
           name="ownerEmail"
           type="email"
           required={true}
-          value={props.ownerEmail}
+          value={ownerEmail}
           placeholder="me@example.com"
-          onChange={props.handleChange}
+          onChange={handleFormInputChange}
         ></input>
       </label>
 
@@ -53,8 +79,8 @@ export const NewRoomForm: FC<Props> = (props: Props) => {
         technique:
         <select
           name="techniqueSelection"
-          value={props.technique}
-          onChange={props.handleSelect}
+          value={technique}
+          onChange={handleSelectOptionChange}
         >
           {props.techniques.map((item) => (
             <option key={item} value={item}>
