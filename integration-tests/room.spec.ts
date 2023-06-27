@@ -87,6 +87,7 @@ test.describe('create new room', () => {
     await expect(page.getByText('eli')).toBeVisible()
 
     await expect(page.getByAltText('avatar of eli')).toBeVisible()
+
     const storage = await context.storageState()
     const playerInStorage = storage.origins[0].localStorage.find(
       (item) => item.name === 'planningRooms',
@@ -100,7 +101,7 @@ test.describe('create new room', () => {
       ).toHaveText(option)
     }
     const revealButton = page.getByRole('button', { name: /reveal/i })
-    await expect(revealButton).toBeDisabled()
+    await expect(revealButton).toBeEnabled()
 
     await expect(page.getByText('Room URL to share: ')).toBeVisible()
     await expect(

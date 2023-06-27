@@ -68,11 +68,7 @@ const RoomPage: FC = () => {
           )}
           {player?.isOwner &&
             roomQuery.data &&
-            roomQuery.data.state === 'planning' && (
-              <button disabled={roomQuery.data?.state === 'planning'}>
-                Reveal
-              </button>
-            )}
+            roomQuery.data.state === 'planning' && <button>Reveal</button>}
           {player?.isOwner && roomQuery.data && (
             <div className="roomAddress">
               <span>Room URL to share: </span>
