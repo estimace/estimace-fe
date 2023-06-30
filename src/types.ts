@@ -1,6 +1,6 @@
 export type Technique = 'fibonacci' | 'tShirtSizing'
 export type TechniquesOptions = Record<Technique, string[]>
-export type RoomState = 'planning' | 'revealed' | 'reset'
+export type RoomState = 'planning' | 'revealed'
 
 export type Room = {
   id: string
@@ -20,5 +20,5 @@ export type Player = {
   estimate: number | null
 }
 
-export type PlayerInStorage = Pick<Player, 'name' | 'email'>
+export type PlayerInStorage = Pick<Player, 'id' | 'name' | 'email'>
 export type RoomInStorage = Record<'slug', string>

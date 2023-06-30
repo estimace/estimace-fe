@@ -1,12 +1,22 @@
 import { FC } from 'react'
 import { Technique } from '@/types'
 import { techniqueOptions } from '@/config'
-import { submitPlayerEstimation } from '@/utils'
 
 type Props = {
   technique: Technique
   roomId: string
   playerId: string
+  onEstimateSubmit: EstimationSubmitHandler
+}
+
+export type EstimationSubmitHandler = (
+  item: EstimationSubmitHandlerParam,
+) => void
+
+export type EstimationSubmitHandlerParam = {
+  playerId: string
+  roomId: string
+  estimate: string
 }
 
 export const Estimation: FC<Props> = (props: Props) => {
@@ -23,7 +33,11 @@ export const Estimation: FC<Props> = (props: Props) => {
             data-value={`estimationButton-${option}`}
             onClick={(e) => {
               e.preventDefault()
-              submitPlayerEstimation(props.playerId, props.roomId, option)
+              props.onEstimateSubmit({
+                playerId: props.playerId,
+                roomId: props.roomId,
+                estimate: option,
+              })
             }}
           >
             {option}

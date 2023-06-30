@@ -21,7 +21,7 @@ test.describe('create new room', () => {
           technique: 'fibonacci',
           players: [
             {
-              id: 14,
+              id: '14',
               roomId: roomId,
               name: 'eli',
               email: 'me@eli.com',
@@ -42,13 +42,13 @@ test.describe('create new room', () => {
       route.fulfill({
         status: 201,
         json: {
-          id: 1,
+          id: '1',
           slug,
           state: 'planning',
           technique: 'fibonacci',
           players: [
             {
-              id: 14,
+              id: '14',
               roomId: roomId,
               name: 'eli',
               email: 'me@eli.com',
@@ -68,7 +68,7 @@ test.describe('create new room', () => {
       route.fulfill({
         status: 201,
         json: {
-          id: 14,
+          id: '14',
           roomId: roomId,
           name: 'eli',
           email: 'me@eli.com',
@@ -107,5 +107,7 @@ test.describe('create new room', () => {
     await expect(
       page.getByText(`http://localhost:5173/rooms/${slug}`),
     ).toBeVisible()
+
+    await expect(page.getByRole('button', { name: /Reset/i })).not.toBeVisible()
   })
 })

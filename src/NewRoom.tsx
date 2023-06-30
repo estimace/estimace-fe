@@ -20,6 +20,7 @@ const CreateRoom: FC = () => {
     mutationFn: createRoom,
     onSuccess: async (room) => {
       setPlayerInLocalStorage({
+        id: room.players[0].id,
         name: room.players[0].name,
         email: room.players[0].email,
       })

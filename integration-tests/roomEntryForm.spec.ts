@@ -33,7 +33,7 @@ test.describe('new player enters the room via shared url', () => {
           technique: 'fibonacci',
           players: [
             {
-              id: 11,
+              id: '11',
               roomId: roomId,
               name: 'arash',
               email: 'me@arashmilani.com',
@@ -41,7 +41,7 @@ test.describe('new player enters the room via shared url', () => {
               estimate: null,
             },
             {
-              id: 12,
+              id: '12',
               roomId: roomId,
               name: 'yaghish',
               email: 'me@yaghish.com',
@@ -61,7 +61,7 @@ test.describe('new player enters the room via shared url', () => {
       route.fulfill({
         status: 201,
         json: {
-          id: 12,
+          id: '12',
           roomId: roomId,
           name: 'yaghish',
           email: 'me@yaghish.com',
@@ -87,12 +87,16 @@ test.describe('new player enters the room via shared url', () => {
       (item) => item.name === 'planningRooms',
     )?.value
 
-    expect(playerInStorage).toBe('{"name":"yaghish","email":"me@yaghish.com"}')
+    expect(playerInStorage).toBe(
+      '{"id":"12","name":"yaghish","email":"me@yaghish.com"}',
+    )
     expect(roomInStorage).toBe('{"xyzxyz":"xyfde569"}')
 
     await expect(page.getByRole('button')).toHaveCount(12)
     await expect(
       page.getByRole('button', { name: /reveal/i }),
     ).not.toBeVisible()
+
+    //await page.getByRole('button', { name: '8' }).click()
   })
 })
