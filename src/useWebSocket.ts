@@ -6,16 +6,11 @@ export const useWebSocket = () => {
   socket = new WebSocket('ws://localhost:4000')
   console.log(socket)
   // Connection opened
-  let stopConnectionTimeout: NodeJS.Timeout | undefined = undefined
 
   socket.onopen = (event) => {
     console.log(socket)
-
     if (socket) {
       socket.send(`{"message": "new client is connected"}`)
-      stopConnectionTimeout = setTimeout(function () {
-        socket?.close()
-      }, 600000)
     }
   }
 
@@ -33,7 +28,6 @@ export const useWebSocket = () => {
 
   socket.onclose = () => {
     console.log(socket)
-    clearTimeout(stopConnectionTimeout)
     console.log('Web Socket connection properly closed.')
   }
 

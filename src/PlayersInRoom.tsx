@@ -14,8 +14,14 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
         const gravatarUrl = getGravatarAddress(player.email)
         return (
           <li key={player.id}>
-            <img src={gravatarUrl} alt={`avatar of ${player.name}`} />
+            <img src={gravatarUrl} alt={`avatar of ${player.name} `} />
             <span className="playerName">{player.name}</span>
+            {props.state === 'planning' && !player.estimate && (
+              <span className="playerStatus"> is thinking!</span>
+            )}
+            {props.state === 'planning' && player.estimate !== null && (
+              <span className="playerStatus"> already Planned!</span>
+            )}
             {props.state === 'revealed' && (
               <span className="playerEstimate">{player.estimate}</span>
             )}

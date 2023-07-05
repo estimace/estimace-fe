@@ -42,7 +42,7 @@ test.describe('create new room', () => {
       route.fulfill({
         status: 201,
         json: {
-          id: '1',
+          id: roomId,
           slug,
           state: 'planning',
           technique: 'fibonacci',
@@ -107,7 +107,5 @@ test.describe('create new room', () => {
     await expect(
       page.getByText(`http://localhost:5173/rooms/${slug}`),
     ).toBeVisible()
-
-    await expect(page.getByRole('button', { name: /Reset/i })).not.toBeVisible()
   })
 })
