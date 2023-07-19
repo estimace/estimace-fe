@@ -7,12 +7,16 @@ test.describe('estimate', () => {
   test("clicking an estimate option sends player's estimation, and as a result player's status broadcasts to others", async ({
     context,
   }) => {
+    // Get all new pages (including popups) in the context
+    context.on('page', async (page) => {
+      await page.waitForLoadState()
+    })
     // Create two pages
     const pageOne = await context.newPage()
     const pageTwo = await context.newPage()
 
     // Get pages of a browser context
-    const allPages = context.pages()
+    const allPages = [pageOne, pageTwo]
     for (const page of allPages) {
       await page.route(`${apiUrl}/rooms/${slug}`, (route) => {
         if (route.request().method() !== 'GET') {
@@ -102,14 +106,14 @@ test.describe('estimate', () => {
       (item) => item.name === 'player',
     )?.value
 
-    const roomInStorageOfPlayerOne = storageOne.origins[0].localStorage.find(
+    const roomOneInStorage = storageOne.origins[0].localStorage.find(
       (item) => item.name === 'planningRooms',
     )?.value
 
     expect(playerOneInStorage).toBe(
       '{"id":"12","name":"yaghish","email":"me@yaghish.com"}',
     )
-    expect(roomInStorageOfPlayerOne).toBe('{"xyzxyz":"xyfde569"}')
+    expect(roomOneInStorage).toBe('{"xyzxyz":"xyfde569"}')
 
     await pageTwo.getByLabel(/name/i).fill('sami')
     await pageTwo.getByLabel(/email/i).fill('me@sami.com')
@@ -120,14 +124,14 @@ test.describe('estimate', () => {
       (item) => item.name === 'player',
     )?.value
 
-    const roomInStorage = storageTwo.origins[0].localStorage.find(
+    const roomTwoInStorage = storageTwo.origins[0].localStorage.find(
       (item) => item.name === 'planningRooms',
     )?.value
 
     expect(playerTwoInStorage).toBe(
       '{"id":"14","name":"sami","email":"me@sami.com"}',
     )
-    expect(roomInStorage).toBe('{"xyzxyz":"xsfde941"}')
+    expect(roomTwoInStorage).toBe('{"xyzxyz":"xsfde941"}')
 
     for (const page of allPages) {
       await expect(page.getByText('arash is thinking!')).toBeVisible()
@@ -140,8 +144,8 @@ test.describe('estimate', () => {
 
     for (const page of allPages) {
       await expect(page.getByText('arash is thinking!')).toBeVisible()
-      await expect(page.getByText('yaghish already Planned!')).toBeVisible()
-      await expect(page.getByText('sami already Planned!')).toBeVisible()
+      await expect(page.getByText('yaghish has already Planned!')).toBeVisible()
+      await expect(page.getByText('sami has already Planned!')).toBeVisible()
     }
   })
 })
