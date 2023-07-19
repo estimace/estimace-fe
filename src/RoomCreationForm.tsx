@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 
 import { Technique } from './types'
+import { techniqueLabels } from './config'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -8,32 +9,32 @@ type Props = {
   isLoading: boolean
   error: Error
   techniques: Technique[]
-  ownerName?: string
-  ownerEmail?: string
+  name?: string
+  email?: string
 }
 
 export type SubmitHandler = (item: SubmitHandlerParam) => void
 
 export type SubmitHandlerParam = {
-  ownerName: string
-  ownerEmail: string
+  name: string
+  email: string
   technique: Technique
 }
 
-export const NewRoomForm: FC<Props> = (props: Props) => {
-  const [ownerName, setOwnerName] = useState(props.ownerName ?? '')
-  const [ownerEmail, setOwnerEmail] = useState(props.ownerEmail ?? '')
+export const RoomCreationForm: FC<Props> = (props: Props) => {
+  const [name, setName] = useState(props.name ?? '')
+  const [email, setEmail] = useState(props.email ?? '')
   const [technique, setTechnique] = useState<Technique>('fibonacci')
 
   const { onSubmit, isLoading, isError, error } = props
 
   const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.name) {
-      case 'ownerName':
-        setOwnerName(e.target.value)
+      case 'name':
+        setName(e.target.value)
         break
-      case 'ownerEmail':
-        setOwnerEmail(e.target.value)
+      case 'email':
+        setEmail(e.target.value)
         break
     }
   }
@@ -46,37 +47,37 @@ export const NewRoomForm: FC<Props> = (props: Props) => {
     <form
       onSubmit={(event) => {
         event.preventDefault()
-        onSubmit({ ownerName, ownerEmail, technique })
+        onSubmit({ name, email, technique })
       }}
     >
       {isError && <div>Error happened: {(error as Error).toString()}</div>}
 
       <label>
-        name:
+        Name:
         <input
-          name="ownerName"
+          name="name"
           type="text"
           required={true}
-          value={ownerName}
+          value={name}
           placeholder="your name"
           onChange={handleFormInputChange}
         ></input>
       </label>
 
       <label>
-        email:
+        Email:
         <input
-          name="ownerEmail"
+          name="email"
           type="email"
           required={true}
-          value={ownerEmail}
+          value={email}
           placeholder="me@example.com"
           onChange={handleFormInputChange}
         ></input>
       </label>
 
       <label>
-        technique:
+        Technique:
         <select
           name="techniqueSelection"
           value={technique}
@@ -84,7 +85,7 @@ export const NewRoomForm: FC<Props> = (props: Props) => {
         >
           {props.techniques.map((item) => (
             <option key={item} value={item}>
-              {item}
+              {techniqueLabels[item]}
             </option>
           ))}
         </select>

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Player, RoomState } from '@/types'
+import { Player, RoomState } from 'app/types'
 import { getGravatarAddress } from './utils'
 
 type Props = {
@@ -9,22 +9,20 @@ type Props = {
 
 export const PlayersInRoom: FC<Props> = (props: Props) => {
   return (
-    <ul className="playersList">
+    <ul aria-label="Players' List">
       {props.players.map((player) => {
         const gravatarUrl = getGravatarAddress(player.email)
         return (
           <li key={player.id}>
-            <img src={gravatarUrl} alt={`avatar of ${player.name} `} />
-            <span className="playerName">{player.name}</span>
-            {props.state === 'planning' && !player.estimate && (
-              <span className="playerStatus"> is thinking!</span>
+            <img src={gravatarUrl} alt={`${player.name}'s avatar`} />
+            <span>{player.name}</span>
+            {props.state === 'planning' && player.estimate === null && (
+              <span> is thinking!</span>
             )}
             {props.state === 'planning' && player.estimate !== null && (
-              <span className="playerStatus"> already Planned!</span>
+              <span> has already Planned!</span>
             )}
-            {props.state === 'revealed' && (
-              <span className="playerEstimate">{player.estimate}</span>
-            )}
+            {props.state === 'revealed' && <span>{player.estimate}</span>}
           </li>
         )
       })}

@@ -1,32 +1,41 @@
-import { PlayerInStorage, RoomInStorage } from '@/types'
+import { PlayerInStorage, RoomInStorage } from 'app/types'
 
 const KEYS = {
   PLAYER: 'player',
-  PLANNING_ROOMS: 'planningRooms',
+  ROOMS: 'rooms',
 }
 
-export function setPlayer(player: PlayerInStorage) {
-  localStorage.setItem(KEYS.PLAYER, JSON.stringify(player))
+function setPlayer(value: PlayerInStorage) {
+  localStorage.setItem(KEYS.PLAYER, JSON.stringify(value))
 }
 
-export function getPlayer(): PlayerInStorage | null {
+function getPlayer(): PlayerInStorage | null {
   const item = localStorage.getItem(KEYS.PLAYER)
-  return item ? JSON.parse(item) : null
+  if (!item) return null
+  return JSON.parse(item)
 }
 
-export function getRoomInStorage(slug: string): RoomInStorage | null {
+function getRoom(id: string): RoomInStorage | null {
   const rooms = getStoredRooms()
-  return rooms[slug] ? { slug: rooms[slug] } : null
+  return rooms[id] ?? null
 }
 
-export function addRoomToStorageRooms(slug: string, secretKey: string) {
+function setRoom(value: RoomInStorage) {
   localStorage.setItem(
-    KEYS.PLANNING_ROOMS,
-    JSON.stringify({ ...getStoredRooms(), [slug]: secretKey }),
+    KEYS.ROOMS,
+    JSON.stringify({ ...getStoredRooms(), [value.id]: value }),
   )
 }
 
-function getStoredRooms(): Record<string, string> {
-  const roomsInStorage = localStorage.getItem(KEYS.PLANNING_ROOMS)
-  return roomsInStorage ? JSON.parse(roomsInStorage) : {}
+function getStoredRooms(): Record<string, RoomInStorage> {
+  const roomsInStorage = localStorage.getItem(KEYS.ROOMS)
+  if (!roomsInStorage) return {}
+  return JSON.parse(roomsInStorage)
+}
+
+export default {
+  setPlayer,
+  getPlayer,
+  setRoom,
+  getRoom,
 }

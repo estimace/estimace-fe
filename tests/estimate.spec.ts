@@ -2,8 +2,7 @@ import { test, expect } from '@playwright/test'
 import { apiUrl } from '../src/config'
 
 test.describe('estimate', () => {
-  const slug = 'xyzxyz'
-  const roomId = '10'
+  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
   test("clicking an estimate option sends player's estimation, and as a result player's status broadcasts to others", async ({
     context,
   }) => {
@@ -18,7 +17,7 @@ test.describe('estimate', () => {
     // Get pages of a browser context
     const allPages = [pageOne, pageTwo]
     for (const page of allPages) {
-      await page.route(`${apiUrl}/rooms/${slug}`, (route) => {
+      await page.route(`${apiUrl}/rooms/${roomId}`, (route) => {
         if (route.request().method() !== 'GET') {
           return route.fallback()
         }
@@ -26,7 +25,6 @@ test.describe('estimate', () => {
           status: 201,
           json: {
             id: roomId,
-            slug: 'xyzxyz',
             state: 'planning',
             technique: 'fibonacci',
             players: [
@@ -60,7 +58,7 @@ test.describe('estimate', () => {
       })
     }
 
-    await pageOne.route(`${apiUrl}/rooms/${slug}/players`, (route) => {
+    await pageOne.route(`${apiUrl}/rooms/${roomId}/players`, (route) => {
       if (route.request().method() !== 'POST') {
         return route.fallback()
       }
@@ -72,12 +70,12 @@ test.describe('estimate', () => {
           name: 'yaghish',
           email: 'me@yaghish.com',
           isOwner: false,
-          secretKey: 'xyfde569',
+          authToken: 'xyfde569',
           estimate: null,
         },
       })
     })
-    await pageTwo.route(`${apiUrl}/rooms/${slug}/players`, (route) => {
+    await pageTwo.route(`${apiUrl}/rooms/${roomId}/players`, (route) => {
       if (route.request().method() !== 'POST') {
         return route.fallback()
       }
@@ -89,7 +87,7 @@ test.describe('estimate', () => {
           name: 'sami',
           email: 'me@sami.com',
           isOwner: false,
-          secretKey: 'xsfde941',
+          authToken: 'xsfde941',
           estimate: null,
         },
       })

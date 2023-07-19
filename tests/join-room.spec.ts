@@ -2,8 +2,7 @@ import { test, expect } from '@playwright/test'
 import { apiUrl } from '../src/config'
 
 test.describe('new player enters the room via shared url', () => {
-  const slug = 'xyzxyz'
-  const roomId = '10'
+  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
 
   test('shows a form to enter the room for the new player whose local storage does not contain player info', async ({
     page,
@@ -19,7 +18,7 @@ test.describe('new player enters the room via shared url', () => {
     page,
     context,
   }) => {
-    await page.route(`${apiUrl}/rooms/${slug}`, (route) => {
+    await page.route(`${apiUrl}/rooms/${roomId}`, (route) => {
       if (route.request().method() !== 'GET') {
         return route.fallback()
       }
@@ -28,7 +27,6 @@ test.describe('new player enters the room via shared url', () => {
         status: 201,
         json: {
           id: roomId,
-          slug: 'xyzxyz',
           state: 'planning',
           technique: 'fibonacci',
           players: [
@@ -53,7 +51,7 @@ test.describe('new player enters the room via shared url', () => {
       })
     })
 
-    await page.route(`${apiUrl}/rooms/${slug}/players`, (route) => {
+    await page.route(`${apiUrl}/rooms/${roomId}/players`, (route) => {
       if (route.request().method() !== 'POST') {
         return route.fallback()
       }
@@ -66,7 +64,7 @@ test.describe('new player enters the room via shared url', () => {
           name: 'yaghish',
           email: 'me@yaghish.com',
           isOwner: false,
-          secretKey: 'xyfde569',
+          authToken: 'xyfde569',
           estimate: null,
         },
       })

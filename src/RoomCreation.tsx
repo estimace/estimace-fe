@@ -2,44 +2,41 @@ import { FC } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
-import { Technique } from '@/types'
-import {
-  setPlayer as setPlayerInLocalStorage,
-  addRoomToStorageRooms,
-  getPlayer,
-} from '@/storage'
-import { NewRoomForm } from '@/NewRoomForm'
-import { createRoom } from './utils'
+import storage from 'app/storage'
+import { Technique } from 'app/types'
+import { RoomCreationForm } from 'app/RoomCreationForm'
+import { createRoom } from 'app/utils'
 
-const CreateRoom: FC = () => {
+export const RoomCreation: FC = () => {
   const navigate = useNavigate()
   const techniques: Technique[] = ['fibonacci', 'tShirtSizing']
-  const storedPlayer = getPlayer()
+  const storedPlayer = storage.getPlayer()
 
   const { mutate, isLoading, isError, error } = useMutation({
     mutationFn: createRoom,
     onSuccess: async (room) => {
-      setPlayerInLocalStorage({
-        id: room.players[0].id,
+      storage.setPlayer({
         name: room.players[0].name,
         email: room.players[0].email,
       })
-      addRoomToStorageRooms(room.slug, room.players[0].secretKey)
-      navigate(`/rooms/${room.slug}`)
+      storage.setRoom({
+        id: room.id,
+        playerId: room.players[0].id,
+        authToken: room.players[0].authToken,
+      })
+      navigate(`/rooms/${room.id}`)
     },
   })
 
   return (
-    <NewRoomForm
+    <RoomCreationForm
       isError={isError}
       isLoading={isLoading}
       onSubmit={mutate}
       error={error as Error}
       techniques={techniques}
-      ownerName={storedPlayer?.name}
-      ownerEmail={storedPlayer?.email}
+      name={storedPlayer?.name}
+      email={storedPlayer?.email}
     />
   )
 }
-
-export default CreateRoom

@@ -1,5 +1,5 @@
 {
-  "name": "estimace",
+  "name": "estimace-fe",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test:integration": "playwright test",
+    "test:integration:ui": "playwright test --ui",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

@@ -1,6 +1,11 @@
-import { TechniquesOptions } from './types'
+import { TechniquesOptions, TechniquesLabels } from './types'
 
 export const apiUrl = '/api'
+
+export const techniqueLabels: TechniquesLabels = {
+  fibonacci: 'Fibonacci',
+  tShirtSizing: 'T-Shirt Sizing',
+}
 
 export const techniqueOptions: TechniquesOptions = {
   fibonacci: [

@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { Technique } from '@/types'
-import { techniqueOptions } from '@/config'
+import { Technique } from 'app/types'
+import { techniqueOptions } from 'app/config'
 
 type Props = {
   technique: Technique
@@ -16,19 +16,19 @@ export type EstimationSubmitHandler = (
 export type EstimationSubmitHandlerParam = {
   playerId: string
   roomId: string
-  estimate: string
+  estimate: number
 }
 
 export const Estimation: FC<Props> = (props: Props) => {
   const estimationOptions = techniqueOptions[props.technique]
 
   return (
-    <section className="estimationForm">
+    <section aria-label="estimate options">
       <h1>Select your estimation:</h1>
-      {estimationOptions.map((option) => {
+      {estimationOptions.map((option, index) => {
         return (
           <button
-            key={option}
+            key={index}
             className="estimationButton"
             data-value={`estimationButton-${option}`}
             onClick={(e) => {
@@ -36,7 +36,7 @@ export const Estimation: FC<Props> = (props: Props) => {
               props.onEstimateSubmit({
                 playerId: props.playerId,
                 roomId: props.roomId,
-                estimate: option,
+                estimate: index,
               })
             }}
           >

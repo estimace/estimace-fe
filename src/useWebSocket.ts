@@ -1,34 +1,35 @@
 let socket: WebSocket | null = null
 
-export const useWebSocket = () => {
-  if (socket) return { socket }
-  // Create WebSocket connection.
-  socket = new WebSocket('ws://localhost:4000')
-  console.log(socket)
-  // Connection opened
+type Param = {
+  playerId: string | undefined
+  authToken: string | undefined
+  onMessage: (event: MessageEvent<unknown>) => void
+}
 
-  socket.onopen = (event) => {
-    console.log(socket)
-    if (socket) {
-      socket.send(`{"message": "new client is connected"}`)
+export const useWebSocket = (param: Param) => {
+  const { playerId, authToken, onMessage } = param
+
+  console.log({ param })
+
+  if (!socket && playerId && authToken) {
+    socket = new WebSocket(
+      `ws://localhost:5173/api/socket?playerId=${playerId}&authToken=${authToken}`,
+    )
+
+    socket.onopen = () => {
+      if (socket) {
+        socket.send(`{"message": "new client is connected"}`)
+      }
     }
-  }
 
-  //receiving message from server
-  socket.onmessage = (event) => {
-    console.log('Message from server ', event)
-    const newMessage = JSON.parse(event.data)
-
-    switch (newMessage.type) {
-      case 'message':
-        console.log(newMessage)
-        break
+    //receiving message from server
+    socket.onmessage = (event) => {
+      onMessage(event)
     }
-  }
 
-  socket.onclose = () => {
-    console.log(socket)
-    console.log('Web Socket connection properly closed.')
+    socket.onclose = () => {
+      console.log('Web Socket connection properly closed.')
+    }
   }
 
   return { socket }
