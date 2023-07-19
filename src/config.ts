@@ -1,6 +1,6 @@
 import { TechniquesOptions } from './types'
 
-export const apiUrl = 'http://localhost:4001'
+export const apiUrl = '/api'
 
 export const techniqueOptions: TechniquesOptions = {
   fibonacci: [
