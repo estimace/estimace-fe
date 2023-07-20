@@ -40,7 +40,7 @@ const addPlayerToRoom = async (roomId: string, player: PlayerInStorage) => {
 const getGravatarAddress = (email: string) => {
   const address = email.trim().toLowerCase()
   const hash = md5(address)
-  return `https://www.gravatar.com/avatar/${hash}&d=retro`
+  return `https://www.gravatar.com/avatar/${hash}?d=retro`
 }
 
 const submitPlayerEstimation = async (

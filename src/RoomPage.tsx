@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import storage from './storage'
 import { Player, Room, RoomInStorage, RoomState } from './types'
-//import { RoomEntryForm } from './RoomEntryForm'
+import { RoomEntryForm } from './RoomEntryForm'
 import { addPlayerToRoom, fetchRoom } from './utils'
 import { PlayersInRoom } from './PlayersInRoom'
 import { Estimation, EstimationSubmitHandlerParam } from './Estimation'
 import { useWebSocket } from './useWebSocket'
 
-type NewPlayerParam = Pick<Player, 'id' | 'name' | 'email'>
+type CreatePlayerParam = Pick<Player, 'name' | 'email'>
 type RoomStatePayload = { id: string; state: RoomState; authToken: string }
 
 const RoomPage: FC = () => {
@@ -65,7 +65,7 @@ const RoomPage: FC = () => {
     onMessage: onMessageFromWS,
   })
 
-  const newPlayerMutationFn = async (newPlayer: NewPlayerParam) => {
+  const newPlayerMutationFn = async (newPlayer: CreatePlayerParam) => {
     const newPlayerInRoom = await addPlayerToRoom(roomId as string, newPlayer)
     if (socket && socket.readyState === 1 && data) {
       socket.send(
@@ -92,7 +92,7 @@ const RoomPage: FC = () => {
       const roomInStorage: RoomInStorage = {
         id: newPlayer.roomId,
         playerId: newPlayer.id,
-        authToken: newPlayer.authToken,
+        plyerAuthToken: newPlayer.authToken,
       }
       storage.setRoom(roomInStorage)
       setActiveRoom(roomInStorage)
@@ -172,7 +172,7 @@ const RoomPage: FC = () => {
 
   return (
     <>
-      {/* {!activeRoom && <RoomEntryForm onSubmit={newPlayerMutation.mutate} />} */}
+      {!activeRoom && <RoomEntryForm onSubmit={newPlayerMutation.mutate} />}
       {activeRoom && (
         <div className="planningRoomWrapper">
           {data && data.players.length && (

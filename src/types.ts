@@ -15,14 +15,14 @@ export type Player = {
   roomId: string
   name: string
   email: string
-  authToken: string
   isOwner: boolean
   estimate: number | null
+  authToken?: string
 }
 
 export type PlayerInStorage = Pick<Player, 'name' | 'email'>
 export type RoomInStorage = {
   id: Room['id']
   playerId: Player['id']
-  authToken: Player['authToken']
+  plyerAuthToken: Player['authToken']
 }

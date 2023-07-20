@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "../",
+    "paths": {
+      "app/*": ["./src/*"]
+    }
+  }
+}

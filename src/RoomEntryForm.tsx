@@ -6,8 +6,8 @@ type Props = {
 }
 
 interface CustomElements extends HTMLFormControlsCollection {
-  playerName: HTMLInputElement
-  playerEmail: HTMLInputElement
+  name: HTMLInputElement
+  email: HTMLInputElement
 }
 
 interface CustomForm extends HTMLFormElement {
@@ -20,30 +20,25 @@ export const RoomEntryForm: FC<Props> = (props: Props) => {
       onSubmit={(e: React.FormEvent<CustomForm>) => {
         e.preventDefault()
         const target = e.currentTarget.elements
-        if (!target.playerName.value || !target.playerEmail.value) return
-
-        props.onSubmit({
-          name: target.playerName.value,
-          email: target.playerEmail.value,
-        })
+        if (target.name.value && target.email.value) {
+          props.onSubmit({
+            name: target.name.value,
+            email: target.email.value,
+          })
+        }
       }}
     >
       <label>
         name:
-        <input
-          name="playerName"
-          type="text"
-          required={true}
-          placeholder="your name"
-        ></input>
+        <input name="name" type="text" required placeholder="your name"></input>
       </label>
 
       <label>
         email:
         <input
-          name="playerEmail"
+          name="email"
           type="email"
-          required={true}
+          required
           placeholder="me@example.com"
         ></input>
       </label>
