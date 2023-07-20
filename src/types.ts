@@ -24,5 +24,5 @@ export type PlayerInStorage = Pick<Player, 'name' | 'email'>
 export type RoomInStorage = {
   id: Room['id']
   playerId: Player['id']
-  plyerAuthToken: Player['authToken']
+  playerAuthToken: Player['authToken']
 }

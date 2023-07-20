@@ -1,11 +1,31 @@
 import { test, expect } from '@playwright/test'
 import { apiUrl } from 'app/config'
-import { assertEstimateOptions } from './utils'
+import {
+  assertEstimateOptions,
+  assertPlayersList,
+  assertShareURLSection,
+} from './utils'
+import { Player } from 'app/types'
 
 test.describe('new player enters the room via shared url', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
-  const playerId = '852a0cd5-9de1-4178-949b-a5cad8cdc2aa'
-  const authToken = 'a-secret-auth-token'
+  const owner: Player = {
+    id: 'a7e2e105-b694-486d-abdd-23b174dfae9a',
+    roomId: roomId,
+    name: 'Luke Skywalker',
+    email: 'luke@skywalker.com',
+    isOwner: true,
+    estimate: null,
+  }
+  const player: Player = {
+    id: '4ed040c2-0cb0-438f-b59d-8eaf873c4fdf',
+    roomId: roomId,
+    name: 'Darth Vader',
+    email: 'darth@vader.com',
+    isOwner: false,
+    estimate: null,
+  }
+  const playerAuthToken: Player['authToken'] = 'a-secret-auth-token'
 
   test('shows the room entry form for the new player whose local storage does not contain room info', async ({
     page,
@@ -29,13 +49,8 @@ test.describe('new player enters the room via shared url', () => {
       route.fulfill({
         status: 201,
         json: {
-          id: playerId,
-          roomId: roomId,
-          name: 'Darth Vader',
-          email: 'darth@vader.com',
-          isOwner: false,
-          authToken,
-          estimate: null,
+          ...player,
+          authToken: playerAuthToken,
         },
       })
     })
@@ -51,24 +66,7 @@ test.describe('new player enters the room via shared url', () => {
           id: roomId,
           state: 'planning',
           technique: 'fibonacci',
-          players: [
-            {
-              id: 'a7e2e105-b694-486d-abdd-23b174dfae9a',
-              roomId: roomId,
-              name: 'Luke Skywalker',
-              email: 'luke@skywalker.com',
-              isOwner: true,
-              estimate: null,
-            },
-            {
-              id: playerId,
-              roomId: roomId,
-              name: 'Darth Vader',
-              email: 'darth@vader.com',
-              isOwner: false,
-              estimate: null,
-            },
-          ],
+          players: [owner, player],
         },
       })
     })
@@ -89,24 +87,23 @@ test.describe('new player enters the room via shared url', () => {
     )?.value
 
     expect(playerInStorage).toBeDefined()
-    expect(JSON.parse(playerInStorage as string)).toBe({
+    expect(JSON.parse(playerInStorage as string)).toStrictEqual({
       name: 'Darth Vader',
       email: 'darth@vader.com',
     })
 
     expect(roomsInStorage).toBeDefined()
-    expect(JSON.parse(roomsInStorage as string)).toBe({
+    expect(JSON.parse(roomsInStorage as string)).toStrictEqual({
       [roomId]: {
         id: roomId,
-        playerId,
-        playerAuthTone: authToken,
+        playerId: player.id,
+        playerAuthToken: playerAuthToken,
       },
     })
 
+    await assertPlayersList(page, [owner, player])
     await assertEstimateOptions(page, 'fibonacci')
-
-    await expect(
-      page.getByRole('button', { name: /reveal/i }),
-    ).not.toBeVisible()
+    await assertShareURLSection(page, roomId)
+    await expect(page.getByRole('button', { name: /reveal/i })).toBeHidden()
   })
 })

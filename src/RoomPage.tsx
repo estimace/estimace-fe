@@ -92,7 +92,7 @@ const RoomPage: FC = () => {
       const roomInStorage: RoomInStorage = {
         id: newPlayer.roomId,
         playerId: newPlayer.id,
-        plyerAuthToken: newPlayer.authToken,
+        playerAuthToken: newPlayer.authToken,
       }
       storage.setRoom(roomInStorage)
       setActiveRoom(roomInStorage)

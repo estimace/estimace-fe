@@ -22,7 +22,7 @@ export const RoomCreation: FC = () => {
       storage.setRoom({
         id: room.id,
         playerId: room.players[0].id,
-        plyerAuthToken: room.players[0].authToken,
+        playerAuthToken: room.players[0].authToken,
       })
       navigate(`/rooms/${room.id}`)
     },
