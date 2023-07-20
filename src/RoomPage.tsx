@@ -66,6 +66,10 @@ const RoomPage: FC = () => {
   })
 
   const newPlayerMutationFn = async (newPlayer: CreatePlayerParam) => {
+    storage.setPlayer({
+      name: newPlayer.name,
+      email: newPlayer.email,
+    })
     const newPlayerInRoom = await addPlayerToRoom(roomId as string, newPlayer)
     if (socket && socket.readyState === 1 && data) {
       socket.send(
@@ -85,10 +89,6 @@ const RoomPage: FC = () => {
   const newPlayerMutation = useMutation({
     mutationFn: newPlayerMutationFn,
     onSuccess: async (newPlayer) => {
-      storage.setPlayer({
-        name: newPlayer.name,
-        email: newPlayer.email,
-      })
       const roomInStorage: RoomInStorage = {
         id: newPlayer.roomId,
         playerId: newPlayer.id,
