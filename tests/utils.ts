@@ -1,4 +1,3 @@
-import md5 from 'md5'
 import { Page, expect } from '@playwright/test'
 import { techniqueOptions } from 'app/config'
 import { Player, Room, Technique } from 'app/types'
@@ -41,12 +40,8 @@ export async function assertPlayersList(page: Page, players: Player[]) {
     const $listItem = $listItems.nth(index)
     await expect($listItem).toContainText(player.name)
 
-    const emailHash = md5(player.email)
     await expect(
       $listItem.getByAltText(`${player.name}'s avatar`),
-    ).toHaveAttribute(
-      'src',
-      `https://www.gravatar.com/avatar/${emailHash}?d=retro`,
-    )
+    ).toHaveAttribute('src', player.pictureURL)
   }
 }

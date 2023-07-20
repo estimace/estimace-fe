@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test'
 import { apiUrl, techniqueLabels } from 'app/config'
-import { Technique } from 'app/types'
+import { Player, Technique } from 'app/types'
 import {
   assertEstimateOptions,
   assertPlayersList,
@@ -9,10 +9,11 @@ import {
 
 test.describe('create new room', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
-  const player = {
+  const player: Player = {
     id: '852a0cd5-9de1-4178-949b-a5cad8cdc2aa',
     name: 'Darth Vader',
-    email: 'darth@vader.com',
+    pictureURL:
+      'https://secure.gravatar.com/avatar/f6cb5b374808419ff6fc55b73a1983bd?d=retro',
     isOwner: true,
     roomId,
     estimate: null,

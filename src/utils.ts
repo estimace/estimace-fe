@@ -1,5 +1,4 @@
 import { QueryKey } from '@tanstack/react-query'
-import md5 from 'md5'
 
 import { Player, Room, PlayerInStorage } from './types'
 import { apiUrl } from './config'
@@ -37,12 +36,6 @@ const addPlayerToRoom = async (roomId: string, player: PlayerInStorage) => {
   return (await res.json()) as Player
 }
 
-const getGravatarAddress = (email: string) => {
-  const address = email.trim().toLowerCase()
-  const hash = md5(address)
-  return `https://www.gravatar.com/avatar/${hash}?d=retro`
-}
-
 const submitPlayerEstimation = async (
   playerId: string,
   roomId: string,
@@ -56,10 +49,4 @@ const submitPlayerEstimation = async (
   return res
 }
 
-export {
-  fetchRoom,
-  createRoom,
-  addPlayerToRoom,
-  getGravatarAddress,
-  submitPlayerEstimation,
-}
+export { fetchRoom, createRoom, addPlayerToRoom, submitPlayerEstimation }
