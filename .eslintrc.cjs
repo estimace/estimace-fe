@@ -6,6 +6,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:@tanstack/eslint-plugin-query/recommended',
+    'plugin:playwright/recommended',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
