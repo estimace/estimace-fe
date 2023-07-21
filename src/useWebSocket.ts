@@ -1,6 +1,7 @@
-import { wsURL } from './config'
+import { getWebsocketServerURL } from './config'
 
 let socket: WebSocket | null = null
+const wssURL = getWebsocketServerURL()
 
 type Param = {
   playerId: string | undefined
@@ -13,7 +14,7 @@ export const useWebSocket = (param: Param) => {
 
   if (!socket && playerId && authToken) {
     socket = new WebSocket(
-      `${wsURL}?playerId=${playerId}&authToken=${authToken}`,
+      `${wssURL}?playerId=${playerId}&authToken=${authToken}`,
     )
 
     socket.onopen = () => {

@@ -8,6 +8,7 @@ import { addPlayerToRoom, fetchRoom } from './utils'
 import { PlayersInRoom } from './PlayersInRoom'
 import { Estimation, EstimationSubmitHandlerParam } from './Estimation'
 import { useWebSocket } from './useWebSocket'
+import { getBaseURL } from './config'
 
 type CreatePlayerParam = Pick<Player, 'name' | 'email'>
 type RoomStatePayload = { id: string; state: RoomState; authToken: string }
@@ -198,7 +199,9 @@ const RoomPage: FC = () => {
               <div id="estimace-share-url-title">
                 Share this room URL so your teammates can join:
               </div>
-              <div aria-hidden>http://localhost:5173/rooms/{data?.id}</div>
+              <div aria-hidden>
+                {getBaseURL()}/rooms/{data?.id}
+              </div>
               <button>Copy URL</button>
             </section>
           )}

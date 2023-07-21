@@ -20,9 +20,7 @@ export async function assertShareURLSection(page: Page, roomId: Room['id']) {
   await expect(
     shareRegion.getByRole('button', { name: /copy URL/gi }),
   ).toBeVisible()
-  await expect(shareRegion).toContainText(
-    `http://localhost:5173/rooms/${roomId}`,
-  )
+  await expect(shareRegion).toContainText(`/rooms/${roomId}`)
 }
 
 export async function assertPlayersList(page: Page, players: Player[]) {
