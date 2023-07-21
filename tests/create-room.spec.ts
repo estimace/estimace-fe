@@ -5,7 +5,8 @@ import {
   assertEstimateOptions,
   assertPlayersList,
   assertShareURLSection,
-} from './utils'
+} from './utils/assertions'
+import { mockGetRoomRequest } from './utils/request-mocks'
 
 test.describe('create new room', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
@@ -87,20 +88,10 @@ test.describe('create new room', () => {
       })
     })
 
-    await page.route(`${apiUrl}/rooms/${roomId}`, async (route) => {
-      if (route.request().method() !== 'GET') {
-        return route.fallback()
-      }
-
-      await route.fulfill({
-        status: 201,
-        json: {
-          id: roomId,
-          state: 'planning',
-          technique: technique,
-          players: [player],
-        },
-      })
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      technique: technique,
+      players: [player],
     })
 
     await page.goto(`/rooms`)

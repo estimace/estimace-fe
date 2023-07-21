@@ -45,3 +45,31 @@ export async function assertPlayersList(page: Page, players: Player[]) {
     ).toHaveAttribute('src', player.pictureURL)
   }
 }
+
+export async function assertStorageValues(
+  page: Page,
+  roomId: Room['id'],
+  player: Pick<Player, 'id' | 'name' | 'email' | 'authToken'>,
+) {
+  const playerInStorage = await page.evaluate(() =>
+    window.localStorage.getItem('player'),
+  )
+  const roomsInStorage = await page.evaluate(() =>
+    window.localStorage.getItem('rooms'),
+  )
+
+  expect(playerInStorage).toBeDefined()
+  expect(JSON.parse(playerInStorage as string)).toStrictEqual({
+    name: player.name,
+    email: player.email,
+  })
+
+  expect(roomsInStorage).toBeDefined()
+  expect(JSON.parse(roomsInStorage as string)).toStrictEqual({
+    [roomId]: {
+      id: roomId,
+      playerId: player.id,
+      playerAuthToken: player.authToken,
+    },
+  })
+}

@@ -9,8 +9,6 @@ type Param = {
 export const useWebSocket = (param: Param) => {
   const { playerId, authToken, onMessage } = param
 
-  console.log({ param })
-
   if (!socket && playerId && authToken) {
     socket = new WebSocket(
       `ws://localhost:5173/api/socket?playerId=${playerId}&authToken=${authToken}`,

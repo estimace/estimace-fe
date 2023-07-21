@@ -71,18 +71,7 @@ const RoomPage: FC = () => {
       email: newPlayer.email,
     })
     const newPlayerInRoom = await addPlayerToRoom(roomId as string, newPlayer)
-    if (socket && socket.readyState === 1 && data) {
-      socket.send(
-        JSON.stringify({
-          type: 'new-player',
-          payload: {
-            id: newPlayerInRoom.id,
-            roomId: newPlayerInRoom.roomId,
-            name: newPlayerInRoom.name,
-          },
-        }),
-      )
-    }
+
     return newPlayerInRoom
   }
 
@@ -112,7 +101,6 @@ const RoomPage: FC = () => {
   }, [roomQuery.data])
 
   const onEstimateSubmit = (item: EstimationSubmitHandlerParam) => {
-    console.log({ item, socket, data })
     if (!socket) {
       return
     }
@@ -121,12 +109,9 @@ const RoomPage: FC = () => {
     }
     socket.send(
       JSON.stringify({
-        type: 'player-estimate',
+        type: 'updateEstimate',
         payload: {
-          id: item.playerId,
           estimate: item.estimate,
-          authToken: player?.authToken,
-          roomId: item.roomId,
         },
       }),
     )

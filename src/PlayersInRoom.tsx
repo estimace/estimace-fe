@@ -15,12 +15,12 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
             {player.pictureURL && (
               <img src={player.pictureURL} alt={`${player.name}'s avatar`} />
             )}
-            <span>{player.name}</span>
+            <span>{player.name}</span>{' '}
             {props.state === 'planning' && player.estimate === null && (
-              <span> is thinking!</span>
+              <span>is estimating</span>
             )}
             {props.state === 'planning' && player.estimate !== null && (
-              <span> has already Planned!</span>
+              <span>estimated</span>
             )}
             {props.state === 'revealed' && <span>{player.estimate}</span>}
           </li>
