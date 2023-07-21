@@ -1,7 +1,7 @@
 import { QueryKey } from '@tanstack/react-query'
 
 import { Player, Room, PlayerInStorage } from './types'
-import { apiUrl } from './config'
+import { apiPath } from './config'
 import { SubmitHandlerParam } from './RoomCreationForm'
 
 const defaultHeaders = {
@@ -10,7 +10,7 @@ const defaultHeaders = {
 }
 
 const fetchRoom = async ({ queryKey }: { queryKey: QueryKey }) => {
-  const res = await fetch(`${apiUrl}/rooms/${queryKey[1]}`)
+  const res = await fetch(`${apiPath}/rooms/${queryKey[1]}`)
 
   if (!res.ok) throw new Error(`error to get requested room`)
 
@@ -19,7 +19,7 @@ const fetchRoom = async ({ queryKey }: { queryKey: QueryKey }) => {
 }
 
 const createRoom = async (item: SubmitHandlerParam) => {
-  const res = await fetch(`${apiUrl}/rooms`, {
+  const res = await fetch(`${apiPath}/rooms`, {
     method: 'POST',
     headers: defaultHeaders,
     body: JSON.stringify(item),
@@ -28,7 +28,7 @@ const createRoom = async (item: SubmitHandlerParam) => {
 }
 
 const addPlayerToRoom = async (roomId: string, player: PlayerInStorage) => {
-  const res = await fetch(`${apiUrl}/rooms/${roomId}/players`, {
+  const res = await fetch(`${apiPath}/rooms/${roomId}/players`, {
     method: 'POST',
     headers: defaultHeaders,
     body: JSON.stringify(player),
@@ -41,7 +41,7 @@ const submitPlayerEstimation = async (
   roomId: string,
   estimate: string,
 ) => {
-  const res = await fetch(`${apiUrl}/rooms/${roomId}/player/estimate`, {
+  const res = await fetch(`${apiPath}/rooms/${roomId}/player/estimate`, {
     method: 'PUT',
     headers: defaultHeaders,
     body: JSON.stringify({ roomId, playerId, estimate }),

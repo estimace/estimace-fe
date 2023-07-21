@@ -1,9 +1,29 @@
 import { Page } from '@playwright/test'
-import { apiUrl } from 'app/config'
+import { apiPath } from 'app/config'
 import { Player, Room } from 'app/types'
 
+export async function mockCreateRoomRequest(
+  page: Page,
+  room: Partial<Omit<Room, 'players'>>,
+  player: Player & { authToken: string },
+) {
+  await page.route(`${apiPath}/rooms`, async (route) => {
+    if (route.request().method() !== 'POST') {
+      return route.fallback()
+    }
+    await route.fulfill({
+      status: 201,
+      json: {
+        ...room,
+        state: 'planning',
+        players: [player],
+      },
+    })
+  })
+}
+
 export async function mockGetRoomRequest(page: Page, payload: Partial<Room>) {
-  await page.route(`${apiUrl}/rooms/${payload.id}`, async (route) => {
+  await page.route(`${apiPath}/rooms/${payload.id}`, async (route) => {
     if (route.request().method() !== 'GET') {
       return route.fallback()
     }
@@ -24,7 +44,7 @@ export async function mockCreatePlayerInRoomRequest(
   payload: Player & { authToken: string },
 ) {
   await page.route(
-    `${apiUrl}/rooms/${payload.roomId}/players`,
+    `${apiPath}/rooms/${payload.roomId}/players`,
     async (route) => {
       if (route.request().method() !== 'POST') {
         return route.fallback()

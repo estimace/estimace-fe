@@ -27,3 +27,9 @@ export type RoomInStorage = {
   playerId: Player['id']
   playerAuthToken: Player['authToken']
 }
+
+declare global {
+  interface Window {
+    WS_URL: string
+  }
+}

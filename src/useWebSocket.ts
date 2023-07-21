@@ -1,3 +1,5 @@
+import { wsURL } from './config'
+
 let socket: WebSocket | null = null
 
 type Param = {
@@ -11,7 +13,7 @@ export const useWebSocket = (param: Param) => {
 
   if (!socket && playerId && authToken) {
     socket = new WebSocket(
-      `ws://localhost:5173/api/socket?playerId=${playerId}&authToken=${authToken}`,
+      `${wsURL}?playerId=${playerId}&authToken=${authToken}`,
     )
 
     socket.onopen = () => {
@@ -20,7 +22,6 @@ export const useWebSocket = (param: Param) => {
       }
     }
 
-    //receiving message from server
     socket.onmessage = (event) => {
       onMessage(event)
     }
