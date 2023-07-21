@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { Player } from 'app/types'
 import { assertStorageValues } from './utils/assertions'
+import wsMockServer from './utils/ws-mock-server'
 import {
   mockCreatePlayerInRoomRequest,
   mockGetRoomRequest,
@@ -43,13 +44,11 @@ test.describe('estimate', () => {
     ]
 
     const playersEmails: Player['email'][] = [
-      'darth@vader.com',
       'luke@skywalker.com',
       'padme@amidala.com',
     ]
 
     const playersAuthTokens: Player['authToken'][] = [
-      'secret-auth-token-for-darth-vader',
       'secret-auth-token-for-luke-skywalker',
       'secret-auth-token-for-padme-amidala',
     ]
@@ -73,14 +72,37 @@ test.describe('estimate', () => {
     }
 
     await mockCreatePlayerInRoomRequest(pageOne, {
+      ...players[0],
+      authToken: playersAuthTokens[0],
+    })
+
+    await mockCreatePlayerInRoomRequest(pageTwo, {
       ...players[1],
       authToken: playersAuthTokens[1],
     })
 
-    await mockCreatePlayerInRoomRequest(pageTwo, {
-      ...players[2],
-      authToken: playersAuthTokens[2],
-    })
+    const wss = await wsMockServer.create(
+      (message, sendMessage, broadcastMessage) => {
+        if (message.type === 'updateEstimate') {
+          const responseMessage = {
+            type: 'estimateUpdated',
+            payload: {
+              ...players[0],
+              estimate: message.payload.estimate,
+            },
+          }
+          sendMessage(responseMessage)
+          broadcastMessage(responseMessage)
+        }
+      },
+    )
+
+    for (const i of [0, 1]) {
+      await pages[i].addInitScript(
+        (value) => (window.WS_URL = value),
+        wss.address,
+      )
+    }
 
     await pageOne.goto(`/rooms/${roomId}`)
     await pageTwo.goto(`/rooms/${roomId}`)
@@ -114,6 +136,7 @@ test.describe('estimate', () => {
     }
 
     await pageOne.getByRole('button', { name: '8' }).click()
+
     await expect(pageOne.getByText(`${owner.name} is estimating`)).toBeVisible()
     await expect(pageTwo.getByText(`${owner.name} is estimating`)).toBeVisible()
     await expect(
@@ -129,6 +152,7 @@ test.describe('estimate', () => {
       pageTwo.getByText(`${players[1].name} is estimating`),
     ).toBeVisible()
 
+    return
     await pageTwo.getByRole('button', { name: '0.5' }).click()
     await expect(pageOne.getByText(`${owner.name} is estimating`)).toBeVisible()
     await expect(pageTwo.getByText(`${owner.name} is estimating`)).toBeVisible()

@@ -8,7 +8,6 @@ export const apiPath = '/api'
  * run tests in parallel without having effects on each other. This feature is
  * disabled in production mode.
  */
-
 export const getWebsocketServerURL = () => {
   const mode = import.meta.env.MODE
   const apiHost = window.location.host // e.g localhost:3500
