@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { PlayerInStorage } from './types'
+import { PlayerInStorage } from 'app/types'
 
 type Props = {
   onSubmit: (player: PlayerInStorage) => void
@@ -14,7 +14,7 @@ interface CustomForm extends HTMLFormElement {
   readonly elements: CustomElements
 }
 
-export const RoomEntryForm: FC<Props> = (props: Props) => {
+export const JoinForm: FC<Props> = (props: Props) => {
   return (
     <form
       onSubmit={(e: React.FormEvent<CustomForm>) => {

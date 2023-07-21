@@ -2,10 +2,11 @@ import { FC } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
-import storage from 'app/storage'
+import storage from 'app/utils/storage'
 import { Technique } from 'app/types'
-import { RoomCreationForm } from 'app/RoomCreationForm'
 import { createRoom } from 'app/utils'
+
+import { RoomCreationForm } from './Form'
 
 export const RoomCreation: FC = () => {
   const navigate = useNavigate()

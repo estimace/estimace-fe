@@ -1,4 +1,4 @@
-import { getWebsocketServerURL } from './config'
+import { getWebsocketServerURL } from 'app/config'
 
 let socket: WebSocket | null = null
 const wssURL = getWebsocketServerURL()

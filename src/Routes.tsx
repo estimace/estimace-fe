@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 
-import HomePage from './Home'
-import { RoomCreation } from './RoomCreation'
-import RoomPage from './RoomPage'
+import HomePage from 'app/pages/Home'
+import { RoomCreation } from 'app/pages/RoomCreation'
+import RoomPage from 'app/pages/Room'
 
 function App() {
   return (

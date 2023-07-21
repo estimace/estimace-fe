@@ -1,21 +1,23 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import storage from './storage'
-import { Player, Room, RoomInStorage, RoomState } from './types'
-import { RoomEntryForm } from './RoomEntryForm'
-import { addPlayerToRoom, fetchRoom } from './utils'
-import { PlayersInRoom } from './PlayersInRoom'
+
+import storage from 'app/utils/storage'
+import { Player, Room, RoomInStorage, RoomState } from 'app/types'
+import { addPlayerToRoom, fetchRoom } from 'app/utils'
+import { useWebSocket } from 'app/hooks/useWebSocket'
+import { getBaseURL } from 'app/config'
+
+import { JoinForm } from './JoinForm'
+import { PlayersInRoom } from './Players'
 import { Estimation, EstimationSubmitHandlerParam } from './Estimation'
-import { useWebSocket } from './useWebSocket'
-import { getBaseURL } from './config'
 
 type CreatePlayerParam = Pick<Player, 'name' | 'email'>
 type RoomStatePayload = { id: string; state: RoomState; authToken: string }
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
-  const [data, setData] = useState<Room | undefined>()
+  const [roomData, setRoomData] = useState<Room | undefined>()
   const [activeRoom, setActiveRoom] = useState(
     storage.getRoom(roomId as string),
   )
@@ -27,38 +29,43 @@ const RoomPage: FC = () => {
   })
   const [player, setPlayer] = useState(roomQuery.data?.players[0])
   const [roomState, setRoomState] = useState<RoomState>(
-    data ? data.state : 'planning',
+    roomData ? roomData.state : 'planning',
   )
 
   const onMessageFromWS = (event: MessageEvent) => {
     console.log('Message from server ', event)
-    // const newMessage = JSON.parse(event.data)
-    // if (!data) return
-    // const updatedPlayer = data?.players.filter(
-    //   (player) => player.id === newMessage.payload.id,
-    // )
+    if (!roomData) return
+    const newMessage = JSON.parse(event.data)
 
-    // {
-    //   type: 'estimateUpdated',
-    //   payload: {
-    //     id: player.id,
-    //     roomId: room.id,
-    //     email: 'darth@vader.com',
-    //     name: 'Darth Vader',
-    //     estimate: 4,
-    //     isOwner: false,
-    //     createdAt: mockedTime.toISOString(),
-    //     updatedAt: mockedTime.toISOString(),
-    //   },
-    // }
-    // switch (newMessage.type) {
-    //   case 'roomStateUpdated':
-    //     break
-    //   case 'estimateUpdated':
-    //     console.log('roomPlayersChanged', data)
-    //     //setData({...data, data?.players[updatedPlayer].estimate =newMessage.payload.estimate})
-    //     break
-    // }
+    switch (newMessage.type) {
+      case 'estimateUpdated': {
+        const updatedPlayer = roomData.players.find(
+          (player) => player.id === newMessage.payload.id,
+        )
+        if (!updatedPlayer) {
+          return
+        }
+        updatedPlayer.estimate = newMessage.payload.estimate
+        setRoomData((prevState) => {
+          if (!prevState) {
+            return
+          }
+          const nextState = { ...prevState }
+          if (!nextState.players) {
+            return prevState
+          }
+          const updatedPlayer = nextState.players.find(
+            (player) => player.id === newMessage.payload.id,
+          )
+          if (!updatedPlayer) {
+            return prevState
+          }
+          updatedPlayer.estimate = newMessage.payload.estimate
+          return nextState
+        })
+        break
+      }
+    }
   }
   const { socket } = useWebSocket({
     playerId: player?.id,
@@ -98,14 +105,14 @@ const RoomPage: FC = () => {
   }, [newPlayerMutation.data, roomQuery])
 
   useEffect(() => {
-    setData(roomQuery.data)
+    setRoomData(roomQuery.data)
   }, [roomQuery.data])
 
   const onEstimateSubmit = (item: EstimationSubmitHandlerParam) => {
     if (!socket) {
       return
     }
-    if (socket.readyState !== 1 || !data || data.state !== 'planning') {
+    if (socket.readyState !== 1 || !roomData || roomData.state !== 'planning') {
       return
     }
     socket.send(
@@ -119,11 +126,11 @@ const RoomPage: FC = () => {
   }
 
   const handleRevealButton = () => {
-    if (!player?.isOwner || !data || !socket) return
+    if (!player?.isOwner || !roomData || !socket) return
     if (socket.readyState !== 1) return
     if (socket.readyState === 1 && activeRoom) {
       const payload: RoomStatePayload = {
-        id: data.id,
+        id: roomData.id,
         authToken: activeRoom?.id,
         state: 'revealed',
       }
@@ -138,11 +145,11 @@ const RoomPage: FC = () => {
   }
 
   const handleResetButton = () => {
-    if (!player?.isOwner || !data || !socket) return
+    if (!player?.isOwner || !roomData || !socket) return
     if (socket.readyState !== 1) return
     if (socket.readyState === 1 && activeRoom) {
       const payload: RoomStatePayload = {
-        id: data.id,
+        id: roomData.id,
         authToken: activeRoom?.id,
         state: 'planning',
       }
@@ -158,22 +165,22 @@ const RoomPage: FC = () => {
 
   return (
     <>
-      {!activeRoom && <RoomEntryForm onSubmit={newPlayerMutation.mutate} />}
+      {!activeRoom && <JoinForm onSubmit={newPlayerMutation.mutate} />}
       {activeRoom && (
         <div className="planningRoomWrapper">
-          {data && data.players.length && (
-            <PlayersInRoom players={data.players} state={roomState} />
+          {roomData && roomData.players.length && (
+            <PlayersInRoom players={roomData.players} state={roomState} />
           )}
 
-          {data && player && roomState === 'planning' && (
+          {roomData && player && roomState === 'planning' && (
             <Estimation
-              technique={data.technique}
-              roomId={data.id}
+              technique={roomData.technique}
+              roomId={roomData.id}
               playerId={player.id}
               onEstimateSubmit={onEstimateSubmit}
             />
           )}
-          {player?.isOwner && data && roomState === 'planning' && (
+          {player?.isOwner && roomData && roomState === 'planning' && (
             <button
               onClick={(event) => {
                 event.preventDefault()
@@ -183,7 +190,7 @@ const RoomPage: FC = () => {
               Reveal
             </button>
           )}
-          {player?.isOwner && data && roomState === 'revealed' && (
+          {player?.isOwner && roomData && roomState === 'revealed' && (
             <button
               onClick={(event) => {
                 event.preventDefault()
@@ -194,13 +201,13 @@ const RoomPage: FC = () => {
             </button>
           )}
 
-          {data && (
+          {roomData && (
             <section aria-labelledby="estimace-share-url-title">
               <div id="estimace-share-url-title">
                 Share this room URL so your teammates can join:
               </div>
               <div aria-hidden>
-                {getBaseURL()}/rooms/{data?.id}
+                {getBaseURL()}/rooms/{roomData?.id}
               </div>
               <button>Copy URL</button>
             </section>

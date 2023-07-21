@@ -1,8 +1,7 @@
 import { QueryKey } from '@tanstack/react-query'
 
-import { Player, Room, PlayerInStorage } from './types'
-import { apiPath } from './config'
-import { SubmitHandlerParam } from './RoomCreationForm'
+import { Player, Room, PlayerInStorage, Technique } from 'app/types'
+import { apiPath } from 'app/config'
 
 const defaultHeaders = {
   Accept: 'application/json',
@@ -18,7 +17,13 @@ const fetchRoom = async ({ queryKey }: { queryKey: QueryKey }) => {
   return result
 }
 
-const createRoom = async (item: SubmitHandlerParam) => {
+export type CreateRoomParam = {
+  name: string
+  email: string
+  technique: Technique
+}
+
+const createRoom = async (item: CreateRoomParam) => {
   const res = await fetch(`${apiPath}/rooms`, {
     method: 'POST',
     headers: defaultHeaders,

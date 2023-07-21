@@ -1,7 +1,8 @@
 import { FC, useState } from 'react'
 
-import { Technique } from './types'
-import { techniqueLabels } from './config'
+import { Technique } from 'app/types'
+import { techniqueLabels } from 'app/config'
+import { CreateRoomParam } from 'app/utils'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -13,13 +14,7 @@ type Props = {
   email?: string
 }
 
-export type SubmitHandler = (item: SubmitHandlerParam) => void
-
-export type SubmitHandlerParam = {
-  name: string
-  email: string
-  technique: Technique
-}
+export type SubmitHandler = (item: CreateRoomParam) => void
 
 export const RoomCreationForm: FC<Props> = (props: Props) => {
   const [name, setName] = useState(props.name ?? '')
