@@ -23,18 +23,17 @@ function create(
     })
 
     wss.on('connection', function connection(ws, req) {
-      console.log('on connection')
+      console.log('WSS: onConnection')
+
       ws.on('error', console.error)
 
-      const url = new URL(`http://localhost${req.url}`)
-
       const sendMessage: SendMessage = (message) => {
-        console.log('sendMessage', message)
+        console.log('WSS: sendMessage', message)
         ws.send(JSON.stringify(message))
       }
 
       const broadcastMessage: BroadcastMessage = (message) => {
-        console.log('broadcastMessage', message)
+        console.log('WSS: broadcastMessage', message)
         wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(message))
@@ -49,7 +48,7 @@ function create(
           message,
           sendMessage,
           broadcastMessage,
-          url,
+          url: new URL(`http://localhost${req.url}`),
         })
       })
     })

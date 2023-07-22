@@ -6,7 +6,7 @@ const defaultHeaders = {
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 type RequestHeaders = Record<string, string>
 
-type ResponseValue<T> = SuccessfulResponse<T> | FailedResponse
+export type ResponseValue<T> = SuccessfulResponse<T> | FailedResponse
 type SuccessfulResponse<T> = {
   errorType: null
   status: number

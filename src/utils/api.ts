@@ -1,26 +1,32 @@
 import { Player, Room } from 'app/types'
 import { apiPath } from 'app/config'
-import { request } from './request'
+import { request, ResponseValue } from './request'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type APIFunction = (...p: any[]) => ReturnType<typeof request>
+export type APIFunction<T, P extends unknown[]> = (
+  ...p: P
+) => Promise<ResponseValue<T>>
 
-const getRoom: APIFunction = async (roomId: Room['id']) => {
+const getRoom: APIFunction<Room, [Room['id']]> = async (roomId) => {
   return request<Room>('GET', `${apiPath}/rooms/${roomId}`)
 }
 
-const createRoom = async (param: {
-  name: Player['name']
-  email: Player['email']
-  technique: Room['technique']
-}) => {
+const createRoom: APIFunction<
+  Room,
+  [
+    {
+      name: Player['name']
+      email: Player['email']
+      technique: Room['technique']
+    },
+  ]
+> = async (param) => {
   return request<Room>('POST', `${apiPath}/rooms`, { body: param })
 }
 
-const addPlayerToRoom = async (
-  roomId: Room['id'],
-  player: Pick<Player, 'name' | 'email'>,
-) => {
+const addPlayerToRoom: APIFunction<
+  Player,
+  [Room['id'], Pick<Player, 'name' | 'email'>]
+> = async (roomId, player) => {
   return request<Player>('POST', `${apiPath}/rooms/${roomId}/players`, {
     body: player,
   })

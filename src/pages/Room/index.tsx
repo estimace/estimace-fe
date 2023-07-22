@@ -38,9 +38,13 @@ const RoomPage: FC = () => {
   })
 
   const roomQuery = useQuery({
-    query: () => api.getRoom(roomId),
-    onResponse: (result) => {
-      if (!result.errorType) setRoom(result.data as Room)
+    params: {
+      query: () => api.getRoom(roomId as string),
+      onResponse: (result) => {
+        if (!result.errorType) {
+          setRoom(result.data)
+        }
+      },
     },
   })
 
@@ -58,7 +62,6 @@ const RoomPage: FC = () => {
     storage.setRoom(roomInStorage)
     setRoomInStorage(roomInStorage)
     setRoom((prev) => {
-      console.log({ prev })
       if (!prev) {
         return null
       }

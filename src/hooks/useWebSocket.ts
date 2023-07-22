@@ -17,7 +17,7 @@ export type MessageListener = (message: Message) => void
 const listeners: Record<Message['type'], MessageListener[]> = {}
 
 function sendMessage(message: Message) {
-  if (socket && socket.readyState === 1) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(message))
   }
 }
