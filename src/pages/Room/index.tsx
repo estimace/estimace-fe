@@ -1,218 +1,109 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useMutation, useQuery } from '@tanstack/react-query'
 
 import storage from 'app/utils/storage'
-import { Player, Room, RoomInStorage, RoomState } from 'app/types'
-import { addPlayerToRoom, fetchRoom } from 'app/utils'
-import { useWebSocket } from 'app/hooks/useWebSocket'
-import { getBaseURL } from 'app/config'
+import { Room, RoomInStorage } from 'app/types'
+import api from 'app/utils/api'
+import { useMutation, useQuery } from 'app/hooks/useAPI'
 
 import { JoinForm } from './JoinForm'
 import { PlayersInRoom } from './Players'
-import { Estimation, EstimationSubmitHandlerParam } from './Estimation'
-
-type CreatePlayerParam = Pick<Player, 'name' | 'email'>
-type RoomStatePayload = { id: string; state: RoomState; authToken: string }
+import { Estimation } from './Estimation'
+import { OwnerControllers } from './OwnerControllers'
+import { usePlayer } from './hooks/usePlayer'
+import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
+import { ShareURL } from './ShareURL'
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
-  const [roomData, setRoomData] = useState<Room | undefined>()
-  const [activeRoom, setActiveRoom] = useState(
+  const [roomInStorage, setRoomInStorage] = useState<RoomInStorage | null>(
     storage.getRoom(roomId as string),
   )
+  const [room, setRoom] = useState<Room | null>(null)
+  const { player, setPlayer } = usePlayer(room, roomInStorage)
 
-  const roomQuery = useQuery<Room, Error>({
-    queryKey: ['room', roomId],
-    queryFn: fetchRoom,
-    enabled: activeRoom ? true : false,
-  })
-  const [player, setPlayer] = useState(roomQuery.data?.players[0])
-  const [roomState, setRoomState] = useState<RoomState>(
-    roomData ? roomData.state : 'planning',
-  )
-
-  const onMessageFromWS = (event: MessageEvent) => {
-    console.log('Message from server ', event)
-    if (!roomData) return
-    const newMessage = JSON.parse(event.data)
-
-    switch (newMessage.type) {
-      case 'estimateUpdated': {
-        const updatedPlayer = roomData.players.find(
-          (player) => player.id === newMessage.payload.id,
-        )
-        if (!updatedPlayer) {
-          return
-        }
-        updatedPlayer.estimate = newMessage.payload.estimate
-        setRoomData((prevState) => {
-          if (!prevState) {
-            return
-          }
-          const nextState = { ...prevState }
-          if (!nextState.players) {
-            return prevState
-          }
-          const updatedPlayer = nextState.players.find(
-            (player) => player.id === newMessage.payload.id,
-          )
-          if (!updatedPlayer) {
-            return prevState
-          }
-          updatedPlayer.estimate = newMessage.payload.estimate
-          return nextState
-        })
-        break
-      }
-    }
-  }
-  const { socket } = useWebSocket({
-    playerId: player?.id,
-    authToken: player?.authToken,
-    onMessage: onMessageFromWS,
+  useOnEstimateUpdatedWSMessage({
+    playerId: roomInStorage?.playerId,
+    playerAuthToken: roomInStorage?.playerAuthToken,
+    room,
+    setRoom,
   })
 
-  const newPlayerMutationFn = async (newPlayer: CreatePlayerParam) => {
-    storage.setPlayer({
-      name: newPlayer.name,
-      email: newPlayer.email,
-    })
-    const newPlayerInRoom = await addPlayerToRoom(roomId as string, newPlayer)
-
-    return newPlayerInRoom
-  }
-
-  const newPlayerMutation = useMutation({
-    mutationFn: newPlayerMutationFn,
-    onSuccess: async (newPlayer) => {
-      const roomInStorage: RoomInStorage = {
-        id: newPlayer.roomId,
-        playerId: newPlayer.id,
-        playerAuthToken: newPlayer.authToken,
-      }
-      storage.setRoom(roomInStorage)
-      setActiveRoom(roomInStorage)
-      setPlayer(newPlayer)
+  const roomQuery = useQuery({
+    query: () => api.getRoom(roomId),
+    onResponse: (result) => {
+      if (!result.errorType) setRoom(result.data as Room)
     },
   })
 
-  useEffect(() => {
-    roomQuery.refetch()
-    newPlayerMutation.data
-      ? setPlayer(newPlayerMutation.data)
-      : setPlayer(roomQuery.data?.players[0])
-  }, [newPlayerMutation.data, roomQuery])
-
-  useEffect(() => {
-    setRoomData(roomQuery.data)
-  }, [roomQuery.data])
-
-  const onEstimateSubmit = (item: EstimationSubmitHandlerParam) => {
-    if (!socket) {
+  const joinRoomMutation = useMutation(api.addPlayerToRoom, (result) => {
+    if (result.errorType) {
       return
     }
-    if (socket.readyState !== 1 || !roomData || roomData.state !== 'planning') {
-      return
+
+    const player = result.data
+    const roomInStorage: RoomInStorage = {
+      id: player.roomId,
+      playerId: player.id,
+      playerAuthToken: player.authToken,
     }
-    socket.send(
-      JSON.stringify({
-        type: 'updateEstimate',
-        payload: {
-          estimate: item.estimate,
-        },
-      }),
-    )
+    storage.setRoom(roomInStorage)
+    setRoomInStorage(roomInStorage)
+    setRoom((prev) => {
+      console.log({ prev })
+      if (!prev) {
+        return null
+      }
+      return { ...prev, players: [...prev.players, player] }
+    })
+    setPlayer(player)
+  })
+
+  const shouldShowJoinRoomForm = roomInStorage === null
+  const shouldShowRoom = !shouldShowJoinRoomForm && room && player
+
+  if (!roomId) {
+    return null
   }
 
-  const handleRevealButton = () => {
-    if (!player?.isOwner || !roomData || !socket) return
-    if (socket.readyState !== 1) return
-    if (socket.readyState === 1 && activeRoom) {
-      const payload: RoomStatePayload = {
-        id: roomData.id,
-        authToken: activeRoom?.id,
-        state: 'revealed',
-      }
-      socket.send(
-        JSON.stringify({
-          type: 'room-state',
-          payload,
-        }),
-      )
-      setRoomState('revealed')
-    }
-  }
-
-  const handleResetButton = () => {
-    if (!player?.isOwner || !roomData || !socket) return
-    if (socket.readyState !== 1) return
-    if (socket.readyState === 1 && activeRoom) {
-      const payload: RoomStatePayload = {
-        id: roomData.id,
-        authToken: activeRoom?.id,
-        state: 'planning',
-      }
-      socket.send(
-        JSON.stringify({
-          type: 'room-state',
-          payload,
-        }),
-      )
-      setRoomState('revealed')
-    }
+  if (roomQuery.isFetching) {
+    return <div>is fetching...</div>
   }
 
   return (
     <>
-      {!activeRoom && <JoinForm onSubmit={newPlayerMutation.mutate} />}
-      {activeRoom && (
-        <div className="planningRoomWrapper">
-          {roomData && roomData.players.length && (
-            <PlayersInRoom players={roomData.players} state={roomState} />
-          )}
+      {roomQuery.error && <div>error: {JSON.stringify(roomQuery.error)}</div>}
+      {shouldShowJoinRoomForm && (
+        <JoinForm
+          onSubmit={(item) => {
+            storage.setPlayer(item)
+            joinRoomMutation.mutate(roomId, item)
+          }}
+        />
+      )}
+      {shouldShowRoom && (
+        <>
+          <PlayersInRoom players={room.players} state={room.state} />
 
-          {roomData && player && roomState === 'planning' && (
+          {room.state === 'planning' && (
             <Estimation
-              technique={roomData.technique}
-              roomId={roomData.id}
+              technique={room.technique}
+              roomId={room.id}
               playerId={player.id}
-              onEstimateSubmit={onEstimateSubmit}
+              playerAuthToken={player.authToken}
             />
           )}
-          {player?.isOwner && roomData && roomState === 'planning' && (
-            <button
-              onClick={(event) => {
-                event.preventDefault()
-                handleRevealButton()
-              }}
-            >
-              Reveal
-            </button>
-          )}
-          {player?.isOwner && roomData && roomState === 'revealed' && (
-            <button
-              onClick={(event) => {
-                event.preventDefault()
-                handleResetButton()
-              }}
-            >
-              Reset
-            </button>
+
+          {player.isOwner && (
+            <OwnerControllers
+              roomState={room.state}
+              playerId={roomInStorage.playerId}
+              playerAuthToken={roomInStorage.playerAuthToken}
+            />
           )}
 
-          {roomData && (
-            <section aria-labelledby="estimace-share-url-title">
-              <div id="estimace-share-url-title">
-                Share this room URL so your teammates can join:
-              </div>
-              <div aria-hidden>
-                {getBaseURL()}/rooms/{roomData?.id}
-              </div>
-              <button>Copy URL</button>
-            </section>
-          )}
-        </div>
+          <ShareURL roomId={room.id} />
+        </>
       )}
     </>
   )

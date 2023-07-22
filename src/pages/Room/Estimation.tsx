@@ -1,26 +1,19 @@
 import { FC } from 'react'
 import { Technique } from 'app/types'
 import { techniqueOptions } from 'app/config'
+import { useSendEstimateWSMessage } from './hooks/useSendEstimateWSMessage'
 
 type Props = {
   technique: Technique
   roomId: string
   playerId: string
-  onEstimateSubmit: EstimationSubmitHandler
-}
-
-export type EstimationSubmitHandler = (
-  item: EstimationSubmitHandlerParam,
-) => void
-
-export type EstimationSubmitHandlerParam = {
-  playerId: string
-  roomId: string
-  estimate: number
+  playerAuthToken: string | undefined
 }
 
 export const Estimation: FC<Props> = (props: Props) => {
-  const estimationOptions = techniqueOptions[props.technique]
+  const { playerId, playerAuthToken, technique } = props
+  const estimationOptions = techniqueOptions[technique]
+  const sendEstimate = useSendEstimateWSMessage({ playerId, playerAuthToken })
 
   return (
     <section aria-label="estimate options">
@@ -31,14 +24,7 @@ export const Estimation: FC<Props> = (props: Props) => {
             key={index}
             className="estimationButton"
             data-value={`estimationButton-${option}`}
-            onClick={(e) => {
-              e.preventDefault()
-              props.onEstimateSubmit({
-                playerId: props.playerId,
-                roomId: props.roomId,
-                estimate: index,
-              })
-            }}
+            onClick={() => sendEstimate(index)}
           >
             {option}
           </button>

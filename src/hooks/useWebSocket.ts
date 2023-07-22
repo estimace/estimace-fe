@@ -6,11 +6,42 @@ const wssURL = getWebsocketServerURL()
 type Param = {
   playerId: string | undefined
   authToken: string | undefined
-  onMessage: (event: MessageEvent<unknown>) => void
+}
+
+export type Message = {
+  type: string
+  payload: Record<string, unknown>
+}
+
+export type MessageListener = (message: Message) => void
+const listeners: Record<Message['type'], MessageListener[]> = {}
+
+function sendMessage(message: Message) {
+  if (socket && socket.readyState === 1) {
+    socket.send(JSON.stringify(message))
+  }
+}
+
+function addMessageListener(
+  messageType: Message['type'],
+  listener: MessageListener,
+) {
+  if (!listeners[messageType]) {
+    listeners[messageType] = []
+  }
+  listeners[messageType].push(listener)
+}
+
+function removeMessageListener(
+  messageType: Message['type'],
+  listener: MessageListener,
+) {
+  const index = listeners[messageType].findIndex((item) => item === listener)
+  listeners[messageType].splice(index, 1)
 }
 
 export const useWebSocket = (param: Param) => {
-  const { playerId, authToken, onMessage } = param
+  const { playerId, authToken } = param
 
   if (!socket && playerId && authToken) {
     socket = new WebSocket(
@@ -18,9 +49,26 @@ export const useWebSocket = (param: Param) => {
     )
 
     socket.onmessage = (event) => {
-      onMessage(event)
+      try {
+        const message = JSON.parse(event.data)
+        if (typeof message.type === 'string' && 'payload' in message) {
+          for (const listener of listeners[message.type] ?? []) {
+            listener(message as Message)
+          }
+        } else {
+          console.error(
+            'format of the message from ws server is not supported',
+            message,
+          )
+        }
+      } catch (error) {
+        console.error('could not parse the message from ws server', {
+          error,
+          data: event.data,
+        })
+      }
     }
   }
 
-  return { socket }
+  return { sendMessage, addMessageListener, removeMessageListener }
 }

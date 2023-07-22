@@ -62,7 +62,7 @@ test.describe('estimate', () => {
       const index = pages.indexOf(page)
       await mockGetRoomRequest(page, {
         id: roomId,
-        players: [owner, ...players],
+        players: [owner],
       })
 
       await mockCreatePlayerInRoomRequest(page, {

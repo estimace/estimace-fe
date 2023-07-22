@@ -1,8 +1,7 @@
 import { FC } from 'react'
-import { PlayerInStorage } from 'app/types'
 
 type Props = {
-  onSubmit: (player: PlayerInStorage) => void
+  onSubmit: (item: { name: string; email: string }) => void
 }
 
 interface CustomElements extends HTMLFormControlsCollection {

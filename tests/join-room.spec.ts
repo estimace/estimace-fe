@@ -47,14 +47,14 @@ test.describe('new player enters the room via shared url', () => {
   test('new player enters the room providing form data and has their info stored in local storage', async ({
     page,
   }) => {
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      players: [owner],
+    })
+
     await mockCreatePlayerInRoomRequest(page, {
       ...player,
       authToken: playerAuthToken,
-    })
-
-    await mockGetRoomRequest(page, {
-      id: roomId,
-      players: [owner, player],
     })
 
     await page.goto(`/rooms/${roomId}`)

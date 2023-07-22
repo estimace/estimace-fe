@@ -16,6 +16,13 @@ export default defineConfig(({ command, mode }) => {
     server: {
       port: parseNumber(env.PORT, 3500),
       proxy: {
+        '/api/socket': {
+          target: env.API_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+          ws: true,
+        },
         '/api': {
           target: env.API_URL,
           changeOrigin: true,
