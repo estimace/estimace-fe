@@ -62,7 +62,7 @@ test.describe('estimate', () => {
       const index = pages.indexOf(page)
       await mockGetRoomRequest(page, {
         id: roomId,
-        players: [owner],
+        players: [owner, players[index === 0 ? 1 : 0]],
       })
 
       await mockCreatePlayerInRoomRequest(page, {
@@ -82,12 +82,14 @@ test.describe('estimate', () => {
     })
 
     const wss = await wsMockServer.create(
-      (message, sendMessage, broadcastMessage) => {
+      ({ message, sendMessage, broadcastMessage, url }) => {
+        const playerId = url.searchParams.get('playerId')
+
         if (message.type === 'updateEstimate') {
           const responseMessage = {
             type: 'estimateUpdated',
             payload: {
-              ...players[0],
+              ...players.find((item) => item.id === playerId),
               estimate: message.payload.estimate,
             },
           }
@@ -152,7 +154,6 @@ test.describe('estimate', () => {
       pageTwo.getByText(`${players[1].name} is estimating`),
     ).toBeVisible()
 
-    return
     await pageTwo.getByRole('button', { name: '0.5' }).click()
     await expect(pageOne.getByText(`${owner.name} is estimating`)).toBeVisible()
     await expect(pageTwo.getByText(`${owner.name} is estimating`)).toBeVisible()

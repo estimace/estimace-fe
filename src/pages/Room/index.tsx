@@ -41,11 +41,11 @@ const RoomPage: FC = () => {
       return
     }
 
-    const player = result.data
+    const joinedPlayer = result.data
     const roomInStorage: RoomInStorage = {
-      id: player.roomId,
-      playerId: player.id,
-      playerAuthToken: player.authToken,
+      id: joinedPlayer.roomId,
+      playerId: joinedPlayer.id,
+      playerAuthToken: joinedPlayer.authToken,
     }
     storage.setRoom(roomInStorage)
     setRoomInStorage(roomInStorage)
@@ -54,9 +54,9 @@ const RoomPage: FC = () => {
       if (!prev) {
         return null
       }
-      return { ...prev, players: [...prev.players, player] }
+      return { ...prev, players: [...prev.players, joinedPlayer] }
     })
-    setPlayer(player)
+    setPlayer(joinedPlayer)
   })
 
   const shouldShowJoinRoomForm = roomInStorage === null
@@ -89,8 +89,8 @@ const RoomPage: FC = () => {
             <Estimation
               technique={room.technique}
               roomId={room.id}
-              playerId={player.id}
-              playerAuthToken={player.authToken}
+              playerId={roomInStorage.playerId}
+              playerAuthToken={roomInStorage.playerAuthToken}
             />
           )}
 

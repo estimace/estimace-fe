@@ -1,11 +1,12 @@
 import { WebSocketServer, WebSocket } from 'ws'
 import type { AddressInfo } from 'ws'
 
-type OnMessage = (
-  message: Message | null,
-  sendMessage: SendMessage,
-  broadcastMessage: BroadcastMessage,
-) => void
+type OnMessage = (params: {
+  message: Message | null
+  sendMessage: SendMessage
+  broadcastMessage: BroadcastMessage
+  url: URL
+}) => void
 type SendMessage = (message: Message) => void
 type BroadcastMessage = SendMessage
 type Message = { type: string; payload: Record<string, unknown> }
@@ -21,9 +22,11 @@ function create(
       resolve({ port: address.port, address: `${host}:${address.port}` })
     })
 
-    wss.on('connection', function connection(ws) {
+    wss.on('connection', function connection(ws, req) {
       console.log('on connection')
       ws.on('error', console.error)
+
+      const url = new URL(`http://localhost${req.url}`)
 
       const sendMessage: SendMessage = (message) => {
         console.log('sendMessage', message)
@@ -42,7 +45,12 @@ function create(
       ws.on('message', function message(data) {
         const message = parseJSON(data.toString())
         console.log('onMessage', message)
-        onMessage(message, sendMessage, broadcastMessage)
+        onMessage({
+          message,
+          sendMessage,
+          broadcastMessage,
+          url,
+        })
       })
     })
   })
