@@ -13,6 +13,7 @@ import { OwnerControllers } from './OwnerControllers'
 import { usePlayer } from './hooks/usePlayer'
 import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
 import { ShareURL } from './ShareURL'
+import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
@@ -23,6 +24,13 @@ const RoomPage: FC = () => {
   const { player, setPlayer } = usePlayer(room, roomInStorage)
 
   useOnEstimateUpdatedWSMessage({
+    playerId: roomInStorage?.playerId,
+    playerAuthToken: roomInStorage?.playerAuthToken,
+    room,
+    setRoom,
+  })
+
+  useOnRoomStateUpdatedWSMessage({
     playerId: roomInStorage?.playerId,
     playerAuthToken: roomInStorage?.playerAuthToken,
     room,
@@ -83,7 +91,11 @@ const RoomPage: FC = () => {
       )}
       {shouldShowRoom && (
         <>
-          <PlayersInRoom players={room.players} state={room.state} />
+          <PlayersInRoom
+            players={room.players}
+            technique={room.technique}
+            state={room.state}
+          />
 
           {room.state === 'planning' && (
             <Estimation
