@@ -6,13 +6,13 @@ export const apiPath = '/api'
  * we want to be able to change the websocket URL for each test by setting the
  * `window.WS_URL` to have an isolated ws mock server per test. this way we can
  * run tests in parallel without having effects on each other. This feature is
- * disabled in production mode.
+ * only enabled in test mode.
  */
 export const getWebsocketServerURL = () => {
   const mode = import.meta.env.MODE
   const apiHost = window.location.host // e.g localhost:3500
   return `ws://${
-    mode !== 'production' && window.WS_URL
+    mode === 'test' && window.WS_URL
       ? window.WS_URL
       : apiHost + apiPath + '/socket'
   }`
