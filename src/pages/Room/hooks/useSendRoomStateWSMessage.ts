@@ -1,21 +1,14 @@
-import { Room } from 'app/types'
+import { Player, Room } from 'app/types'
 import { useWebSocket } from 'app/hooks/useWebSocket'
 
-type Params = {
-  playerId: string | undefined
-  playerAuthToken: string | undefined
-}
-
-export function useSendRoomStateWSMessage(params: Params) {
-  const { playerId, playerAuthToken } = params
-
-  const { sendMessage } = useWebSocket({
-    playerId: playerId,
-    authToken: playerAuthToken,
+export function useSendRoomStateWSMessage(player: Player) {
+  const socket = useWebSocket({
+    playerId: player.id,
+    playerAuthToken: player.authToken,
   })
 
   function sendRoomState(state: Room['state']) {
-    sendMessage({
+    socket.sendMessage({
       type: 'updateRoomState',
       payload: {
         state,

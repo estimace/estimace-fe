@@ -1,15 +1,15 @@
-import { Room } from 'app/types'
+import { Player, Room } from 'app/types'
 import { useSendRoomStateWSMessage } from './hooks/useSendRoomStateWSMessage'
 
 type Props = {
-  playerId: string | undefined
-  playerAuthToken: string | undefined
+  player: Player
   roomState: Room['state']
 }
 
 export const OwnerControllers: React.FC<Props> = (props) => {
-  const { playerId, playerAuthToken, roomState } = props
-  const sendRoomState = useSendRoomStateWSMessage({ playerId, playerAuthToken })
+  const { player, roomState } = props
+
+  const sendRoomState = useSendRoomStateWSMessage(player)
 
   return (
     <>

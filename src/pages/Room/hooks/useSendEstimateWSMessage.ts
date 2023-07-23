@@ -1,20 +1,14 @@
 import { useWebSocket } from 'app/hooks/useWebSocket'
+import { Player } from 'app/types'
 
-type Params = {
-  playerId: string | undefined
-  playerAuthToken: string | undefined
-}
-
-export function useSendEstimateWSMessage(params: Params) {
-  const { playerId, playerAuthToken } = params
-
-  const { sendMessage } = useWebSocket({
-    playerId: playerId,
-    authToken: playerAuthToken,
+export function useSendEstimateWSMessage(player: Player) {
+  const socket = useWebSocket({
+    playerId: player.id,
+    playerAuthToken: player.authToken,
   })
 
   function sendEstimate(estimate: number) {
-    sendMessage({
+    socket.sendMessage({
       type: 'updateEstimate',
       payload: {
         estimate,

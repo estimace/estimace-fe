@@ -9,24 +9,24 @@ type Props = {
 }
 
 export const PlayersInRoom: FC<Props> = (props: Props) => {
-  const { technique } = props
+  const { players, state, technique } = props
 
   return (
     <ul aria-label="Players' List">
-      {props.players.map((player) => {
+      {players.map((player) => {
         return (
           <li key={player.id}>
             {player.pictureURL && (
               <img src={player.pictureURL} alt={`${player.name}'s avatar`} />
             )}
             <span>{player.name}</span>{' '}
-            {props.state === 'planning' && player.estimate === null && (
+            {state === 'planning' && player.estimate === null && (
               <span>is estimating</span>
             )}
-            {props.state === 'planning' && player.estimate !== null && (
+            {state === 'planning' && player.estimate !== null && (
               <span>estimated</span>
             )}
-            {props.state === 'revealed' && (
+            {state === 'revealed' && (
               <span>
                 {player.estimate
                   ? techniqueOptions[technique][player.estimate]

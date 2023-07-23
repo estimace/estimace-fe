@@ -1,20 +1,19 @@
 import { useWebSocket, MessageListener } from 'app/hooks/useWebSocket'
-import { Room } from 'app/types'
+import { Player, Room } from 'app/types'
 import { useEffect, useMemo } from 'react'
 
 type Params = {
-  playerId: string | undefined
-  playerAuthToken: string | undefined
+  player: Player | null
   room: Room | null
   setRoom: React.Dispatch<React.SetStateAction<Room | null>>
 }
 
 export function useOnRoomStateUpdatedWSMessage(params: Params) {
-  const { playerId, playerAuthToken, room, setRoom } = params
+  const { player, room, setRoom } = params
 
-  const { addMessageListener, removeMessageListener } = useWebSocket({
-    playerId: playerId,
-    authToken: playerAuthToken,
+  const socket = useWebSocket({
+    playerId: player?.id,
+    playerAuthToken: player?.authToken,
   })
 
   const onMessage = useMemo<MessageListener>(
@@ -31,10 +30,10 @@ export function useOnRoomStateUpdatedWSMessage(params: Params) {
       return
     }
 
-    addMessageListener('roomStateUpdated', onMessage)
+    socket.addMessageListener('roomStateUpdated', onMessage)
 
     return () => {
-      removeMessageListener('roomStateUpdated', onMessage)
+      socket.removeMessageListener('roomStateUpdated', onMessage)
     }
-  }, [room, onMessage, addMessageListener, removeMessageListener])
+  }, [room, onMessage, socket])
 }

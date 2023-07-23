@@ -6,28 +6,24 @@ export function useQuery<
   F extends APIFunction<T, Parameters<F>>,
   Q extends () => ReturnType<F>,
   R extends Awaited<ReturnType<Q>>,
->({ params }: { params: { query: Q; onResponse?: (result: R) => void } }) {
-  const { query, onResponse } = params
+>(query: Q) {
   const [isFetching, setIsFetching] = useState(false)
-  const [error, setError] = useState<undefined | null | object>(undefined)
-  const [data, setData] = useState<R | undefined>(undefined)
+  const [result, setResult] = useState<R | undefined>(undefined)
 
   useEffect(() => {
-    if (data || isFetching || error) {
+    if (result || isFetching) {
       return
     }
 
     setIsFetching(true)
     query().then((result) => {
-      setError(result.errorType ? result.data : null)
-      setData(result.data as R)
+      setResult(result as R)
       setIsFetching(false)
-      onResponse?.(result as R)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { isFetching, error, data }
+  return { isFetching, result }
 }
 
 export function useMutation<
@@ -39,18 +35,17 @@ export function useMutation<
   const [error, setError] = useState<undefined | null | object>(undefined)
   const [data, setData] = useState<R | undefined>(undefined)
 
-  const mutate = (...params: Parameters<F>) => {
+  const mutate = async (...params: Parameters<F>) => {
     if (isMutating) {
       return
     }
 
     setIsMutating(true)
-    fn(...params).then((result) => {
-      setError(result.errorType ? result.data : null)
-      setData(data)
-      setIsMutating(false)
-      onResponse(result as R)
-    })
+    const result = await fn(...params)
+    setError(result.errorType ? result.data : null)
+    setData(data)
+    setIsMutating(false)
+    onResponse(result as R)
   }
 
   return { mutate, isMutating, error, data }

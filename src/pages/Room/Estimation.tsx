@@ -1,19 +1,19 @@
 import { FC } from 'react'
-import { Technique } from 'app/types'
+import { Player, Technique } from 'app/types'
 import { techniqueOptions } from 'app/config'
 import { useSendEstimateWSMessage } from './hooks/useSendEstimateWSMessage'
 
 type Props = {
+  player: Player
   technique: Technique
   roomId: string
-  playerId: string
-  playerAuthToken: string | undefined
 }
 
 export const Estimation: FC<Props> = (props: Props) => {
-  const { playerId, playerAuthToken, technique } = props
+  const { player, technique } = props
   const estimationOptions = techniqueOptions[technique]
-  const sendEstimate = useSendEstimateWSMessage({ playerId, playerAuthToken })
+
+  const sendEstimate = useSendEstimateWSMessage(player)
 
   return (
     <section aria-label="estimate options">

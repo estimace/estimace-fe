@@ -6,7 +6,13 @@ const KEYS = {
 }
 
 function setPlayer(value: PlayerInStorage) {
-  localStorage.setItem(KEYS.PLAYER, JSON.stringify(value))
+  localStorage.setItem(
+    KEYS.PLAYER,
+    JSON.stringify({
+      name: value.name,
+      email: value.email,
+    }),
+  )
 }
 
 function getPlayer(): PlayerInStorage | null {
@@ -23,7 +29,14 @@ function getRoom(id: string): RoomInStorage | null {
 function setRoom(value: RoomInStorage) {
   localStorage.setItem(
     KEYS.ROOMS,
-    JSON.stringify({ ...getStoredRooms(), [value.id]: value }),
+    JSON.stringify({
+      ...getStoredRooms(),
+      [value.id]: {
+        id: value.id,
+        playerId: value.playerId,
+        playerAuthToken: value.playerAuthToken,
+      },
+    }),
   )
 }
 

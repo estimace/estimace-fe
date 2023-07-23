@@ -7,13 +7,13 @@ type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 type RequestHeaders = Record<string, string>
 
 export type ResponseValue<T> = SuccessfulResponse<T> | FailedResponse
-type SuccessfulResponse<T> = {
+export type SuccessfulResponse<T> = {
   errorType: null
   status: number
   data: T
 }
-type FailedResponse = {
-  errorType: 'network-error' | 'response-error'
+export type FailedResponse = {
+  errorType: 'network-error' | 'response-error' | 'parse-error'
   status: number
   data: {
     type: string
@@ -45,6 +45,14 @@ export async function request<T>(
   }
 
   try {
+    if (res.status < 200 || res.status > 299) {
+      return {
+        errorType: 'response-error',
+        status: res.status,
+        data: await res.json(),
+      }
+    }
+
     return {
       errorType: null,
       status: res.status,
@@ -52,7 +60,7 @@ export async function request<T>(
     }
   } catch (_) {
     return {
-      errorType: 'response-error',
+      errorType: 'parse-error',
       status: res.status,
       data: {
         type: 'request/invalid-json',

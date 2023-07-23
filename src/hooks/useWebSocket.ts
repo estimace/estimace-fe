@@ -5,7 +5,7 @@ const wssURL = getWebsocketServerURL()
 
 type Param = {
   playerId: string | undefined
-  authToken: string | undefined
+  playerAuthToken: string | undefined
 }
 
 export type Message = {
@@ -41,11 +41,11 @@ function removeMessageListener(
 }
 
 export const useWebSocket = (param: Param) => {
-  const { playerId, authToken } = param
+  const { playerId, playerAuthToken } = param
 
-  if (!socket && playerId && authToken) {
+  if (!socket && playerId && playerAuthToken) {
     socket = new WebSocket(
-      `${wssURL}?playerId=${playerId}&authToken=${authToken}`,
+      `${wssURL}?playerId=${playerId}&authToken=${playerAuthToken}`,
     )
 
     socket.onmessage = (event) => {

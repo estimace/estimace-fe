@@ -13,6 +13,7 @@ export function usePlayer(
       (item) => item.id === roomInStorage.playerId,
     )
     if (playerInRoom) {
+      playerInRoom.authToken = roomInStorage.playerAuthToken
       setPlayer(playerInRoom)
     }
   }, [room, roomInStorage])

@@ -1,7 +1,11 @@
-import { FC } from 'react'
+import { useMutation } from 'app/hooks/useAPI'
+import { Player, PlayerInStorage, Room } from 'app/types'
+import api from 'app/utils/api'
+import storage from 'app/utils/storage'
 
 type Props = {
-  onSubmit: (item: { name: string; email: string }) => void
+  roomId: Room['id']
+  onSubmit: (player: Player) => void
 }
 
 interface CustomElements extends HTMLFormControlsCollection {
@@ -13,20 +17,36 @@ interface CustomForm extends HTMLFormElement {
   readonly elements: CustomElements
 }
 
-export const JoinForm: FC<Props> = (props: Props) => {
+export const JoinForm: React.FC<Props> = (props: Props) => {
+  const { roomId, onSubmit } = props
+
+  const { mutate, isMutating, error } = useMutation(
+    api.addPlayerToRoom,
+    (result) => {
+      if (!result.errorType) {
+        onSubmit(result.data)
+      }
+    },
+  )
+
   return (
     <form
       onSubmit={(e: React.FormEvent<CustomForm>) => {
         e.preventDefault()
         const target = e.currentTarget.elements
-        if (target.name.value && target.email.value) {
-          props.onSubmit({
-            name: target.name.value,
-            email: target.email.value,
-          })
+        const param: PlayerInStorage = {
+          name: target.name.value,
+          email: target.email.value,
+        }
+
+        if (param.name && param.email) {
+          storage.setPlayer(param)
+          mutate(roomId, param)
         }
       }}
     >
+      {error && <div>An error occurred while joining the room.</div>}
+
       <label>
         name:
         <input name="name" type="text" required placeholder="your name"></input>
@@ -41,7 +61,7 @@ export const JoinForm: FC<Props> = (props: Props) => {
           placeholder="me@example.com"
         ></input>
       </label>
-      <button>Enter</button>
+      <button disabled={isMutating}>Enter</button>
     </form>
   )
 }

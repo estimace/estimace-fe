@@ -2,9 +2,7 @@ import { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import storage from 'app/utils/storage'
-import { Room, RoomInStorage } from 'app/types'
-import api from 'app/utils/api'
-import { useMutation, useQuery } from 'app/hooks/useAPI'
+import { Player, RoomInStorage } from 'app/types'
 
 import { JoinForm } from './JoinForm'
 import { PlayersInRoom } from './Players'
@@ -14,46 +12,20 @@ import { usePlayer } from './hooks/usePlayer'
 import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
 import { ShareURL } from './ShareURL'
 import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
+import { useRoom } from './hooks/useRoom'
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
   const [roomInStorage, setRoomInStorage] = useState<RoomInStorage | null>(
     storage.getRoom(roomId as string),
   )
-  const [room, setRoom] = useState<Room | null>(null)
+  const { roomQuery, room, setRoom } = useRoom()
   const { player, setPlayer } = usePlayer(room, roomInStorage)
 
-  useOnEstimateUpdatedWSMessage({
-    playerId: roomInStorage?.playerId,
-    playerAuthToken: roomInStorage?.playerAuthToken,
-    room,
-    setRoom,
-  })
+  useOnEstimateUpdatedWSMessage({ player, room, setRoom })
+  useOnRoomStateUpdatedWSMessage({ player, room, setRoom })
 
-  useOnRoomStateUpdatedWSMessage({
-    playerId: roomInStorage?.playerId,
-    playerAuthToken: roomInStorage?.playerAuthToken,
-    room,
-    setRoom,
-  })
-
-  const roomQuery = useQuery({
-    params: {
-      query: () => api.getRoom(roomId as string),
-      onResponse: (result) => {
-        if (!result.errorType) {
-          setRoom(result.data)
-        }
-      },
-    },
-  })
-
-  const joinRoomMutation = useMutation(api.addPlayerToRoom, (result) => {
-    if (result.errorType) {
-      return
-    }
-
-    const joinedPlayer = result.data
+  const handleJoinFormSubmit = (joinedPlayer: Player) => {
     const roomInStorage: RoomInStorage = {
       id: joinedPlayer.roomId,
       playerId: joinedPlayer.id,
@@ -61,16 +33,13 @@ const RoomPage: FC = () => {
     }
     storage.setRoom(roomInStorage)
     setRoomInStorage(roomInStorage)
-    setRoom((prev) => {
-      if (!prev) {
-        return null
-      }
-      return { ...prev, players: [...prev.players, joinedPlayer] }
-    })
+    setRoom((prev) =>
+      prev ? { ...prev, players: [...prev.players, joinedPlayer] } : null,
+    )
     setPlayer(joinedPlayer)
-  })
+  }
 
-  const shouldShowJoinRoomForm = roomInStorage === null
+  const shouldShowJoinRoomForm = room && roomInStorage === null
   const shouldShowRoom = !shouldShowJoinRoomForm && room && player
 
   if (!roomId) {
@@ -83,15 +52,14 @@ const RoomPage: FC = () => {
 
   return (
     <>
-      {roomQuery.error && <div>error: {JSON.stringify(roomQuery.error)}</div>}
-      {shouldShowJoinRoomForm && (
-        <JoinForm
-          onSubmit={(item) => {
-            storage.setPlayer(item)
-            joinRoomMutation.mutate(roomId, item)
-          }}
-        />
+      {roomQuery.result?.errorType && (
+        <div>The room does not exists or has been deleted</div>
       )}
+
+      {shouldShowJoinRoomForm && (
+        <JoinForm roomId={room.id} onSubmit={handleJoinFormSubmit} />
+      )}
+
       {shouldShowRoom && (
         <>
           <PlayersInRoom
@@ -102,19 +70,14 @@ const RoomPage: FC = () => {
 
           {room.state === 'planning' && (
             <Estimation
+              player={player}
               technique={room.technique}
               roomId={room.id}
-              playerId={roomInStorage.playerId}
-              playerAuthToken={roomInStorage.playerAuthToken}
             />
           )}
 
           {player.isOwner && (
-            <OwnerControllers
-              roomState={room.state}
-              playerId={roomInStorage.playerId}
-              playerAuthToken={roomInStorage.playerAuthToken}
-            />
+            <OwnerControllers player={player} roomState={room.state} />
           )}
 
           <ShareURL roomId={room.id} />

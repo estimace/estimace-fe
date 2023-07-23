@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test'
 import { apiPath } from 'app/config'
 import { Player, Room } from 'app/types'
+import { FailedResponse } from 'app/utils/request'
 
 export async function mockCreateRoomRequest(
   page: Page,
@@ -34,6 +35,26 @@ export async function mockGetRoomRequest(page: Page, payload: Partial<Room>) {
         ...payload,
         state: payload.state ?? 'planning',
         technique: payload.technique ?? 'fibonacci',
+      },
+    })
+  })
+}
+
+export async function mockGetRoomRequestError(
+  page: Page,
+  roomId: Room['id'],
+  statusCode: number,
+  payload: FailedResponse['data'],
+) {
+  await page.route(`${apiPath}/rooms/${roomId}`, async (route) => {
+    if (route.request().method() !== 'GET') {
+      return route.fallback()
+    }
+
+    await route.fulfill({
+      status: statusCode,
+      json: {
+        ...payload,
       },
     })
   })
