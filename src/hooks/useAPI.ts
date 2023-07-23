@@ -44,6 +44,7 @@ export function useMutation<
       return
     }
 
+    setIsMutating(true)
     fn(...params).then((result) => {
       setError(result.errorType ? result.data : null)
       setData(data)
