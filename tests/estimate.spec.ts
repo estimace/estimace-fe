@@ -71,16 +71,6 @@ test.describe('estimate', () => {
       })
     }
 
-    await mockCreatePlayerInRoomRequest(pageOne, {
-      ...players[0],
-      authToken: playersAuthTokens[0],
-    })
-
-    await mockCreatePlayerInRoomRequest(pageTwo, {
-      ...players[1],
-      authToken: playersAuthTokens[1],
-    })
-
     const wss = await wsMockServer.create(
       ({ message, sendMessage, broadcastMessage, url }) => {
         const playerId = url.searchParams.get('playerId')

@@ -8,18 +8,33 @@ type OnMessage = (params: {
   url: URL
 }) => void
 type SendMessage = (message: Message) => void
-type BroadcastMessage = SendMessage
+export type BroadcastMessage = (message: Message) => void
 type Message = { type: string; payload: Record<string, unknown> }
 
 const host = '127.0.0.1'
 
-function create(
-  onMessage: OnMessage,
-): Promise<{ port: number; address: string }> {
+function create(onMessage?: OnMessage): Promise<{
+  port: number
+  address: string
+  broadcastMessage: BroadcastMessage
+}> {
   return new Promise((resolve) => {
+    const broadcastMessage: BroadcastMessage = (message) => {
+      console.log('WSS: broadcastMessage', message)
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(message))
+        }
+      })
+    }
+
     const wss = new WebSocketServer({ port: 0, host }, () => {
       const address = wss.address() as AddressInfo
-      resolve({ port: address.port, address: `${host}:${address.port}` })
+      resolve({
+        port: address.port,
+        address: `${host}:${address.port}`,
+        broadcastMessage,
+      })
     })
 
     wss.on('connection', function connection(ws, req) {
@@ -32,7 +47,7 @@ function create(
         ws.send(JSON.stringify(message))
       }
 
-      const broadcastMessage: BroadcastMessage = (message) => {
+      const _broadcastMessage: BroadcastMessage = (message) => {
         console.log('WSS: broadcastMessage', message)
         wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -44,10 +59,10 @@ function create(
       ws.on('message', function message(data) {
         const message = parseJSON(data.toString())
         console.log('onMessage', message)
-        onMessage({
+        onMessage?.({
           message,
           sendMessage,
-          broadcastMessage,
+          broadcastMessage: _broadcastMessage,
           url: new URL(`http://localhost${req.url}`),
         })
       })

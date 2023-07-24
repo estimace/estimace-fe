@@ -13,6 +13,7 @@ import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMes
 import { ShareURL } from './ShareURL'
 import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 import { useRoom } from './hooks/useRoom'
+import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
@@ -22,6 +23,7 @@ const RoomPage: FC = () => {
   const { roomQuery, room, setRoom } = useRoom()
   const { player, setPlayer } = usePlayer(room, roomInStorage)
 
+  useOnNewPlayerJoinedWSMessage({ player, room, setRoom })
   useOnEstimateUpdatedWSMessage({ player, room, setRoom })
   useOnRoomStateUpdatedWSMessage({ player, room, setRoom })
 

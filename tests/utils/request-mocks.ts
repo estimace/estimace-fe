@@ -2,6 +2,7 @@ import { Page } from '@playwright/test'
 import { apiPath } from 'app/config'
 import { Player, Room } from 'app/types'
 import { FailedResponse } from 'app/utils/request'
+import { BroadcastMessage } from './ws-mock-server'
 
 export async function mockCreateRoomRequest(
   page: Page,
@@ -63,6 +64,7 @@ export async function mockGetRoomRequestError(
 export async function mockCreatePlayerInRoomRequest(
   page: Page,
   payload: Player & { authToken: string },
+  broadcastMessage?: BroadcastMessage,
 ) {
   await page.route(
     `${apiPath}/rooms/${payload.roomId}/players`,
@@ -70,6 +72,11 @@ export async function mockCreatePlayerInRoomRequest(
       if (route.request().method() !== 'POST') {
         return route.fallback()
       }
+
+      broadcastMessage?.({
+        type: 'newPlayerJoined',
+        payload,
+      })
 
       route.fulfill({
         status: 201,
