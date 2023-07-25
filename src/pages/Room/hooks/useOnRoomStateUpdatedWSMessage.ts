@@ -1,5 +1,5 @@
 import { useWebSocket, MessageListener } from 'app/hooks/useWebSocket'
-import { Player, Room } from 'app/types'
+import { Player, Room, RoomState } from 'app/types'
 import { useEffect, useMemo } from 'react'
 
 type Params = {
@@ -18,9 +18,19 @@ export function useOnRoomStateUpdatedWSMessage(params: Params) {
 
   const onMessage = useMemo<MessageListener>(
     () => (message) => {
-      if (room) {
-        setRoom({ ...room, state: message.payload.state as Room['state'] })
+      const roomState: RoomState = message.payload.state as RoomState
+      if (!room) {
+        return
       }
+      const nextState = { ...room }
+      nextState.state = message.payload.state as Room['state']
+      if (roomState === 'planning') {
+        nextState.players = room.players.map((item) => ({
+          ...item,
+          estimate: null,
+        }))
+      }
+      setRoom(nextState)
     },
     [room, setRoom],
   )

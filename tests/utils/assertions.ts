@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test'
 import { techniqueOptions } from 'app/config'
-import { Player, Room, Technique } from 'app/types'
+import { Player, Room, RoomState, Technique } from 'app/types'
 
 export async function assertEstimateOptions(page: Page, technique: Technique) {
   const estimateOptions = page.getByRole('region', {
@@ -42,6 +42,32 @@ export async function assertPlayersList(page: Page, players: Player[]) {
     await expect(
       $listItem.getByAltText(`${player.name}'s avatar`),
     ).toHaveAttribute('src', player.pictureURL)
+  }
+}
+
+export async function assertPlayersEstimations(
+  page: Page,
+  players: Player[],
+  technique: Technique = 'fibonacci',
+  roomState: RoomState,
+  expectedEstimations: Player['estimate'][],
+) {
+  const $list = page.getByRole('list', { name: "Players' List" })
+  await expect($list).toBeVisible()
+  const $listItems = $list.getByRole('listitem')
+
+  for (const player of players) {
+    const index = players.indexOf(player)
+    const $listItem = $listItems.nth(index)
+    const playerEstimate = expectedEstimations[index]
+      ? techniqueOptions[technique][expectedEstimations[index]]
+      : 'did not estimate'
+
+    await expect($listItem).toContainText(
+      `${player.name} ${
+        roomState === 'revealed' ? playerEstimate : ' is estimating'
+      }`,
+    )
   }
 }
 
