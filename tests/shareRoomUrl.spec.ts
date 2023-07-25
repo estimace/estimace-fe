@@ -45,6 +45,7 @@ test.describe('Share URL', () => {
     const copiedURL = await page.evaluate(() => {
       return navigator.clipboard.readText()
     })
-    await expect(copiedURL).toContain(`/rooms/${roomId}`)
+
+    await expect(copiedURL).toBe(page.url())
   })
 })
