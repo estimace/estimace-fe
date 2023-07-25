@@ -63,7 +63,6 @@ test.describe('create new room', () => {
     await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
   })
 
-  // eslint-disable-next-line playwright/expect-expect
   test('creates a room with tShirtSizing technique and shows a room ready to planning with selected planning technique and the room url to share with players', async ({
     page,
   }) => {
