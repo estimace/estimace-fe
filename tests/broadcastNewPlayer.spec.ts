@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test'
 import { Player, Technique } from 'app/types'
-import wsMockServer from './utils/ws-mock-server'
+import wsMockServer from './utils/wsMockServer'
 import {
   mockCreatePlayerInRoomRequest,
   mockCreateRoomRequest,
   mockGetRoomRequest,
-} from './utils/request-mocks'
+} from './utils/requestMocks'
 
 test.describe('broadcast joining new player', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'

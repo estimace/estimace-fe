@@ -10,7 +10,7 @@ import {
   mockCreatePlayerInRoomRequest,
   mockGetRoomRequest,
   mockGetRoomRequestError,
-} from './utils/request-mocks'
+} from './utils/requestMocks'
 
 test.describe('new player enters the room via shared url', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'

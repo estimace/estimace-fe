@@ -1,10 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { Player } from 'app/types'
 import { assertShareURLSection } from './utils/assertions'
-import {
-  mockCreateRoomRequest,
-  mockGetRoomRequest,
-} from './utils/request-mocks'
+import { mockCreateRoomRequest, mockGetRoomRequest } from './utils/requestMocks'
 
 test.describe('Share URL', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'

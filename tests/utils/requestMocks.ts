@@ -2,7 +2,7 @@ import { Page } from '@playwright/test'
 import { apiPath } from 'app/config'
 import { Player, Room } from 'app/types'
 import { FailedResponse } from 'app/utils/request'
-import { BroadcastMessage } from './ws-mock-server'
+import { BroadcastMessage } from './wsMockServer'
 
 export async function mockCreateRoomRequest(
   page: Page,
