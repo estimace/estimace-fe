@@ -77,6 +77,9 @@ test.describe('new player enters the room via shared url', () => {
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue('')
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
     await expect(page.getByRole('button', { name: /enter/i })).toBeVisible()
+    await expect(
+      page.getByRole('checkbox', { name: /remember me/i }),
+    ).toBeChecked()
   })
 
   test('new player enters the room providing form data and has their info stored in local storage', async ({
@@ -107,5 +110,40 @@ test.describe('new player enters the room via shared url', () => {
       authToken: playerAuthToken,
       email: playerEmail,
     })
+  })
+  test('new player unchecks the default remember me in the entrance form and as a result their info does not get stored in local storage', async ({
+    page,
+  }) => {
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      players: [owner],
+    })
+
+    await mockCreatePlayerInRoomRequest(page, {
+      ...player,
+      authToken: playerAuthToken,
+    })
+
+    await page.goto(`/rooms/${roomId}`)
+
+    await page.getByRole('textbox', { name: 'name' }).fill(player.name)
+    await page.getByRole('textbox', { name: 'email' }).fill(playerEmail)
+    await page.getByRole('checkbox', { name: /remember me/i }).uncheck()
+
+    await expect(
+      page.getByRole('checkbox', { name: /remember me/i }),
+    ).not.toBeChecked()
+    await page.getByRole('button', { name: /enter/i }).click()
+
+    await assertStorageValues(
+      page,
+      roomId,
+      {
+        ...player,
+        authToken: playerAuthToken,
+        email: playerEmail,
+      },
+      false,
+    )
   })
 })

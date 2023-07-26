@@ -75,20 +75,25 @@ export async function assertStorageValues(
   page: Page,
   roomId: Room['id'],
   player: Pick<Player, 'id' | 'name' | 'email' | 'authToken'>,
+  rememberPlayer = true,
 ) {
   const playerInStorage = await page.evaluate(() =>
     window.localStorage.getItem('player'),
   )
+  if (!rememberPlayer) {
+    expect(playerInStorage).toBeNull()
+    expect(playerInStorage).toBeFalsy()
+  } else {
+    expect(playerInStorage).toBeDefined()
+    expect(JSON.parse(playerInStorage as string)).toStrictEqual({
+      name: player.name,
+      email: player.email,
+    })
+  }
+
   const roomsInStorage = await page.evaluate(() =>
     window.localStorage.getItem('rooms'),
   )
-
-  expect(playerInStorage).toBeDefined()
-  expect(JSON.parse(playerInStorage as string)).toStrictEqual({
-    name: player.name,
-    email: player.email,
-  })
-
   expect(roomsInStorage).toBeDefined()
   expect(JSON.parse(roomsInStorage as string)).toStrictEqual({
     [roomId]: {

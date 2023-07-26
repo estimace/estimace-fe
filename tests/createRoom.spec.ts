@@ -5,6 +5,7 @@ import {
   assertEstimateOptions,
   assertPlayersList,
   assertShareURLSection,
+  assertStorageValues,
 } from './utils/assertions'
 import { mockCreateRoomRequest, mockGetRoomRequest } from './utils/requestMocks'
 
@@ -21,12 +22,18 @@ test.describe('create new room', () => {
   }
   const authToken = 'a-secret-auth-token'
 
-  test('shows empty form based if there is no previous player info in localStorage', async ({
+  test('shows empty form if there is no previous player info in localStorage', async ({
     page,
   }) => {
     await page.goto(`/rooms`)
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue('')
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
+    const rememberMeBox = page.getByLabel(/remember me/i)
+    await expect(rememberMeBox).toBeChecked()
+
+    rememberMeBox.uncheck()
+
+    await expect(rememberMeBox).not.toBeChecked()
   })
 
   test('shows prefilled form based on previous player info in localStorage', async ({
@@ -47,9 +54,39 @@ test.describe('create new room', () => {
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue(
       'darth@vader.com',
     )
+    await expect(
+      page.getByRole('checkbox', { name: /remember me/gi }),
+    ).toBeChecked()
   })
 
-  test('creates a room with fibonacci technique and shows a room ready to planning with selected planning technique and the room url to share with players', async ({
+  // eslint-disable-next-line playwright/expect-expect
+  test(`creates a room and does not store owner's info in the localStorage if the user has unchecked remember me`, async ({
+    page,
+  }) => {
+    await mockCreateRoomRequest(
+      page,
+      { id: roomId, technique: 'fibonacci' },
+      { ...player, authToken },
+    )
+
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      technique: 'fibonacci',
+      players: [player],
+    })
+
+    await page.goto(`/rooms`)
+    await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
+    await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
+
+    await page.getByRole('checkbox', { name: /remember me/i }).uncheck()
+
+    await page.getByRole('button', { name: /create/i }).click()
+
+    await assertStorageValues(page, roomId, { ...player, authToken }, false)
+  })
+
+  test(`creates a room with fibonacci technique and shows a room ready to planning with selected planning technique and the room url to share with players`, async ({
     page,
   }) => {
     await createRoom(page, 'fibonacci')

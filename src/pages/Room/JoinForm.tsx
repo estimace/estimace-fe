@@ -1,7 +1,10 @@
+import { useState } from 'react'
+
 import { useMutation } from 'app/hooks/useAPI'
 import { Player, PlayerInStorage, Room } from 'app/types'
 import api from 'app/utils/api'
 import storage from 'app/utils/storage'
+import { RememberMe } from './RememberMe'
 
 type Props = {
   roomId: Room['id']
@@ -19,6 +22,7 @@ interface CustomForm extends HTMLFormElement {
 
 export const JoinForm: React.FC<Props> = (props: Props) => {
   const { roomId, onSubmit } = props
+  const rememberMeState = useState(true)
 
   const { mutate, isMutating, error } = useMutation(
     api.addPlayerToRoom,
@@ -40,7 +44,9 @@ export const JoinForm: React.FC<Props> = (props: Props) => {
         }
 
         if (param.name && param.email) {
-          storage.setPlayer(param)
+          if (rememberMeState[0]) {
+            storage.setPlayer(param)
+          }
           mutate(roomId, param)
         }
       }}
@@ -62,6 +68,7 @@ export const JoinForm: React.FC<Props> = (props: Props) => {
         ></input>
       </label>
       <button disabled={isMutating}>Enter</button>
+      <RememberMe rememberMe={rememberMeState} />
     </form>
   )
 }

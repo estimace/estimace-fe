@@ -34,10 +34,6 @@ export const RoomCreation: FC = () => {
       isError={!!error}
       isLoading={isMutating}
       onSubmit={(item) => {
-        storage.setPlayer({
-          name: item.name,
-          email: item.email,
-        })
         mutate(item)
       }}
       error={error as Error}

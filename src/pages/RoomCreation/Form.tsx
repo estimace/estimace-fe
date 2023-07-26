@@ -2,6 +2,8 @@ import { FC, useState } from 'react'
 
 import { Technique } from 'app/types'
 import { techniqueLabels } from 'app/config'
+import { RememberMe } from '../Room/RememberMe'
+import storage from 'app/utils/storage'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -23,6 +25,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
   const [name, setName] = useState(props.name ?? '')
   const [email, setEmail] = useState(props.email ?? '')
   const [technique, setTechnique] = useState<Technique>('fibonacci')
+  const rememberMeState = useState(true)
 
   const { onSubmit, isLoading, isError, error } = props
 
@@ -45,6 +48,12 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
     <form
       onSubmit={(event) => {
         event.preventDefault()
+        if (rememberMeState[0]) {
+          storage.setPlayer({
+            name,
+            email,
+          })
+        }
         onSubmit({ name, email, technique })
       }}
     >
@@ -91,6 +100,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
       <button name="createRoomButton" className="button" disabled={isLoading}>
         Create
       </button>
+      <RememberMe rememberMe={rememberMeState} />
     </form>
   )
 }
