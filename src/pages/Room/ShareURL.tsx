@@ -1,8 +1,8 @@
+import { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { getBaseURL } from 'app/config'
 import { Room } from 'app/types'
-import { useState } from 'react'
 
 type Props = {
   roomId: Room['id']
