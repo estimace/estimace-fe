@@ -5,6 +5,10 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const generateScopedName =
+    mode === 'production'
+      ? '[local]_[hash:base64:5]'
+      : '[name]__[local]___[hash:base64:5]'
 
   return {
     plugins: [react()],
@@ -29,6 +33,17 @@ export default defineConfig(({ command, mode }) => {
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
+      },
+    },
+    css: {
+      // cssPreprocessOptions: {
+      //   scss: {
+      //     additionalData: 'app/assets/global.css',
+      //   },
+      // },
+      modules: {
+        localsConvention: 'camelCase',
+        generateScopedName,
       },
     },
   }

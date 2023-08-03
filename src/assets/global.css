@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Source+Serif+Pro&display=swap');
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-background: #013b0d;
+  --color-foreground: #fbfbfb;
+  --color-neutral: #29442e;
+  --color-primary: #94f498;
+
+  --page-max-width: 1200px;
+  --paragraph-max-width: 800px;
+
+  --font-size-s: 1rem;
+  --font-size-m: 1.5rem;
+  --font-size-l: 2rem;
+  --font-size-xl: 2.5rem;
+
+  --spacing-xs: 0.25rem;
+  --spacing-s: 0.75rem;
+  --spacing-m: 1.5rem;
+  --spacing-l: 2rem;
+  --spacing-xl: 4rem;
+
+  --border-radius-s: 3px;
+  --border-radius-m: 5px;
+  --border-radius-l: 12px;
+  --border-radius-xl: 18px;
+
+  --font-family-text: 'Noto Sans';
+
+  --line-height-heading: 2;
+
+  --font-line-height-s: 1.2;
+  --font-line-height-m: 1.5;
+  --font-line-height-l: 1.75;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  max-width: var(--page-max-width);
+  font-weight: 400;
+  font-family: var(--font-family-text);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: #fbfbfb;
+    --color-foreground: #011605;
+    --color-neutral: #e3f2f7;
+    --color-primary: #db0b20;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #011605;
+    --color-foreground: #fbfbfb;
+    --color-neutral: #29442e;
+    --color-primary: #94f498;
+  }
+}
