@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
+import styles from './index.module.css'
 
 function HomePage() {
   return (
-    <div>
+    <div className={styles.homePageWrapper}>
       <h1>Estimace</h1>
       <h2>A minimal scrum planning app</h2>
       <p>
-        You can choose to use either <i>fibonacci</i> or <i>T-Shirt Sizing</i>{' '}
+        You can choose to use either{' '}
+        <i className={styles.fibonacciTechnique}>Fibonacci</i> or{' '}
+        <i className={styles.tshirtSizingTechnique}>T-Shirt Sizing</i>{' '}
         techniques
       </p>
       <p>
