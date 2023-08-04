@@ -1,0 +1,41 @@
+.estimaceForm {
+  max-width: var(--paragraph-max-width);
+  line-height: var(--line-height-heading);
+  margin: var(--spacing-l) var(--spacing-s);
+  display: flex;
+  flex-direction: column;
+}
+.estimaceForm label {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+.estimaceForm label > span {
+  display: inline-block;
+  min-width: fit-content;
+  margin-right: var(--spacing-xs);
+  flex-grow: 0;
+}
+.estimaceForm label input[type='text'],
+.estimaceForm label input[type='email'] {
+  padding: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  flex-grow: 0.75;
+  border-radius: var(--border-radius-m);
+  font: inherit;
+  outline-style: none;
+}
+
+.errorMessageWrapper {
+  margin: var(--spacing-m);
+  margin-left: 0;
+  color: var(--color-error);
+}
+.estimaceForm section::after {
+  content: 'a';
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-top: 2px solid var(--color-neutral);
+  border-right: 2px solid var(--color-neutral);
+}

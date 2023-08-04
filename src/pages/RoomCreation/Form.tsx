@@ -5,6 +5,9 @@ import { techniqueLabels } from 'app/config'
 import { RememberMe } from '../Room/RememberMe'
 import storage from 'app/utils/storage'
 
+import styles from './Form.module.css'
+import { Select } from './Select'
+
 type Props = {
   onSubmit: SubmitHandler
   isError: boolean
@@ -40,12 +43,13 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
     }
   }
 
-  const handleSelectOptionChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    setTechnique(e.currentTarget.value as Technique)
+  const handleSelectOptionChange = (ev: React.FormEvent<HTMLSelectElement>) => {
+    setTechnique(ev.currentTarget.value as Technique)
   }
 
   return (
     <form
+      className={styles.estimaceForm}
       onSubmit={(event) => {
         event.preventDefault()
         if (rememberMeState[0]) {
@@ -57,10 +61,14 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
         onSubmit({ name, email, technique })
       }}
     >
-      {isError && <div>Error happened: {(error as Error).toString()}</div>}
+      {isError && (
+        <div className="errorMessageWrapper">
+          Error happened: {JSON.stringify(error)}
+        </div>
+      )}
 
       <label>
-        Name:
+        <span>Name:</span>
         <input
           name="name"
           type="text"
@@ -72,7 +80,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
       </label>
 
       <label>
-        Email:
+        <span>Email:</span>
         <input
           name="email"
           type="email"
@@ -84,18 +92,22 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
       </label>
 
       <label>
-        Technique:
-        <select
+        <span> Technique:</span>
+
+        <Select
+          aria-hidden={true}
           name="techniqueSelection"
           value={technique}
           onChange={handleSelectOptionChange}
         >
           {props.techniques.map((item) => (
-            <option key={item} value={item}>
-              {techniqueLabels[item]}
-            </option>
+            <Select.Option
+              key={item}
+              label={techniqueLabels[item]}
+              value={item}
+            />
           ))}
-        </select>
+        </Select>
       </label>
       <button name="createRoomButton" className="button" disabled={isLoading}>
         Create

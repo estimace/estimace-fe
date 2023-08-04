@@ -1,4 +1,5 @@
 .homePageWrapper {
+  max-width: var(--page-max-width);
   line-height: var(--font-line-height-l);
   display: flex;
   flex-direction: column;

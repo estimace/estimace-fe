@@ -30,9 +30,7 @@ test.describe('create new room', () => {
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
     const rememberMeBox = page.getByLabel(/remember me/i)
     await expect(rememberMeBox).toBeChecked()
-
-    rememberMeBox.uncheck()
-
+    await rememberMeBox.uncheck()
     await expect(rememberMeBox).not.toBeChecked()
   })
 

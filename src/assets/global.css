@@ -134,6 +134,7 @@ table {
   --color-foreground: #fbfbfb;
   --color-neutral: #29442e;
   --color-primary: #94f498;
+  --color-error: #fa5919;
 
   --page-max-width: 1200px;
   --paragraph-max-width: 800px;
@@ -161,12 +162,14 @@ table {
   --font-line-height-s: 1.2;
   --font-line-height-m: 1.5;
   --font-line-height-l: 1.75;
+  --font-line-height-xl: 2;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   max-width: var(--page-max-width);
+  margin: 0 auto;
   font-weight: 400;
   font-family: var(--font-family-text);
 }
