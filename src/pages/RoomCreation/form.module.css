@@ -5,37 +5,43 @@
   display: flex;
   flex-direction: column;
 }
+
 .estimaceForm label {
   display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-s);
 }
+
 .estimaceForm label > span {
   display: inline-block;
   min-width: fit-content;
   margin-right: var(--spacing-xs);
   flex-grow: 0;
 }
-.estimaceForm label input[type='text'],
-.estimaceForm label input[type='email'] {
-  padding: var(--spacing-xs);
-  margin-top: var(--spacing-xs);
+
+.estimaceForm input[type='text'],
+.estimaceForm input[type='email'] {
   flex-grow: 0.75;
-  border-radius: var(--border-radius-m);
-  font: inherit;
-  outline-style: none;
+}
+
+.estimaceForm input[type='text']:focus,
+.estimaceForm input[type='email']:focus {
+  outline-color: var(--color-primary);
+}
+
+.estimaceForm button {
+  align-self: flex-start;
+  width: 82%;
+  margin-left: var(--spacing-xs);
+}
+
+.estimaceFormSelect {
+  margin-left: var(--spacing-xs);
+  width: 71.4%;
 }
 
 .errorMessageWrapper {
   margin: var(--spacing-m);
   margin-left: 0;
   color: var(--color-error);
-}
-.estimaceForm section::after {
-  content: 'a';
-  display: block;
-  width: 2px;
-  height: 2px;
-  border-top: 2px solid var(--color-neutral);
-  border-right: 2px solid var(--color-neutral);
 }

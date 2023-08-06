@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import { FC, ReactElement } from 'react'
 import styles from './Select.module.css'
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  children: JSX.Element[]
+  children: ReactElement<OptionProps> | ReactElement<OptionProps>[]
   name?: string
   defaultValue?: string
   value?: string
@@ -16,16 +16,23 @@ type OptionProps = {
 type SelectComponent = FC<SelectProps> & { Option: OptionComponent }
 type OptionComponent = FC<OptionProps>
 
-const Option: OptionComponent = (props) => {
+const Option: OptionComponent = (props: OptionProps) => {
   return <option value={props.value}>{props.label}</option>
 }
 
 export const Select: SelectComponent = (props: SelectProps) => {
-  const { name, children, defaultValue, value, onChange, ...restOfProps } =
-    props
+  const {
+    name,
+    children,
+    defaultValue,
+    value,
+    onChange,
+    className,
+    ...restOfProps
+  } = props
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap + ' ' + (className ?? '')}>
       <select
         name={name}
         defaultValue={defaultValue}
@@ -34,7 +41,9 @@ export const Select: SelectComponent = (props: SelectProps) => {
         className={styles.select}
         {...restOfProps}
       >
-        {children.map((item) => (item.type === Select.Option ? item : null))}
+        {Array.isArray(children)
+          ? children.map((item) => (item.type === Select.Option ? item : null))
+          : children}
       </select>
     </div>
   )

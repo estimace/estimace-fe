@@ -1,0 +1,7 @@
+.textInput {
+  width: auto;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-m);
+  font: inherit;
+  border: 2px solid var(--color-neutral);
+}

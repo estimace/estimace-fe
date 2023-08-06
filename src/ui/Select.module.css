@@ -1,22 +1,24 @@
 .wrap {
   position: relative;
-  width: 10em;
+  width: 100%;
 }
 
 .select {
   background-color: transparent;
-  padding: 0 var(--spacing-xs) 0 0;
   width: 100%;
   cursor: pointer;
   font: inherit;
   color: var(--color-primary);
-  outline: 100% var(--color-neutral);
-  padding-left: var(--spacing-s);
-  border: 2px solid var(--color-neutral);
+  padding: 0 var(--spacing-xs) 0 var(--spacing-s);
+  border: 1px solid var(--color-primary);
   border-radius: var(--border-radius-m);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
+}
+
+.select:focus {
+  outline: 1px solid var(--color-primary);
 }
 
 .wrap::after {
@@ -24,10 +26,13 @@
   display: block;
   width: 10px;
   height: 10px;
-  border-right: 2px solid var(--color-neutral);
-  border-bottom: 2px solid var(--color-neutral);
+  border-right: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+  border-top-right-radius: var(--border-radius-s);
+  border-bottom-left-radius: var(--border-radius-s);
   position: absolute;
   right: 10px;
   top: 10px;
   transform: rotate(45deg);
+  z-index: -1;
 }

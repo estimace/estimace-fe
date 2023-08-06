@@ -16,5 +16,12 @@ module.exports = {
     'react-refresh/only-export-components': 'warn',
     '@tanstack/query/exhaustive-deps': 'error',
     '@tanstack/query/prefer-query-object-syntax': 'error',
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        controlComponents: ['TextInput', 'Checkbox', 'Select'],
+        depth: 3,
+      },
+    ],
   },
 }

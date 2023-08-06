@@ -144,6 +144,9 @@ table {
   --font-size-l: 2rem;
   --font-size-xl: 2.5rem;
 
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+
   --spacing-xs: 0.25rem;
   --spacing-s: 0.75rem;
   --spacing-m: 1.5rem;
@@ -159,6 +162,7 @@ table {
 
   --line-height-heading: 2;
 
+  --font-line-height-xs: 0.8;
   --font-line-height-s: 1.2;
   --font-line-height-m: 1.5;
   --font-line-height-l: 1.75;
@@ -179,7 +183,8 @@ body {
     --color-background: #fbfbfb;
     --color-foreground: #011605;
     --color-neutral: #e3f2f7;
-    --color-primary: #db0b20;
+    --color-primary: #00973f;
+    --color-error: #fa5919;
   }
 }
 
@@ -189,5 +194,6 @@ body {
     --color-foreground: #fbfbfb;
     --color-neutral: #29442e;
     --color-primary: #94f498;
+    --color-error: #fa5919;
   }
 }

@@ -1,0 +1,31 @@
+.button {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border: 1px solid var(--color-neutral);
+  border-radius: var(--border-radius-l);
+  box-shadow: -0.07rem -0.05rem var(--color-neutral);
+  min-width: fit-content;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--font-line-height-xs);
+  min-height: var(--font-line-height-xs);
+  outline: 0;
+  padding: var(--spacing-s) var(--spacing-m);
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  touch-action: manipulation;
+}
+
+.button:hover {
+  transform: scale(1.02, 1.01);
+  font-weight: var(--font-weight-bold);
+}
+
+.button:focus-visible {
+  transform: scale(1.02, 1.01);
+  font-weight: var(--font-weight-bold);
+}

@@ -1,0 +1,20 @@
+.checkbox {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border: 1px solid var(--color-neutral);
+  border-radius: var(--border-radius-l);
+  cursor: pointer;
+  display: block;
+  min-width: var(--font-line-height-l);
+  min-height: var(--font-line-height-l);
+  line-height: var(--font-line-height-l);
+  padding: var(--spacing-xs);
+}
+
+.checkbox:hover {
+  transform: scale(1.02, 1.01);
+}
+
+.checkbox:focus-visible {
+  transform: scale(1.02, 1.01);
+}

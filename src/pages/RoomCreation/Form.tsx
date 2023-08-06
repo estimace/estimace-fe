@@ -2,11 +2,14 @@ import { FC, useState } from 'react'
 
 import { Technique } from 'app/types'
 import { techniqueLabels } from 'app/config'
-import { RememberMe } from '../Room/RememberMe'
 import storage from 'app/utils/storage'
 
+import { RememberMe } from '../Room/RememberMe'
+import { TextInput } from 'app/ui/TextInput'
+import { Select } from 'app/ui/Select'
+import { Button } from 'app/ui/Button'
+
 import styles from './Form.module.css'
-import { Select } from './Select'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -62,39 +65,37 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
       }}
     >
       {isError && (
-        <div className="errorMessageWrapper">
+        <div className={styles.errorMessageWrapper}>
           Error happened: {JSON.stringify(error)}
         </div>
       )}
-
       <label>
         <span>Name:</span>
-        <input
-          name="name"
-          type="text"
+        <TextInput
+          name={'name'}
+          type={'text'}
           required={true}
           value={name}
-          placeholder="your name"
+          placeholder={'your name'}
           onChange={handleFormInputChange}
-        ></input>
+        ></TextInput>
       </label>
-
       <label>
         <span>Email:</span>
-        <input
-          name="email"
-          type="email"
+        <TextInput
+          name={'email'}
+          type={'email'}
           required={true}
           value={email}
           placeholder="me@example.com"
           onChange={handleFormInputChange}
-        ></input>
+        ></TextInput>
       </label>
 
       <label>
         <span> Technique:</span>
-
         <Select
+          className={styles.estimaceFormSelect}
           aria-hidden={true}
           name="techniqueSelection"
           value={technique}
@@ -109,9 +110,11 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
           ))}
         </Select>
       </label>
-      <button name="createRoomButton" className="button" disabled={isLoading}>
-        Create
-      </button>
+      <Button
+        name="createRoomButton"
+        isDisabled={isLoading}
+        label="Create"
+      ></Button>
       <RememberMe rememberMe={rememberMeState} />
     </form>
   )
