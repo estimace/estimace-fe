@@ -15,6 +15,8 @@ import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSM
 import { useRoom } from './hooks/useRoom'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
 
+import styles from './index.module.css'
+
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
   const [roomInStorage, setRoomInStorage] = useState<RoomInStorage | null>(
@@ -63,27 +65,30 @@ const RoomPage: FC = () => {
       )}
 
       {shouldShowRoom && (
-        <>
-          <PlayersInRoom
-            players={room.players}
-            technique={room.technique}
-            state={room.state}
-          />
-
-          {room.state === 'planning' && (
-            <Estimation
-              player={player}
+        <div className={styles.roomWrap}>
+          <div className={styles.playersWrap}>
+            <PlayersInRoom
+              players={room.players}
               technique={room.technique}
-              roomId={room.id}
+              state={room.state}
             />
-          )}
 
-          {player.isOwner && (
-            <OwnerControllers player={player} roomState={room.state} />
-          )}
+            <ShareURL roomId={room.id} />
+          </div>
+          <div className={styles.controllersWrap}>
+            {room.state === 'planning' && (
+              <Estimation
+                player={player}
+                technique={room.technique}
+                roomId={room.id}
+              />
+            )}
 
-          <ShareURL roomId={room.id} />
-        </>
+            {player.isOwner && (
+              <OwnerControllers player={player} roomState={room.state} />
+            )}
+          </div>
+        </div>
       )}
     </>
   )

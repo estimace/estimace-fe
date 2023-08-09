@@ -9,7 +9,7 @@ import { TextInput } from 'app/ui/TextInput'
 import { Select } from 'app/ui/Select'
 import { Button } from 'app/ui/Button'
 
-import styles from './Form.module.css'
+import styles from 'app/pages/form.module.css'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -52,7 +52,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
 
   return (
     <form
-      className={styles.estimaceForm}
+      className={styles.form}
       onSubmit={(event) => {
         event.preventDefault()
         if (rememberMeState[0]) {
@@ -69,22 +69,24 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
           Error happened: {JSON.stringify(error)}
         </div>
       )}
+
       <label>
         <span>Name:</span>
         <TextInput
-          name={'name'}
-          type={'text'}
+          name="name"
+          type="text"
           required={true}
           value={name}
-          placeholder={'your name'}
+          placeholder="your name"
           onChange={handleFormInputChange}
         ></TextInput>
       </label>
+
       <label>
         <span>Email:</span>
         <TextInput
-          name={'email'}
-          type={'email'}
+          name="email"
+          type="email"
           required={true}
           value={email}
           placeholder="me@example.com"
@@ -95,7 +97,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
       <label>
         <span> Technique:</span>
         <Select
-          className={styles.estimaceFormSelect}
+          className={styles.formSelect}
           aria-hidden={true}
           name="techniqueSelection"
           value={technique}
@@ -110,11 +112,13 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
           ))}
         </Select>
       </label>
+
       <Button
         name="createRoomButton"
         isDisabled={isLoading}
         label="Create"
       ></Button>
+
       <RememberMe rememberMe={rememberMeState} />
     </form>
   )

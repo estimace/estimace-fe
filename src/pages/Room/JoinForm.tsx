@@ -6,6 +6,10 @@ import api from 'app/utils/api'
 import storage from 'app/utils/storage'
 import { RememberMe } from './RememberMe'
 
+import styles from 'app/pages/form.module.css'
+import { TextInput } from 'app/ui/TextInput'
+import { Button } from 'app/ui/Button'
+
 type Props = {
   roomId: Room['id']
   onSubmit: (player: Player) => void
@@ -35,6 +39,7 @@ export const JoinForm: React.FC<Props> = (props: Props) => {
 
   return (
     <form
+      className={styles.form}
       onSubmit={(e: React.FormEvent<CustomForm>) => {
         e.preventDefault()
         const target = e.currentTarget.elements
@@ -54,20 +59,26 @@ export const JoinForm: React.FC<Props> = (props: Props) => {
       {error && <div>An error occurred while joining the room.</div>}
 
       <label>
-        name:
-        <input name="name" type="text" required placeholder="your name"></input>
+        <span>Name:</span>
+        <TextInput
+          name="name"
+          type="text"
+          required={true}
+          placeholder="your name"
+        />
       </label>
 
       <label>
-        email:
-        <input
+        <span>Email:</span>
+        <TextInput
           name="email"
           type="email"
-          required
+          required={true}
           placeholder="me@example.com"
-        ></input>
+        />
       </label>
-      <button disabled={isMutating}>Enter</button>
+
+      <Button label={'Enter'} isDisabled={isMutating} />
       <RememberMe rememberMe={rememberMeState} />
     </form>
   )

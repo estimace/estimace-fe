@@ -11,13 +11,14 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 type ButtonComponent = FC<ButtonProps>
 
 export const Button: ButtonComponent = (props: ButtonProps) => {
-  const { name, type, isDisabled, label, ...restOfProps } = props
+  const { name, type, isDisabled, label, className, ...restOfProps } = props
 
   return (
     <button
+      {...restOfProps}
       name={name}
       type={type}
-      className={styles.button}
+      className={[styles.button, className].join(' ')}
       disabled={isDisabled === undefined ? false : isDisabled}
     >
       {label}

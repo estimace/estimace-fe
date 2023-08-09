@@ -138,6 +138,7 @@ table {
 
   --page-max-width: 1200px;
   --paragraph-max-width: 800px;
+  --min-page-width: 390px;
 
   --font-size-s: 1rem;
   --font-size-m: 1.5rem;
@@ -167,6 +168,8 @@ table {
   --font-line-height-m: 1.5;
   --font-line-height-l: 1.75;
   --font-line-height-xl: 2;
+
+  --break-point-m: 850px;
 }
 
 body {

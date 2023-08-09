@@ -37,15 +37,43 @@ test.describe('Share URL', () => {
     await page.getByRole('button').click()
     await assertShareURLSection(page, roomId)
 
-    page.getByRole('button', { name: /copy url/i }).click()
-    await expect(
-      page.getByText(/Room URL copied to the clipboard/gi),
-    ).toBeVisible()
+    await page.getByRole('button', { name: /copy url/i }).click()
+    const status = page.getByRole('status')
+    await expect(status).toBeVisible()
+    await expect(status).toHaveText('Room URL copied to the clipboard')
 
     const copiedURL = await page.evaluate(() => {
       return navigator.clipboard.readText()
     })
 
     await expect(copiedURL).toBe(page.url())
+  })
+
+  test('hides the status message for copied URL after 3 seconds', async ({
+    page,
+  }) => {
+    await mockCreateRoomRequest(
+      page,
+      { id: roomId, technique: 'fibonacci' },
+      { ...player, authToken },
+    )
+
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      technique: 'fibonacci',
+      players: [player],
+    })
+
+    await page.goto(`/rooms`)
+    await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
+    await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
+    await page.getByRole('button').click()
+
+    await page.getByRole('button', { name: /copy url/i }).click()
+
+    const status = page.getByRole('status')
+    await expect(status).toBeVisible()
+    await expect(status).toHaveText('Room URL copied to the clipboard')
+    await expect(page.getByRole('status')).toBeHidden()
   })
 })

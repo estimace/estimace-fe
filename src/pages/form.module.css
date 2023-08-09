@@ -1,4 +1,4 @@
-.estimaceForm {
+.form {
   max-width: var(--paragraph-max-width);
   line-height: var(--line-height-heading);
   margin: var(--spacing-l) var(--spacing-s);
@@ -6,36 +6,36 @@
   flex-direction: column;
 }
 
-.estimaceForm label {
+.form label {
   display: flex;
   align-items: center;
   margin-bottom: var(--spacing-s);
 }
 
-.estimaceForm label > span {
+.form label > span {
   display: inline-block;
   min-width: fit-content;
   margin-right: var(--spacing-xs);
   flex-grow: 0;
 }
 
-.estimaceForm input[type='text'],
-.estimaceForm input[type='email'] {
+.form input[type='text'],
+.form input[type='email'] {
   flex-grow: 0.75;
 }
 
-.estimaceForm input[type='text']:focus,
-.estimaceForm input[type='email']:focus {
+.form input[type='text']:focus,
+.form input[type='email']:focus {
   outline-color: var(--color-primary);
 }
 
-.estimaceForm button {
+.form button {
   align-self: flex-start;
   width: 82%;
   margin-left: var(--spacing-xs);
 }
 
-.estimaceFormSelect {
+.formSelect {
   margin-left: var(--spacing-xs);
   width: 71.4%;
 }

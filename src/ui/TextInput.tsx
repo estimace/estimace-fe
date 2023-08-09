@@ -33,6 +33,7 @@ export const TextInput: TextInputComponent = (props: TextInputProps) => {
       value={value}
       placeholder={placeholder}
       onChange={onChange}
-    ></input>
+      {...restOfProps}
+    />
   )
 }

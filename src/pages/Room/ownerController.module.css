@@ -1,0 +1,18 @@
+.roomStateReset,
+.roomStateReveal {
+  margin-top: var(--spacing-m);
+  width: 30%;
+}
+
+.roomStateReset {
+  background-color: var(--color-foreground);
+  opacity: 70%;
+}
+
+@media (max-width: 850px) {
+  .roomStateReset,
+  .roomStateReveal {
+    margin: var(--spacing-xs) 0;
+    width: 45%;
+  }
+}

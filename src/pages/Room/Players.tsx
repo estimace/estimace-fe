@@ -2,6 +2,8 @@ import { FC } from 'react'
 import { Player, Room, RoomState } from 'app/types'
 import { techniqueOptions } from 'app/config'
 
+import styles from './players.module.css'
+
 type Props = {
   players: Player[]
   technique: Room['technique']
@@ -12,7 +14,7 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
   const { players, state, technique } = props
 
   return (
-    <ul aria-label="Players' List">
+    <ul aria-label="Players' List" className={styles.playersList}>
       {players.map((player) => {
         return (
           <li key={player.id}>
@@ -21,17 +23,18 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
             )}
             <span>{player.name}</span>{' '}
             {state === 'planning' && player.estimate === null && (
-              <span>is estimating</span>
+              <span className={styles.isEstimating}>is estimating</span>
             )}
             {state === 'planning' && player.estimate !== null && (
-              <span>estimated</span>
+              <span className={styles.estimated}>estimated</span>
             )}
-            {state === 'revealed' && (
-              <span>
-                {player.estimate
-                  ? techniqueOptions[technique][player.estimate]
-                  : 'did not estimate'}
+            {state === 'revealed' && player.estimate !== null && (
+              <span className={styles.revealedEstimation}>
+                {techniqueOptions[technique][player.estimate]}
               </span>
+            )}
+            {state === 'revealed' && player.estimate === null && (
+              <span className={styles.notEstimated}>did not estimate</span>
             )}
           </li>
         )

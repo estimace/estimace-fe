@@ -3,7 +3,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { getBaseURL } from 'app/config'
 import { Room } from 'app/types'
+
 import { Button } from 'app/ui/Button'
+import styles from './shareURL.module.css'
 
 type Props = {
   roomId: Room['id']
@@ -27,18 +29,25 @@ export const ShareURL: React.FC<Props> = (props) => {
   }, [urlCopied])
 
   return (
-    <section aria-labelledby="estimace-share-url-title">
+    <section
+      aria-labelledby="estimace-share-url-title"
+      className={styles.shareRoomURLWrap}
+    >
       <div id="estimace-share-url-title">
         Share this room URL so your teammates can join:
       </div>
+      <div aria-hidden={urlCopied}>{roomURL}</div>
+      <div>
+        <CopyToClipboard text={roomURL} onCopy={() => setUrlCopied(true)}>
+          <Button label="Copy URL" />
+        </CopyToClipboard>
+      </div>
 
-      <CopyToClipboard text={roomURL} onCopy={() => setUrlCopied(true)}>
-        <Button label="Copy URL" />
-      </CopyToClipboard>
-
-      <span aria-hidden={urlCopied}>{roomURL}</span>
-
-      {urlCopied && <div>Room URL copied to the clipboard</div>}
+      {urlCopied && (
+        <div role="status" className={styles.copiedRoomURLNotify}>
+          Room URL copied to the clipboard
+        </div>
+      )}
     </section>
   )
 }
