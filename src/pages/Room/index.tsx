@@ -16,6 +16,7 @@ import { useRoom } from './hooks/useRoom'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
 
 import styles from './index.module.css'
+import { Swiper } from 'app/ui/Swiper'
 
 const RoomPage: FC = () => {
   const { id: roomId } = useParams()
@@ -66,15 +67,17 @@ const RoomPage: FC = () => {
 
       {shouldShowRoom && (
         <div className={styles.roomWrap}>
-          <div className={styles.playersWrap}>
-            <PlayersInRoom
-              players={room.players}
-              technique={room.technique}
-              state={room.state}
-            />
+          <Swiper direction="vertical">
+            <div className={styles.playersWrap}>
+              <PlayersInRoom
+                players={room.players}
+                technique={room.technique}
+                state={room.state}
+              />
 
-            <ShareURL roomId={room.id} />
-          </div>
+              <ShareURL roomId={room.id} />
+            </div>
+          </Swiper>
           <div className={styles.controllersWrap}>
             {room.state === 'planning' && (
               <Estimation

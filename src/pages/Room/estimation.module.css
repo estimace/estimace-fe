@@ -6,6 +6,14 @@
   margin-bottom: var(--spacing-m);
 }
 
+.largeScreenEstimationOptionsWrap {
+  display: block;
+}
+
+.smallScreenEstimationOptionsWrap {
+  display: none;
+}
+
 .estimationOptionsWrap {
   display: flex;
   gap: 1rem;
@@ -40,8 +48,15 @@
   .estimationOptionsWrap {
     width: 100%;
     flex-wrap: nowrap;
-    overflow-x: scroll;
     height: 5rem;
     padding: var(--spacing-xs);
+  }
+
+  .largeScreenEstimationOptionsWrap {
+    display: none;
+  }
+
+  .smallScreenEstimationOptionsWrap {
+    display: block;
   }
 }

@@ -9,7 +9,6 @@
 .playersWrap {
   flex: 1;
   flex-basis: 48%;
-  overflow-y: auto;
 }
 
 .controllersWrap {
@@ -25,7 +24,6 @@
 
   .playersWrap {
     flex: 1;
-    overflow-y: scroll;
     overflow-x: hidden;
   }
 

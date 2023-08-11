@@ -185,7 +185,7 @@ body {
   :root {
     --color-background: #fbfbfb;
     --color-foreground: #011605;
-    --color-neutral: #e3f2f7;
+    --color-neutral: #d5e4e9;
     --color-primary: #00973f;
     --color-error: #fa5919;
   }
@@ -195,7 +195,7 @@ body {
   :root {
     --color-background: #011605;
     --color-foreground: #fbfbfb;
-    --color-neutral: #29442e;
+    --color-neutral: #304b35;
     --color-primary: #94f498;
     --color-error: #fa5919;
   }

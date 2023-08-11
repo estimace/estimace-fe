@@ -1,0 +1,52 @@
+.swiperWrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper {
+  overflow: auto;
+  height: 100%;
+}
+
+.swiperPreviousItemsIndicator,
+.swiperNextItemsIndicator {
+  position: absolute;
+}
+
+.verticalSlide .swiperPreviousItemsIndicator,
+.verticalSlide .swiperNextItemsIndicator {
+  left: 0;
+  width: 100%;
+  height: 2rem;
+}
+
+.verticalSlide .swiperPreviousItemsIndicator {
+  top: 0;
+}
+
+.verticalSlide .swiperNextItemsIndicator {
+  bottom: 0;
+}
+
+.horizontalSlide .swiperPreviousItemsIndicator,
+.horizontalSlide .swiperNextItemsIndicator {
+  top: 0;
+  height: 100%;
+  width: 1.5rem;
+}
+
+.horizontalSlide .swiperPreviousItemsIndicator {
+  left: 0;
+}
+
+.horizontalSlide .swiperNextItemsIndicator {
+  right: 0;
+}
+
+.swiperPreviousItemsIndicator {
+  background: linear-gradient(var(--color-background), transparent);
+}
+
+.swiperNextItemsIndicator {
+  background: linear-gradient(transparent, var(--color-background));
+}
