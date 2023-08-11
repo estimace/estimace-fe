@@ -20,7 +20,6 @@ function create(onMessage?: OnMessage): Promise<{
 }> {
   return new Promise((resolve) => {
     const broadcastMessage: BroadcastMessage = (message) => {
-      console.log('WSS: broadcastMessage', message)
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify(message))
@@ -38,17 +37,13 @@ function create(onMessage?: OnMessage): Promise<{
     })
 
     wss.on('connection', function connection(ws, req) {
-      console.log('WSS: onConnection')
-
       ws.on('error', console.error)
 
       const sendMessage: SendMessage = (message) => {
-        console.log('WSS: sendMessage', message)
         ws.send(JSON.stringify(message))
       }
 
       const _broadcastMessage: BroadcastMessage = (message) => {
-        console.log('WSS: broadcastMessage', message)
         wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(message))
@@ -58,7 +53,7 @@ function create(onMessage?: OnMessage): Promise<{
 
       ws.on('message', function message(data) {
         const message = parseJSON(data.toString())
-        console.log('onMessage', message)
+
         onMessage?.({
           message,
           sendMessage,
