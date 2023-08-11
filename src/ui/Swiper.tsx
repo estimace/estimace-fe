@@ -26,6 +26,9 @@ export const Swiper: SwiperComponent = (props: SwiperProps) => {
   const [isEndOfSwiper, setIsEndOfSwiper] = useState(true)
   const swiperRef = useRef<HTMLDivElement | null>(null)
 
+  const swiperDirectionClassName =
+    direction === 'horizontal' ? styles.horizontalSlide : styles.verticalSlide
+
   useEffect(() => {
     const element = swiperRef.current
     if (element) {
@@ -38,7 +41,7 @@ export const Swiper: SwiperComponent = (props: SwiperProps) => {
 
   const classNames = clsx(
     styles.swiperWrap,
-    direction === 'horizontal' ? styles.horizontalSlide : styles.verticalSlide,
+    swiperDirectionClassName,
     className,
   )
 
@@ -70,12 +73,23 @@ export const Swiper: SwiperComponent = (props: SwiperProps) => {
         {children}
       </div>
 
-      {!isStartOfSwiper && (
-        <div className={styles.swiperPreviousItemsIndicator} aria-hidden></div>
-      )}
-      {!isEndOfSwiper && (
-        <div className={styles.swiperNextItemsIndicator} aria-hidden></div>
-      )}
+      <div
+        className={clsx(
+          styles.swiperPreviousItemsIndicator,
+          swiperDirectionClassName,
+          !isStartOfSwiper && styles.swiperStartIsVisible,
+        )}
+        aria-hidden
+      ></div>
+
+      <div
+        className={clsx(
+          styles.swiperNextItemsIndicator,
+          swiperDirectionClassName,
+          !isEndOfSwiper && styles.swiperEndIsVisible,
+        )}
+        aria-hidden
+      ></div>
     </div>
   )
 }

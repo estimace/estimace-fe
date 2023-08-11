@@ -21,11 +21,11 @@
 }
 
 .verticalSlide .swiperPreviousItemsIndicator {
-  top: 0;
+  top: -2rem;
 }
 
 .verticalSlide .swiperNextItemsIndicator {
-  bottom: 0;
+  bottom: -2rem;
 }
 
 .horizontalSlide .swiperPreviousItemsIndicator,
@@ -36,25 +36,44 @@
 }
 
 .horizontalSlide .swiperPreviousItemsIndicator {
-  left: 0;
+  left: -1.5rem;
 }
 
 .horizontalSlide .swiperNextItemsIndicator {
-  right: 0;
+  right: -1.5rem;
 }
 
 .verticalSlide .swiperPreviousItemsIndicator {
   background: linear-gradient(var(--color-background), transparent);
+  transition: all 0.4s ease-in-out;
+}
+
+.verticalSlide .swiperStartIsVisible {
+  transform: translateY(2rem);
 }
 
 .verticalSlide .swiperNextItemsIndicator {
   background: linear-gradient(transparent, var(--color-background));
+  transition: all 0.4s ease-in-out;
+}
+.verticalSlide .swiperEndIsVisible {
+  transform: translateY(-2rem);
 }
 
 .horizontalSlide .swiperPreviousItemsIndicator {
   background: linear-gradient(90deg, var(--color-background), transparent);
+  transition: all 0.4s ease-in-out;
+}
+
+.horizontalSlide .swiperStartIsVisible {
+  transform: translateX(1.5rem);
 }
 
 .horizontalSlide .swiperNextItemsIndicator {
   background: linear-gradient(90deg, transparent, var(--color-background));
+  transition: all 0.4s ease-in-out;
+}
+
+.horizontalSlide .swiperEndIsVisible {
+  transform: translateX(-1.5rem);
 }
