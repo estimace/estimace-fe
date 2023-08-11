@@ -43,10 +43,18 @@
   right: 0;
 }
 
-.swiperPreviousItemsIndicator {
+.verticalSlide .swiperPreviousItemsIndicator {
   background: linear-gradient(var(--color-background), transparent);
 }
 
-.swiperNextItemsIndicator {
+.verticalSlide .swiperNextItemsIndicator {
   background: linear-gradient(transparent, var(--color-background));
+}
+
+.horizontalSlide .swiperPreviousItemsIndicator {
+  background: linear-gradient(90deg, var(--color-background), transparent);
+}
+
+.horizontalSlide .swiperNextItemsIndicator {
+  background: linear-gradient(90deg, transparent, var(--color-background));
 }
