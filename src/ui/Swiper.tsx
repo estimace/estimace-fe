@@ -1,5 +1,14 @@
-import { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import {
+  FC,
+  ReactElement,
+  UIEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { clsx } from 'clsx'
+
+import debounce from 'app/utils/debounce'
 
 import styles from './Swiper.module.css'
 
@@ -33,29 +42,30 @@ export const Swiper: SwiperComponent = (props: SwiperProps) => {
     className,
   )
 
+  const handleOnScroll: UIEventHandler<HTMLDivElement> = (event) => {
+    const { size, scroll, scrollMax } = getSizes(
+      event.target as HTMLElement,
+      direction,
+    )
+    if (scroll > 10) {
+      setIsStartOfSwiper(false)
+    } else {
+      setIsStartOfSwiper(true)
+    }
+
+    if (scrollMax <= scroll + size) {
+      setIsEndOfSwiper(true)
+    } else {
+      setIsEndOfSwiper(false)
+    }
+  }
+
   return (
     <div className={classNames} {...restOfProps}>
       <div
         ref={swiperRef}
         className={styles.swiper}
-        onScroll={(event) => {
-          const { size, scroll, scrollMax } = getSizes(
-            event.currentTarget,
-            direction,
-          )
-
-          if (scroll > 10) {
-            setIsStartOfSwiper(false)
-          } else {
-            setIsStartOfSwiper(true)
-          }
-
-          if (scrollMax <= scroll + size) {
-            setIsEndOfSwiper(true)
-          } else {
-            setIsEndOfSwiper(false)
-          }
-        }}
+        onScroll={debounce(handleOnScroll)}
       >
         {children}
       </div>
