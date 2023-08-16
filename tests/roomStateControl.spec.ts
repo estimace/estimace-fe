@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test'
+
 import { Player } from 'app/types'
+import { sortPlayersByEstimations } from 'app/utils/sortPlayers'
+import { techniqueLabels } from 'app/config'
+
 import { assertPlayersEstimations } from './utils/assertions'
 import wsMockServer from './utils/wsMockServer'
 import {
@@ -159,13 +163,18 @@ test.describe('room state', () => {
 
     await pageOwner.getByRole('button', { name: 'reveal' }).click()
 
+    players[0].estimate = 11
+    players[1].estimate = 6
+    players[2].estimate = 1
+
     for (const page of [pageOwner, pageOne, pageTwo]) {
+      sortPlayersByEstimations(players)
       await assertPlayersEstimations(
         page,
         players,
         'fibonacci',
         'revealed',
-        [11, 6, 1],
+        [1, 6, 11],
       )
     }
 
@@ -181,5 +190,113 @@ test.describe('room state', () => {
         null,
       ])
     }
+  })
+
+  test('sort players list by their estimation when the state of room is revealed', async ({
+    page,
+  }) => {
+    const players: Player[] = [
+      {
+        id: '5ba855f3-40bf-4a5a-b7ea-c40114d58be5',
+        roomId: roomId,
+        name: 'Darth Vader',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/f6cb5b374808419ff6fc55b73a1983bd?d=retro',
+        isOwner: true,
+        estimate: null,
+      },
+      {
+        id: '6304dd2c-9760-44d4-8355-77bc0b70a363',
+        roomId: roomId,
+        name: 'Luke Skywalker',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/f352bf4fc014b769a4f6ada2a0caed1c?d=retro',
+        isOwner: false,
+        estimate: 5,
+      },
+      {
+        id: '0a500d4d-bb91-46ab-aa01-36ffc947c02b',
+        roomId: roomId,
+        name: 'Leia Skywalker',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/f352bf4fc014b769a4f6ada2a0caed1c?d=retro',
+        isOwner: false,
+        estimate: 11,
+      },
+      {
+        id: '3d9a1e89-3775-4338-80b2-b2ed7213e993',
+        roomId: roomId,
+        name: 'Rey Rey',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/f352bf4fc014b769a4f6ada2a0caed1c?d=retro',
+        isOwner: false,
+        estimate: null,
+      },
+      {
+        id: 'bb778929-397c-4806-94fd-55ac5b8800cd',
+        roomId: roomId,
+        name: 'Anakin Skywalker',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/f352bf4fc014b769a4f6ada2a0caed1c?d=retro',
+        isOwner: false,
+        estimate: 5,
+      },
+      {
+        id: 'c4640745-2127-4ce1-8cc3-5d03d511b4c0',
+        roomId: roomId,
+        name: 'Padme Amidala',
+        pictureURL:
+          'https://secure.gravatar.com/avatar/63836ebe426034fcfd64f83c70630115?d=retro',
+        isOwner: false,
+        estimate: 0,
+      },
+    ]
+    mockCreateRoomRequest(
+      page,
+      { id: roomId, technique: 'fibonacci' },
+      { ...players[0], authToken: 'a-secret-auth-for-room-owner' },
+    )
+
+    const wss = await wsMockServer.create(({ message, sendMessage }) => {
+      if (message.type === 'updateRoomState') {
+        const responseMessage = {
+          type: 'roomStateUpdated',
+          payload: {
+            id: roomId,
+            state: message.payload.state,
+          },
+        }
+        sendMessage(responseMessage)
+      }
+    })
+    await page.addInitScript((value) => (window.WS_URL = value), wss.address)
+
+    await mockGetRoomRequest(page, {
+      id: roomId,
+      technique: 'fibonacci',
+      players,
+    })
+
+    page.goto('/rooms')
+    await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
+    await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
+    await page
+      .getByLabel(/Technique/gi)
+      .selectOption(techniqueLabels['fibonacci'])
+    await page.getByRole('button', { name: /create/gi }).click()
+
+    await page.getByRole('button', { name: /reveal/gi }).click()
+
+    sortPlayersByEstimations(players)
+
+    await expect(page.getByRole('button', { name: /reset/gi })).toBeVisible()
+    await assertPlayersEstimations(page, players, 'fibonacci', 'revealed', [
+      0,
+      5,
+      5,
+      11,
+      null,
+      null,
+    ])
   })
 })

@@ -59,10 +59,10 @@ export async function assertPlayersEstimations(
   for (const player of players) {
     const index = players.indexOf(player)
     const $listItem = $listItems.nth(index)
-    const playerEstimate = expectedEstimations[index]
-      ? techniqueOptions[technique][expectedEstimations[index]]
-      : 'did not estimate'
-
+    const playerEstimate =
+      expectedEstimations[index] !== null
+        ? techniqueOptions[technique][expectedEstimations[index]]
+        : 'did not estimate'
     await expect($listItem).toContainText(
       `${player.name} ${
         roomState === 'revealed' ? playerEstimate : ' is estimating'
