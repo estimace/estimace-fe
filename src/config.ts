@@ -9,9 +9,10 @@ export const apiPath = '/api'
  * only enabled in test mode.
  */
 export const getWebsocketServerURL = () => {
+  const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
   const mode = import.meta.env.MODE
   const apiHost = window.location.host // e.g localhost:3500
-  return `ws://${
+  return `${protocol}://${
     mode === 'test' && window.WS_URL
       ? window.WS_URL
       : apiHost + apiPath + '/socket'
