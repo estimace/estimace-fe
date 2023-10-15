@@ -15,6 +15,9 @@
   flex: 1;
   flex-basis: 48%;
 }
+.errorMessage {
+  padding-top: var(--spacing-l);
+}
 
 @media (max-width: 850px) {
   .roomWrap {

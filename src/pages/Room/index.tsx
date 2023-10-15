@@ -58,7 +58,9 @@ const RoomPage: FC = () => {
   return (
     <>
       {roomQuery.result?.errorType && (
-        <div>The room does not exists or has been deleted</div>
+        <div className={styles.errorMessage}>
+          The room does not exist or has been deleted.
+        </div>
       )}
 
       {shouldShowJoinRoomForm && (
