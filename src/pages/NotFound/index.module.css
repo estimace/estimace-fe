@@ -1,0 +1,34 @@
+.notFoundPageWrapper {
+  max-width: var(--page-max-width);
+  line-height: var(--font-line-height-l);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--spacing-xl) var(--spacing-l) 0 var(--spacing-m);
+}
+
+.notFoundPageWrapper h1 {
+  font-size: var(--font-size-l);
+  margin-bottom: var(--spacing-m);
+}
+.notFoundPageWrapper h2 {
+  font-size: var(--font-size-s);
+  margin: var(--spacing-m) 0;
+}
+.notFoundPageWrapper p {
+  font-size: var(--font-size-s);
+  margin: var(--spacing-m) 0;
+}
+.notFoundPageWrapper a {
+  background-color: var(--color-primary);
+  color: var(--color-neutral);
+  display: inline-block;
+  margin-left: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-s);
+  border-radius: var(--border-radius-s);
+  text-decoration: none;
+}
+
+.notFoundPageWrapper a:hover {
+  transform: scaleX(105%) scaleY(105%);
+}
