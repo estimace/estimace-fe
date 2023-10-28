@@ -5,16 +5,22 @@ function HomePage() {
   return (
     <div className={styles.homePageWrapper}>
       <h1>Estimace</h1>
-      <h2>A minimal scrum planning app</h2>
+      <h2>A minimal planning poker app for Agile teams</h2>
       <p>
-        You can choose to use either{' '}
-        <i className={styles.fibonacciTechnique}>Fibonacci</i> or{' '}
-        <i className={styles.tshirtSizingTechnique}>T-Shirt Sizing</i>{' '}
-        techniques
+        Although we can argue about the effectiveness of estimates and story
+        points all day long, but you can find yourself here and there in a
+        situation that you need to provide estimates. if that happens at least
+        you deserve a to the point app to help your team with it. Estimace is
+        here to help you with that. That's where <strong>Estimace</strong> steps
+        in.
       </p>
       <p>
-        To Create a room and start the planning of your sprint click{' '}
-        <Link to="/rooms">start</Link>
+        All you need to do is to create a room for your planning session and
+        share the link of it with your teammates. Then you can start estimating
+        your stories.
+      </p>
+      <p>
+        <Link to="/rooms">Create A Room</Link>
       </p>
     </div>
   )

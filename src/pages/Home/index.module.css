@@ -7,7 +7,7 @@
 }
 
 .homePageWrapper h1 {
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-xl);
   margin-bottom: var(--spacing-s);
 }
 .homePageWrapper h2 {
@@ -16,11 +16,11 @@
 }
 .homePageWrapper p {
   margin: var(--spacing-s) 0;
+  max-width: 800px;
 }
 
-.homePageWrapper p i {
-  color: var(--color-primary);
-  padding-right: var(--spacing-xs);
+.homePageWrapper p strong {
+  font-weight: bold;
 }
 
 .homePageWrapper a {
