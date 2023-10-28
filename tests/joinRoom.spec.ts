@@ -43,7 +43,7 @@ test.describe('new player enters the room via shared url', () => {
     await page.goto(`/rooms/invalid-uuid-value`)
 
     await expect(
-      page.getByText(/The room does not exists or has been deleted/i),
+      page.getByText(/The room does not exist or has been deleted./i),
     ).toBeVisible()
     await expect(page.getByRole('textbox', { name: 'name' })).toBeHidden()
     await expect(page.getByRole('textbox', { name: 'email' })).toBeHidden()
@@ -58,7 +58,7 @@ test.describe('new player enters the room via shared url', () => {
     await page.goto(`/rooms/${roomId}`)
 
     await expect(
-      page.getByText(/The room does not exists or has been deleted/i),
+      page.getByText(/The room does not exist or has been deleted./i),
     ).toBeVisible()
     await expect(page.getByRole('textbox', { name: 'name' })).toBeHidden()
     await expect(page.getByRole('textbox', { name: 'email' })).toBeHidden()

@@ -1,0 +1,10 @@
+stages:
+  - test
+
+integration tests:
+  stage: test
+  script:
+    - docker build -t estimace-fe-integration:latest -f ./Dockerfile.test .
+    - docker rm -f estimace-fe-integration
+    - docker run --name estimace-fe-integration estimace-fe-integration:latest
+    - docker rm -f estimace-fe-integration

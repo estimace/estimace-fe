@@ -46,7 +46,7 @@ test.describe('Share URL', () => {
       return navigator.clipboard.readText()
     })
 
-    await expect(copiedURL).toBe(page.url())
+    expect(copiedURL).toBe(page.url())
   })
 
   test('hides the status message for copied URL after 3 seconds', async ({
