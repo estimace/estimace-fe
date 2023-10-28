@@ -43,12 +43,12 @@ function EstimationContent(props: Props): JSX.Element {
       {estimationOptions.map((option, index) => {
         return (
           <Button
-            key={index}
-            data-value={`estimationButton-${option}`}
+            key={option}
             onClick={() => sendEstimate(index)}
-            label={option}
             className={styles.estimationOptionsButton}
-          />
+          >
+            {option}
+          </Button>
         )
       })}
     </div>

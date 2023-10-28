@@ -78,7 +78,7 @@ export const JoinForm: React.FC<Props> = (props: Props) => {
         />
       </label>
 
-      <Button label={'Enter'} isDisabled={isMutating} />
+      <Button disabled={isMutating}>Enter</Button>
       <RememberMe rememberMe={rememberMeState} />
     </form>
   )
