@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/playwright:v1.39.0-jammy AS base
+
+# Install dependencies only when needed
+FROM base AS app-deps
+WORKDIR /opt/app
+
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn --frozen-lockfile
+
+# Install browser and its dependancies
+FROM app-deps AS app-deps-with-browsers
+RUN npx playwright install chromium --with-deps
+
+# Rebuild the source code only when needed
+FROM app-deps-with-browsers
+WORKDIR /opt/app
+COPY --from=app-deps /opt/app/node_modules ./node_modules
+COPY . .
+
+CMD ["yarn", "run", "test:integration"]
