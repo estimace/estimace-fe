@@ -1,6 +1,14 @@
 stages:
   - test
 
+linter:
+  stage: test
+  script:
+    - docker build -t estimace-fe-linter:latest -f ./Dockerfile.linter .
+    - docker rm -f estimace-fe-linter
+    - docker run --name estimace-fe-linter estimace-fe-linter:latest
+    - docker rm -f estimace-fe-linter
+
 integration tests:
   stage: test
   script:
