@@ -113,11 +113,7 @@ export const RoomCreationForm: FC<Props> = (props: Props) => {
         </Select>
       </label>
 
-      <Button
-        name="createRoomButton"
-        isDisabled={isLoading}
-        label="Create"
-      ></Button>
+      <Button disabled={isLoading}>Create</Button>
 
       <RememberMe rememberMe={rememberMeState} />
     </form>

@@ -39,7 +39,7 @@ export const ShareURL: React.FC<Props> = (props) => {
       <div aria-hidden={urlCopied}>{roomURL}</div>
       <div>
         <CopyToClipboard text={roomURL} onCopy={() => setUrlCopied(true)}>
-          <Button label="Copy URL" />
+          <Button>Copy URL</Button>
         </CopyToClipboard>
       </div>
 

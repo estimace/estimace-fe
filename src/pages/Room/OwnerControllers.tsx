@@ -18,18 +18,18 @@ export const OwnerControllers: React.FC<Props> = (props) => {
     <>
       {roomState === 'planning' ? (
         <Button
-          type="button"
           onClick={() => sendRoomState('revealed')}
-          label="Reveal"
           className={styles.roomStateReveal}
-        />
+        >
+          Reveal
+        </Button>
       ) : (
         <Button
-          type="button"
           onClick={() => sendRoomState('planning')}
-          label="Reset"
           className={styles.roomStateReset}
-        />
+        >
+          Reset
+        </Button>
       )}
     </>
   )
