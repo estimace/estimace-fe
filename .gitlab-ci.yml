@@ -3,16 +3,15 @@ stages:
 
 linter:
   stage: test
+  image: node:18-alpine
   script:
-    - docker build -t estimace-fe-linter:latest -f ./Dockerfile.linter .
-    - docker rm -f estimace-fe-linter
-    - docker run --name estimace-fe-linter estimace-fe-linter:latest
-    - docker rm -f estimace-fe-linter
+    - yarn --frozen-lockfile
+    - yarn run lint
 
 integration tests:
   stage: test
+  image: mcr.microsoft.com/playwright:v1.39.0-jammy
   script:
-    - docker build -t estimace-fe-integration:latest -f ./Dockerfile.test .
-    - docker rm -f estimace-fe-integration
-    - docker run --name estimace-fe-integration estimace-fe-integration:latest
-    - docker rm -f estimace-fe-integration
+    - yarn --frozen-lockfile
+    - npx playwright install chromium --with-deps
+    - yarn run test:integration
