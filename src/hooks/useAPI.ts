@@ -33,7 +33,7 @@ export function useMutation<
 >(fn: F, onResponse: (result: R) => void) {
   const [isMutating, setIsMutating] = useState(false)
   const [error, setError] = useState<undefined | null | object>(undefined)
-  const [data, setData] = useState<R | undefined>(undefined)
+  const [data, setData] = useState<R['data'] | undefined>(undefined)
 
   const mutate = async (...params: Parameters<F>) => {
     if (isMutating) {
@@ -43,7 +43,7 @@ export function useMutation<
     setIsMutating(true)
     const result = await fn(...params)
     setError(result.errorType ? result.data : null)
-    setData(data)
+    setData(result.data)
     setIsMutating(false)
     onResponse(result as R)
   }
