@@ -27,7 +27,7 @@ export type SubmitHandler = (item: {
   technique: Technique
 }) => void
 
-export const RoomCreationForm: FC<Props> = (props: Props) => {
+export const RoomCreationForm: FC<Props> = (props) => {
   const [name, setName] = useState(props.name ?? '')
   const [email, setEmail] = useState(props.email ?? '')
   const [technique, setTechnique] = useState<Technique>('fibonacci')

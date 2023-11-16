@@ -1,17 +1,11 @@
 import { FC } from 'react'
 import styles from './TextInput.module.css'
 
-type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  name: string
-  type: 'text' | 'email'
-  value?: string
-  placeholder?: string
-  required?: boolean
-}
+type TextInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 type TextInputComponent = FC<TextInputProps>
 
-export const TextInput: TextInputComponent = (props: TextInputProps) => {
+export const TextInput: TextInputComponent = (props) => {
   const {
     name,
     type,
