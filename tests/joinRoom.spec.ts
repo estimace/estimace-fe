@@ -14,6 +14,7 @@ import {
 
 test.describe('new player enters the room via shared url', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
+  const roomIdInBase64 = 'S4G5sulEQsKV7kSuIW01-A'
   const owner: Player = {
     id: 'a7e2e105-b694-486d-abdd-23b174dfae9a',
     roomId: roomId,
@@ -40,7 +41,20 @@ test.describe('new player enters the room via shared url', () => {
       type: '/rooms/get/id/invalid',
       title: '"id" field is not a valid UUID',
     })
-    await page.goto(`/rooms/invalid-uuid-value`)
+    await page.goto(`/r/7cf7d0b2-646e-4a9a-a10c-489759ff213f`)
+
+    await expect(
+      page.getByText(/The room does not exist or has been deleted./i),
+    ).toBeVisible()
+    await expect(page.getByRole('textbox', { name: 'name' })).toBeHidden()
+    await expect(page.getByRole('textbox', { name: 'email' })).toBeHidden()
+    await expect(page.getByRole('button', { name: /enter/i })).toBeHidden()
+  })
+
+  test('shows error when room id is not a valid base64 ID', async ({
+    page,
+  }) => {
+    await page.goto(`/r/invalid-room_id`)
 
     await expect(
       page.getByText(/The room does not exist or has been deleted./i),
@@ -55,7 +69,7 @@ test.describe('new player enters the room via shared url', () => {
       type: '/rooms/get/not-found',
       title: 'could not found the room with specified id',
     })
-    await page.goto(`/rooms/${roomId}`)
+    await page.goto(`/r/${roomId}`)
 
     await expect(
       page.getByText(/The room does not exist or has been deleted./i),
@@ -72,7 +86,7 @@ test.describe('new player enters the room via shared url', () => {
       id: roomId,
       players: [owner],
     })
-    await page.goto(`/rooms/${roomId}`)
+    await page.goto(`/r/${roomId}`)
 
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue('')
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
@@ -95,7 +109,7 @@ test.describe('new player enters the room via shared url', () => {
       authToken: playerAuthToken,
     })
 
-    await page.goto(`/rooms/${roomId}`)
+    await page.goto(`/r/${roomId}`)
 
     await page.getByRole('textbox', { name: 'name' }).fill(player.name)
     await page.getByRole('textbox', { name: 'email' }).fill(playerEmail)
@@ -103,7 +117,7 @@ test.describe('new player enters the room via shared url', () => {
 
     await assertPlayersList(page, [owner, player])
     await assertEstimateOptions(page, 'fibonacci')
-    await assertShareURLSection(page, roomId)
+    await assertShareURLSection(page, roomIdInBase64)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeHidden()
     await assertStorageValues(page, roomId, {
       ...player,
@@ -124,7 +138,7 @@ test.describe('new player enters the room via shared url', () => {
       authToken: playerAuthToken,
     })
 
-    await page.goto(`/rooms/${roomId}`)
+    await page.goto(`/r/${roomId}`)
 
     await page.getByRole('textbox', { name: 'name' }).fill(player.name)
     await page.getByRole('textbox', { name: 'email' }).fill(playerEmail)

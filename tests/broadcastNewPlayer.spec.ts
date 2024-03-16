@@ -111,8 +111,8 @@ test.describe('broadcast joining new player', () => {
       )
     }
 
-    await pageOne.goto(`/rooms/${roomId}`)
-    await pageTwo.goto(`/rooms/${roomId}`)
+    await pageOne.goto(`/r/${roomId}`)
+    await pageTwo.goto(`/r/${roomId}`)
 
     await pageOne.waitForLoadState()
     await pageTwo.waitForLoadState()

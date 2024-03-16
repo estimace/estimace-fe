@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
-import { useParams } from 'react-router-dom'
 
+import { Swiper } from 'app/ui/Swiper'
 import storage from 'app/utils/storage'
 import { Player, RoomInStorage } from 'app/types'
 
@@ -14,12 +14,12 @@ import { ShareURL } from './ShareURL'
 import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 import { useRoom } from './hooks/useRoom'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
+import { useRoomIdInURL } from './hooks/useRoomIdInURL'
 
 import styles from './index.module.css'
-import { Swiper } from 'app/ui/Swiper'
 
 const RoomPage: FC = () => {
-  const { id: roomId } = useParams()
+  const roomId = useRoomIdInURL()
   const [roomInStorage, setRoomInStorage] = useState<RoomInStorage | null>(
     storage.getRoom(roomId as string),
   )
@@ -48,11 +48,15 @@ const RoomPage: FC = () => {
   const shouldShowRoom = !shouldShowJoinRoomForm && room && player
 
   if (!roomId) {
-    return null
+    return (
+      <div className={styles.errorMessage}>
+        The room does not exist or has been deleted.
+      </div>
+    )
   }
 
   if (roomQuery.isFetching) {
-    return <div>is fetching...</div>
+    return <div>Loading...</div>
   }
 
   return (

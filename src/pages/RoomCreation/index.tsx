@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import storage from 'app/utils/storage'
 import { Technique } from 'app/types'
 import api from 'app/utils/api'
+import { useMutation } from 'app/hooks/useAPI'
+import { getRelativeRoomURLInBase64 } from 'app/utils/url'
 
 import { RoomCreationForm } from './Form'
-import { useMutation } from 'app/hooks/useAPI'
 
 export const RoomCreation: FC = () => {
   const navigate = useNavigate()
@@ -24,7 +25,8 @@ export const RoomCreation: FC = () => {
           playerId: room.players[0].id,
           playerAuthToken: room.players[0].authToken,
         })
-        navigate(`/rooms/${room.id}`)
+        const roomURL = getRelativeRoomURLInBase64(room.id)
+        navigate(roomURL)
       }
     },
   )

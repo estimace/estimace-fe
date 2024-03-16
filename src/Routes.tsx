@@ -10,7 +10,7 @@ function App() {
     <Routes>
       <Route Component={HomePage} path="/" />
       <Route Component={RoomCreation} path="/rooms" />
-      <Route Component={RoomPage} path="/rooms/:id" />
+      <Route Component={RoomPage} path="/r/:id" />
       <Route Component={NotFound} path="*" />
     </Routes>
   )
