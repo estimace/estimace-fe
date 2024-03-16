@@ -3,7 +3,7 @@ stages:
 
 linter:
   stage: test
-  image: node:18-alpine
+  image: node:20.11-alpine
   script:
     - yarn --frozen-lockfile
     - yarn run lint
