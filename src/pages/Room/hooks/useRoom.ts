@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 
 import { Room } from 'app/types'
 import { useQuery } from 'app/hooks/useAPI'
 import api from 'app/utils/api'
 
+import { useRoomIdInURL } from './useRoomIdInURL'
+
 export function useRoom() {
-  const { id: roomId } = useParams()
+  const roomId = useRoomIdInURL()
   const [room, setRoom] = useState<Room | null>(null)
 
   const roomQuery = useQuery(() => api.getRoom(roomId as string))

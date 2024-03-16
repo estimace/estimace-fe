@@ -11,6 +11,7 @@ import { mockCreateRoomRequest, mockGetRoomRequest } from './utils/requestMocks'
 
 test.describe('create new room', () => {
   const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
+  const roomIdInBase64 = 'S4G5sulEQsKV7kSuIW01-A'
   const player: Player = {
     id: '852a0cd5-9de1-4178-949b-a5cad8cdc2aa',
     name: 'Darth Vader',
@@ -91,7 +92,7 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'fibonacci')
-    await assertShareURLSection(page, roomId)
+    await assertShareURLSection(page, roomIdInBase64)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
   })
 
@@ -102,7 +103,7 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'tShirtSizing')
-    await assertShareURLSection(page, roomId)
+    await assertShareURLSection(page, roomIdInBase64)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
   })
 
