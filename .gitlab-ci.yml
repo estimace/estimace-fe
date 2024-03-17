@@ -10,7 +10,7 @@ linter:
 
 integration tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.39.0-jammy
+  image: mcr.microsoft.com/playwright:v1.42.1-jammy
   script:
     - yarn --frozen-lockfile
     - npx playwright install chromium --with-deps
