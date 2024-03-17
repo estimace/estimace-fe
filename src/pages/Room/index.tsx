@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { Swiper } from 'app/ui/Swiper'
 import storage from 'app/utils/storage'
@@ -14,12 +15,11 @@ import { ShareURL } from './ShareURL'
 import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 import { useRoom } from './hooks/useRoom'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
-import { useRoomIdInURL } from './hooks/useRoomIdInURL'
 
 import styles from './index.module.css'
 
 const RoomPage: FC = () => {
-  const roomId = useRoomIdInURL()
+  const { id: roomId } = useParams()
   const [roomInStorage, setRoomInStorage] = useState<RoomInStorage | null>(
     storage.getRoom(roomId as string),
   )

@@ -13,7 +13,7 @@ import {
 } from './utils/requestMocks'
 
 test.describe('room state', () => {
-  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
+  const roomId = '1Pmkdo2domxTclzX'
   test('room owner changes room state, and as a result rooms state broadcasts to others', async ({
     browser,
   }) => {
@@ -106,7 +106,7 @@ test.describe('room state', () => {
     )
     mockGetRoomRequest(pageOwner, { id: roomId, players })
 
-    pageOwner.goto('/rooms')
+    pageOwner.goto('/r')
     await pageOwner.waitForLoadState()
     await pageOwner.getByRole('textbox', { name: 'name' }).fill(players[0].name)
     await pageOwner
@@ -277,7 +277,7 @@ test.describe('room state', () => {
       players,
     })
 
-    page.goto('/rooms')
+    page.goto('/r')
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await page

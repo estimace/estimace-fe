@@ -20,7 +20,7 @@ function HomePage() {
         your stories.
       </p>
       <p>
-        <Link to="/rooms">Create A Room</Link>
+        <Link to="/r">Create A Room</Link>
       </p>
     </div>
   )

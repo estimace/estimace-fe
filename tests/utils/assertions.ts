@@ -13,10 +13,7 @@ export async function assertEstimateOptions(page: Page, technique: Technique) {
   }
 }
 
-export async function assertShareURLSection(
-  page: Page,
-  roomIdInBase64: string,
-) {
+export async function assertShareURLSection(page: Page, roomId: string) {
   const shareRegion = page.getByRole('region', {
     name: /Share this room URL so your teammates can join:/gi,
   })
@@ -24,7 +21,7 @@ export async function assertShareURLSection(
   await expect(
     shareRegion.getByRole('button', { name: /copy URL/gi }),
   ).toBeVisible()
-  await expect(shareRegion).toContainText(`/r/${roomIdInBase64}`)
+  await expect(shareRegion).toContainText(`/r/${roomId}`)
 }
 
 export async function assertPlayersList(page: Page, players: Player[]) {

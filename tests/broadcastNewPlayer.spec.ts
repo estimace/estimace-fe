@@ -8,7 +8,7 @@ import {
 } from './utils/requestMocks'
 
 test.describe('broadcast joining new player', () => {
-  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
+  const roomId = '1Pmkdo2domxTclzX'
   test("new player enters the room, and as a result player's joining gets broadcasted to other room players", async ({
     browser,
   }) => {
@@ -79,7 +79,7 @@ test.describe('broadcast joining new player', () => {
       wss.address,
     )
 
-    pageOwner.goto('/rooms')
+    pageOwner.goto('/r')
     await pageOwner.getByRole('textbox', { name: 'name' }).fill(owner.name)
     await pageOwner
       .getByRole('textbox', { name: 'email' })

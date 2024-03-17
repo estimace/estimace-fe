@@ -8,7 +8,7 @@ import {
 } from './utils/requestMocks'
 
 test.describe('estimate', () => {
-  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
+  const roomId = '1Pmkdo2domxTclzX'
   test("clicking an estimate option sends player's estimation, and as a result player's status broadcasts to others", async ({
     browser,
   }) => {
