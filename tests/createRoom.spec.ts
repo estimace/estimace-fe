@@ -10,8 +10,7 @@ import {
 import { mockCreateRoomRequest, mockGetRoomRequest } from './utils/requestMocks'
 
 test.describe('create new room', () => {
-  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
-  const roomIdInBase64 = 'S4G5sulEQsKV7kSuIW01-A'
+  const roomId = '1Pmkdo2domxTclzX'
   const player: Player = {
     id: '852a0cd5-9de1-4178-949b-a5cad8cdc2aa',
     name: 'Darth Vader',
@@ -26,7 +25,7 @@ test.describe('create new room', () => {
   test('shows empty form if there is no previous player info in localStorage', async ({
     page,
   }) => {
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue('')
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
     const rememberMeBox = page.getByLabel(/remember me/i)
@@ -45,7 +44,7 @@ test.describe('create new room', () => {
         JSON.stringify({ name: 'Darth Vader', email: 'darth@vader.com' }),
       ),
     )
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
 
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue(
       'Darth Vader',
@@ -74,7 +73,7 @@ test.describe('create new room', () => {
       players: [player],
     })
 
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
 
@@ -92,7 +91,7 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'fibonacci')
-    await assertShareURLSection(page, roomIdInBase64)
+    await assertShareURLSection(page, roomId)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
   })
 
@@ -103,7 +102,7 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'tShirtSizing')
-    await assertShareURLSection(page, roomIdInBase64)
+    await assertShareURLSection(page, roomId)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
   })
 
@@ -120,7 +119,7 @@ test.describe('create new room', () => {
       players: [player],
     })
 
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await expect(page.getByLabel(/Technique/gi)).toBeVisible()

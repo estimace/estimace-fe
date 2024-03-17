@@ -4,8 +4,7 @@ import { assertShareURLSection } from './utils/assertions'
 import { mockCreateRoomRequest, mockGetRoomRequest } from './utils/requestMocks'
 
 test.describe('Share URL', () => {
-  const roomId = '4b81b9b2-e944-42c2-95ee-44ae216d35f8'
-  const roomIdInBase64 = 'S4G5sulEQsKV7kSuIW01-A'
+  const roomId = '1Pmkdo2domxTclzX'
   const player: Player = {
     id: '852a0cd5-9de1-4178-949b-a5cad8cdc2aa',
     name: 'Darth Vader',
@@ -32,11 +31,11 @@ test.describe('Share URL', () => {
       players: [player],
     })
 
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await page.getByRole('button').click()
-    await assertShareURLSection(page, roomIdInBase64)
+    await assertShareURLSection(page, roomId)
 
     await page.getByRole('button', { name: /copy url/i }).click()
     const status = page.getByRole('status')
@@ -65,7 +64,7 @@ test.describe('Share URL', () => {
       players: [player],
     })
 
-    await page.goto(`/rooms`)
+    await page.goto(`/r`)
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await page.getByRole('button').click()

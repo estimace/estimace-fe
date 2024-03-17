@@ -9,7 +9,7 @@ function App() {
   return (
     <Routes>
       <Route Component={HomePage} path="/" />
-      <Route Component={RoomCreation} path="/rooms" />
+      <Route Component={RoomCreation} path="/r" />
       <Route Component={RoomPage} path="/r/:id" />
       <Route Component={NotFound} path="*" />
     </Routes>
