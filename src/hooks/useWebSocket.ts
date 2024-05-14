@@ -1,8 +1,8 @@
 import { getWebsocketServerURL } from 'app/config'
 
 type Param = {
-  playerId: string
-  playerAuthToken: string
+  playerId: string | undefined
+  playerAuthToken: string | undefined
 }
 
 let socket: WebSocket | null = null
