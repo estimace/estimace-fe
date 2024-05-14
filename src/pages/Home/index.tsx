@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
+import { FC } from 'react'
+
 import styles from './index.module.css'
 
-function HomePage() {
+const HomePage: FC = () => {
   return (
     <div className={styles.homePageWrapper}>
       <h1>Estimace</h1>

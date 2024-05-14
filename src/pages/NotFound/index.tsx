@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
+import { FC } from 'react'
+
 import styles from './index.module.css'
 
-function NotFound() {
+const NotFound: FC = () => {
   return (
     <div className={styles.notFoundPageWrapper}>
       <h1>Whoops!</h1>
