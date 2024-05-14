@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
 import HomePage from 'app/pages/Home'
-import { RoomCreation } from 'app/pages/RoomCreation'
+import RoomCreation from 'app/pages/RoomCreation'
 import RoomPage from 'app/pages/Room'
 import NotFound from 'app/pages/NotFound'
 

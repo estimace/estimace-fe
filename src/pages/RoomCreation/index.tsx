@@ -9,7 +9,7 @@ import { getRelativeRoomURLInBase64 } from 'app/utils/url'
 
 import { RoomCreationForm } from './Form'
 
-export const RoomCreation: FC = () => {
+const RoomCreation: FC = () => {
   const navigate = useNavigate()
   const techniques: Technique[] = ['fibonacci', 'tShirtSizing']
   const storedPlayer = storage.getPlayer()
@@ -45,3 +45,5 @@ export const RoomCreation: FC = () => {
     />
   )
 }
+
+export default RoomCreation

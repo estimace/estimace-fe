@@ -1,12 +1,14 @@
 import { getWebsocketServerURL } from 'app/config'
 
-let socket: WebSocket | null = null
-const wssURL = getWebsocketServerURL()
-
 type Param = {
   playerId: string | undefined
   playerAuthToken: string | undefined
 }
+
+let socket: WebSocket | null = null
+let currentPlayerId: Param['playerId']
+
+const wssURL = getWebsocketServerURL()
 
 export type Message = {
   type: string
@@ -43,7 +45,14 @@ function removeMessageListener(
 export const useWebSocket = (param: Param) => {
   const { playerId, playerAuthToken } = param
 
+  if (socket && playerId !== currentPlayerId) {
+    socket.close()
+    socket = null
+  }
+
   if (!socket && playerId && playerAuthToken) {
+    currentPlayerId = playerId
+
     socket = new WebSocket(
       `${wssURL}?playerId=${playerId}&authToken=${playerAuthToken}`,
     )
