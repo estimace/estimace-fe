@@ -1,5 +1,5 @@
 import { APIFunction } from 'app/utils/api'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function useQuery<
   T,
@@ -9,6 +9,11 @@ export function useQuery<
 >(query: Q) {
   const [isFetching, setIsFetching] = useState(false)
   const [result, setResult] = useState<R | undefined>(undefined)
+
+  const refresh = useCallback(() => {
+    setIsFetching(false)
+    setResult(undefined)
+  }, [])
 
   useEffect(() => {
     if (result || isFetching) {
@@ -21,9 +26,9 @@ export function useQuery<
       setIsFetching(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isFetching, result])
 
-  return { isFetching, result }
+  return { isFetching, result, refresh }
 }
 
 export function useMutation<

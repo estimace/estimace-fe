@@ -1,12 +1,13 @@
 import { getWebsocketServerURL } from 'app/config'
 
 type Param = {
-  playerId: string | undefined
-  playerAuthToken: string | undefined
+  playerId: string
+  playerAuthToken: string
 }
 
 let socket: WebSocket | null = null
-let currentPlayerId: Param['playerId']
+let currentPlayerId: string | null = null
+let currentPlayerAuthToken: string | null = null
 
 const wssURL = getWebsocketServerURL()
 
@@ -18,7 +19,8 @@ export type Message = {
 export type MessageListener = (message: Message) => void
 const listeners: Record<Message['type'], MessageListener[]> = {}
 
-function sendMessage(message: Message) {
+async function sendMessage(message: Message) {
+  await reconnectIfNeeded()
   if (socket && socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(message))
   }
@@ -45,39 +47,74 @@ function removeMessageListener(
 export const useWebSocket = (param: Param) => {
   const { playerId, playerAuthToken } = param
 
-  if (socket && playerId !== currentPlayerId) {
-    socket.close()
-    socket = null
+  if (isSocketOpen(socket) && playerId !== currentPlayerId) {
+    socket?.close()
   }
 
-  if (!socket && playerId && playerAuthToken) {
+  if (
+    !isSocketOpen(socket) &&
+    !isSocketConnecting(socket) &&
+    playerId &&
+    playerAuthToken
+  ) {
     currentPlayerId = playerId
+    currentPlayerAuthToken = playerAuthToken
 
-    socket = new WebSocket(
-      `${wssURL}?playerId=${playerId}&authToken=${playerAuthToken}`,
-    )
-
-    socket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data)
-        if (typeof message.type === 'string' && 'payload' in message) {
-          for (const listener of listeners[message.type] ?? []) {
-            listener(message as Message)
-          }
-        } else {
-          console.error(
-            'format of the message from ws server is not supported',
-            message,
-          )
-        }
-      } catch (error) {
-        console.error('could not parse the message from ws server', {
-          error,
-          data: event.data,
-        })
-      }
-    }
+    createWebSocket()
   }
 
   return { sendMessage, addMessageListener, removeMessageListener }
+}
+
+function createWebSocket() {
+  socket = new WebSocket(
+    `${wssURL}?playerId=${currentPlayerId}&authToken=${currentPlayerAuthToken}`,
+  )
+
+  socket.addEventListener('message', (event) => {
+    try {
+      const message = JSON.parse(event.data)
+      if (typeof message.type === 'string' && 'payload' in message) {
+        for (const listener of listeners[message.type] ?? []) {
+          listener(message as Message)
+        }
+      } else {
+        console.error(
+          'format of the message from ws server is not supported',
+          message,
+        )
+      }
+    } catch (error) {
+      console.error('could not parse the message from ws server', {
+        error,
+        data: event.data,
+      })
+    }
+  })
+
+  return new Promise<void>((resolve) => {
+    socket?.addEventListener('open', () => {
+      resolve()
+    })
+  })
+}
+
+async function reconnectIfNeeded() {
+  console.log({
+    socket,
+    currentPlayerId,
+    currentPlayerAuthToken,
+    readyState: socket?.readyState,
+  })
+  if (!isSocketOpen(socket) && currentPlayerId && currentPlayerAuthToken) {
+    await createWebSocket()
+  }
+}
+
+function isSocketOpen(socket: WebSocket | null) {
+  return socket && socket.readyState === socket.OPEN
+}
+
+function isSocketConnecting(socket: WebSocket | null) {
+  return socket && socket.readyState === socket.CONNECTING
 }

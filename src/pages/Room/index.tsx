@@ -10,11 +10,12 @@ import { PlayersInRoom } from './Players'
 import { Estimation } from './Estimation'
 import { OwnerControllers } from './OwnerControllers'
 import { usePlayer } from './hooks/usePlayer'
-import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
 import { ShareURL } from './ShareURL'
-import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 import { useRoom } from './hooks/useRoom'
+import { useOnTabFocus } from './hooks/useOnTabFocus'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
+import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
+import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
 
 import styles from './index.module.css'
 
@@ -24,6 +25,15 @@ const RoomPage: FC = () => {
     storage.getRoom(roomId as string),
   )
   const { roomQuery, room, setRoom } = useRoom()
+
+  /** This hook serves to update room data when the user focuses on the tab.
+   * It's essential for fetching the most recent room state after the tab is
+   * switched on desktop devices or if the user sends their browser app to the
+   * background in their mobile device. In both scenarios, the websocket
+   * connection is terminated, leading to outdated data upon the user's return
+   * to the page.*/
+  useOnTabFocus(roomQuery.refresh)
+
   const { player, setPlayer } = usePlayer(room, roomInStorage)
 
   useOnNewPlayerJoinedWSMessage({ player, room, setRoom })
