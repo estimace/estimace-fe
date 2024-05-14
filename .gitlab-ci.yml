@@ -8,6 +8,13 @@ linter:
     - yarn --frozen-lockfile
     - yarn run lint
 
+types check:
+  stage: test
+  image: node:20.11-alpine
+  script:
+    - yarn --frozen-lockfile
+    - yarn run tsc
+
 integration tests:
   stage: test
   image: mcr.microsoft.com/playwright:v1.42.1-jammy
