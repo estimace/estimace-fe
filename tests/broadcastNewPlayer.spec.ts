@@ -79,7 +79,7 @@ test.describe('broadcast joining new player', () => {
       wss.address,
     )
 
-    pageOwner.goto('/r')
+    await pageOwner.goto('/r')
     await pageOwner.getByRole('textbox', { name: 'name' }).fill(owner.name)
     await pageOwner
       .getByRole('textbox', { name: 'email' })

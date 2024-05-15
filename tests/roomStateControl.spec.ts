@@ -106,7 +106,7 @@ test.describe('room state', () => {
     )
     mockGetRoomRequest(pageOwner, { id: roomId, players })
 
-    pageOwner.goto('/r')
+    await pageOwner.goto('/r')
     await pageOwner.waitForLoadState()
     await pageOwner.getByRole('textbox', { name: 'name' }).fill(players[0].name)
     await pageOwner
@@ -277,7 +277,7 @@ test.describe('room state', () => {
       players,
     })
 
-    page.goto('/r')
+    await page.goto('/r')
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await page
