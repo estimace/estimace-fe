@@ -1,11 +1,8 @@
 .roomStateReset,
 .roomStateReveal {
-  margin-top: var(--spacing-m);
-  width: 30%;
 }
 
 .roomStateReset {
-  background-color: var(--color-foreground);
   opacity: 70%;
 }
 

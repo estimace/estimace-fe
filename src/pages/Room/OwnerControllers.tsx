@@ -21,7 +21,7 @@ export const OwnerControllers: React.FC<Props> = (props) => {
           onClick={() => sendRoomState('revealed')}
           className={styles.roomStateReveal}
         >
-          Reveal
+          Reveal Estimates
         </Button>
       ) : (
         <Button

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Source+Serif+Pro&display=swap');
-
 html,
 body,
 div,
@@ -130,20 +128,23 @@ table {
 }
 
 :root {
-  --color-background: #013b0d;
-  --color-foreground: #fbfbfb;
-  --color-neutral: #29442e;
-  --color-primary: #94f498;
-  --color-error: #fa5919;
+  --color-primary: rgb(0, 0, 0, 1);
+  --color-primary-content: rgb(255, 255, 255);
+  --color-secondary: rgb(255, 255, 255);
+  --color-secondary-content: rgb(0, 0, 0, 1);
+  --color-neutral-900: rgb(0, 0, 0, 1);
+  --color-neutral-500: rgb(127, 127, 127, 1);
+  --color-neutral-100: rgb(255, 255, 255);
 
   --page-max-width: 1200px;
   --paragraph-max-width: 800px;
   --min-page-width: 390px;
 
-  --font-size-s: 1rem;
-  --font-size-m: 1.5rem;
-  --font-size-l: 2rem;
-  --font-size-xl: 3rem;
+  --font-size-xs: 0.5rem;
+  --font-size-s: 0.75rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.75rem;
+  --font-size-xl: 2.2rem;
 
   --font-weight-normal: 400;
   --font-weight-bold: 600;
@@ -154,12 +155,12 @@ table {
   --spacing-l: 2rem;
   --spacing-xl: 4rem;
 
-  --border-radius-s: 3px;
-  --border-radius-m: 5px;
-  --border-radius-l: 12px;
-  --border-radius-xl: 18px;
+  --border-radius-s: 5px;
+  --border-radius-m: 8px;
+  --border-radius-l: 16px;
+  --border-radius-xl: 20px;
 
-  --font-family-text: 'Noto Sans';
+  --font-family-text: sans-serif;
 
   --line-height-heading: 2;
 
@@ -173,30 +174,18 @@ table {
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-900);
   max-width: var(--page-max-width);
   margin: 0 auto;
-  font-weight: 400;
+  font-weight: normal;
   font-family: var(--font-family-text);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-background: #fbfbfb;
-    --color-foreground: #011605;
-    --color-neutral: #d5e4e9;
-    --color-primary: #00973f;
-    --color-error: #fa5919;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: #011605;
-    --color-foreground: #fbfbfb;
-    --color-neutral: #304b35;
-    --color-primary: #94f498;
-    --color-error: #fa5919;
+    /* --color-neutral-900: rgb(255, 255, 255);
+    --color-neutral-500: rgb(127, 127, 127, 1);
+    --color-neutral-100: rgb(0, 0, 0, 1); */
   }
 }

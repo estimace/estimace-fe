@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'app/ui/Link'
 import { FC } from 'react'
 
 import styles from './index.module.css'

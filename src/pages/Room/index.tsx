@@ -65,12 +65,10 @@ const RoomPage: FC = () => {
     )
   }
 
-  if (roomQuery.isFetching) {
-    return <div>Loading...</div>
-  }
-
   return (
     <>
+      {roomQuery.isFetching && <div>Loading...</div>}
+
       {roomQuery.result?.errorType && (
         <div className={styles.errorMessage}>
           The room does not exist or has been deleted.
@@ -82,32 +80,34 @@ const RoomPage: FC = () => {
       )}
 
       {shouldShowRoom && (
-        <div className={styles.roomWrap}>
-          <Swiper direction="vertical">
-            <div className={styles.playersWrap}>
-              <PlayersInRoom
-                players={room.players}
-                technique={room.technique}
-                state={room.state}
-              />
-
-              <ShareURL roomId={room.id} />
-            </div>
-          </Swiper>
-          <div className={styles.controllersWrap}>
-            {room.state === 'planning' && (
-              <Estimation
-                player={player}
-                technique={room.technique}
-                roomId={room.id}
-              />
-            )}
-
+        <section className={styles.roomWrap}>
+          <aside className={styles.roomControllers}>
+            <ShareURL roomId={room.id} />
             {player.isOwner && (
               <OwnerControllers player={player} roomState={room.state} />
             )}
+          </aside>
+          <div className={styles.room}>
+            <Swiper direction="vertical">
+              <div className={styles.playersWrap}>
+                <PlayersInRoom
+                  players={room.players}
+                  technique={room.technique}
+                  state={room.state}
+                />
+              </div>
+            </Swiper>
+            <div className={styles.playerControllers}>
+              {room.state === 'planning' && (
+                <Estimation
+                  player={player}
+                  technique={room.technique}
+                  roomId={room.id}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        </section>
       )}
     </>
   )

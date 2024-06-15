@@ -1,22 +1,6 @@
 .shareRoomURLWrap {
-  padding-top: var(--spacing-s);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
-  justify-content: center;
-}
-
-.shareRoomURLWrap div {
-  line-height: var(--font-line-height-l);
-  padding-right: var(--spacing-xl);
 }
 
 .copiedRoomURLNotify {
   font-weight: var(--font-weight-bold);
-}
-
-@media (max-width: 480px) {
-  .shareRoomURLWrap {
-    gap: var(--spacing-xs);
-  }
 }

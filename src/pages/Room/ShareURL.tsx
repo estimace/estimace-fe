@@ -29,25 +29,16 @@ export const ShareURL: React.FC<Props> = (props) => {
   }, [urlCopied])
 
   return (
-    <section
-      aria-labelledby="estimace-share-url-title"
-      className={styles.shareRoomURLWrap}
-    >
-      <div id="estimace-share-url-title">
-        Share this room URL so your teammates can join:
-      </div>
-      <div aria-hidden={urlCopied}>
-        {roomURL.replace('https://', '').replace('http://', '')}
-      </div>
+    <section className={styles.shareRoomURLWrap}>
       <div>
         <CopyToClipboard text={roomURL} onCopy={() => setUrlCopied(true)}>
-          <Button>Copy URL</Button>
+          <Button variant="secondary">Copy invite link</Button>
         </CopyToClipboard>
       </div>
 
       {urlCopied && (
         <div role="status" className={styles.copiedRoomURLNotify}>
-          Room URL copied to the clipboard
+          Invite link has been copied to the clipboard.
         </div>
       )}
     </section>

@@ -22,17 +22,3 @@
 .homePageWrapper p strong {
   font-weight: bold;
 }
-
-.homePageWrapper a {
-  background-color: var(--color-primary);
-  color: var(--color-neutral);
-  display: inline-block;
-  margin-left: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-s);
-  border-radius: var(--border-radius-s);
-  text-decoration: none;
-}
-
-.homePageWrapper a:hover {
-  transform: scaleX(105%) scaleY(105%);
-}

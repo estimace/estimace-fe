@@ -1,27 +1,28 @@
-.button {
+.link {
   cursor: pointer;
   border-radius: var(--border-radius-l);
   box-shadow: -0.07rem -0.05rem var(--color-neutral);
-  min-width: fit-content;
+  width: fit-content;
   display: block;
   font-family: inherit;
   font-size: var(--font-size-m);
   padding: var(--spacing-s) var(--spacing-m);
   text-align: center;
+  text-decoration: none;
 }
 
-.button:focus-visible {
+.link:focus-visible {
   outline: 2px dashed var(--color-neutral-500);
   outline-offset: 1px;
 }
 
-.primaryButton {
+.primaryLink {
   background: var(--color-primary);
   color: var(--color-primary-content);
   border: 2px solid var(--color-primary);
 }
 
-.secondaryButton {
+.secondaryLink {
   background: var(--color-secondary);
   color: var(--color-secondary-content);
   border: 2px solid var(--color-secondary-content);
