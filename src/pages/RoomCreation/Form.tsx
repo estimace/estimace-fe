@@ -77,7 +77,6 @@ export const RoomCreationForm: FC<Props> = (props) => {
           type="text"
           required={true}
           value={name}
-          placeholder="your name"
           onChange={handleFormInputChange}
         ></TextInput>
       </label>
@@ -89,7 +88,6 @@ export const RoomCreationForm: FC<Props> = (props) => {
           type="email"
           required={true}
           value={email}
-          placeholder="me@example.com"
           onChange={handleFormInputChange}
         ></TextInput>
       </label>

@@ -6,6 +6,7 @@ import { Technique } from 'app/types'
 import api from 'app/utils/api'
 import { useMutation } from 'app/hooks/useAPI'
 import { getRelativeRoomURLInBase64 } from 'app/utils/url'
+import { Headline } from 'app/ui/Headline'
 
 import { RoomCreationForm } from './Form'
 
@@ -32,17 +33,20 @@ const RoomCreation: FC = () => {
   )
 
   return (
-    <RoomCreationForm
-      isError={!!error}
-      isLoading={isMutating}
-      onSubmit={(item) => {
-        mutate(item)
-      }}
-      error={error as Error}
-      techniques={techniques}
-      name={storedPlayer?.name}
-      email={storedPlayer?.email}
-    />
+    <main>
+      <Headline tag="h1">Create Estimace room</Headline>
+      <RoomCreationForm
+        isError={!!error}
+        isLoading={isMutating}
+        onSubmit={(item) => {
+          mutate(item)
+        }}
+        error={error as Error}
+        techniques={techniques}
+        name={storedPlayer?.name}
+        email={storedPlayer?.email}
+      />
+    </main>
   )
 }
 

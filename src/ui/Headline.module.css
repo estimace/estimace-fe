@@ -1,0 +1,24 @@
+.size100 {
+  font-weight: bold;
+  font-size: var(--font-size-s);
+}
+
+.size200 {
+  font-weight: bold;
+  font-size: var(--font-size-m);
+}
+
+.size300 {
+  font-weight: bold;
+  font-size: var(--font-size-l);
+}
+
+.size400 {
+  font-weight: bold;
+  font-size: var(--font-size-xl);
+}
+
+.size500 {
+  font-weight: bold;
+  font-size: var(--font-size-xxl);
+}
