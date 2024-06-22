@@ -26,3 +26,9 @@
   color: var(--color-secondary-content);
   border: 2px solid var(--color-secondary-content);
 }
+
+@media (max-width: 800px) {
+  .button {
+    padding: var(--spacing-s) var(--spacing-s);
+  }
+}
