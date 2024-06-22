@@ -26,7 +26,7 @@
   height: 3.5rem;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
   .estimationDeck h1 {
     margin-bottom: var(--spacing-s);
   }
@@ -34,7 +34,6 @@
   .estimationOptionsWrap {
     width: 100%;
     flex-wrap: nowrap;
-    height: 5rem;
     padding: var(--spacing-xs);
   }
 

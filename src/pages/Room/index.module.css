@@ -11,7 +11,7 @@
 .roomControllers {
   flex: 0 0 var(--spacing-xl);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-s);
@@ -35,16 +35,32 @@
   flex: 1;
 }
 
-.playerControllers {
-}
 .errorMessage {
   padding-top: var(--spacing-l);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
   .roomWrap {
+    flex-direction: column-reverse;
+    gap: var(--spacing-s);
+  }
+
+  .roomControllers {
+    border-bottom: none;
+    border-top: 1px solid var(--color-neutral-500);
+  }
+
+  .room {
     flex-direction: column;
-    gap: var(--spacing-xs);
+    justify-content: flex-start;
+  }
+
+  .room > * {
+    flex-basis: unset;
+  }
+
+  .room > *:first-child {
+    flex: 1;
   }
 
   .playersWrap {

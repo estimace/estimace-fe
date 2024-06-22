@@ -44,8 +44,8 @@
 }
 
 .verticalSlide .swiperPreviousItemsIndicator {
-  background: linear-gradient(var(--color-background), transparent);
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(var(--swiper-indicator-color) 10%, transparent);
+  transition: all 0.2s ease-in-out;
 }
 
 .verticalSlide .swiperStartIsVisible {
@@ -53,16 +53,20 @@
 }
 
 .verticalSlide .swiperNextItemsIndicator {
-  background: linear-gradient(transparent, var(--color-background));
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(transparent 10%, var(--swiper-indicator-color));
+  transition: all 0.2s ease-in-out;
 }
 .verticalSlide .swiperEndIsVisible {
   transform: translateY(-2rem);
 }
 
 .horizontalSlide .swiperPreviousItemsIndicator {
-  background: linear-gradient(90deg, var(--color-background), transparent);
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(
+    90deg,
+    var(--swiper-indicator-color) 10%,
+    transparent
+  );
+  transition: all 0.2s ease-in-out;
 }
 
 .horizontalSlide .swiperStartIsVisible {
@@ -70,8 +74,12 @@
 }
 
 .horizontalSlide .swiperNextItemsIndicator {
-  background: linear-gradient(90deg, transparent, var(--color-background));
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(
+    90deg,
+    transparent 10%,
+    var(--swiper-indicator-color)
+  );
+  transition: all 0.2s ease-in-out;
 }
 
 .horizontalSlide .swiperEndIsVisible {

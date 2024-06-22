@@ -170,7 +170,9 @@ table {
   --font-line-height-l: 1.75;
   --font-line-height-xl: 2;
 
-  --break-point-m: 850px;
+  --break-point-m: 800px;
+
+  --swiper-indicator-color: var(--color-neutral-100);
 }
 
 body {
