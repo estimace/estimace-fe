@@ -24,16 +24,18 @@
   display: flex;
   gap: var(--spacing-xl);
   overflow: hidden;
+  justify-content: space-between;
+}
+
+.room > * {
+  flex-basis: 48%;
 }
 
 .playersWrap {
   flex: 1;
-  flex-basis: 48%;
 }
 
 .playerControllers {
-  flex: 1;
-  flex-basis: 48%;
 }
 .errorMessage {
   padding-top: var(--spacing-l);

@@ -136,8 +136,8 @@ table {
   --color-neutral-500: rgb(127, 127, 127, 1);
   --color-neutral-100: rgb(255, 255, 255);
 
-  --page-max-width: 1200px;
-  --paragraph-max-width: 800px;
+  --page-max-width: 800px;
+  --paragraph-max-width: 600px;
   --min-page-width: 390px;
 
   --font-size-xs: 0.5rem;
