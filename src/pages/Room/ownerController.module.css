@@ -2,10 +2,6 @@
 .roomStateReveal {
 }
 
-.roomStateReset {
-  opacity: 70%;
-}
-
 @media (max-width: 850px) {
   .roomStateReset,
   .roomStateReveal {
