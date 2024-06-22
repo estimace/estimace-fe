@@ -1,7 +1,5 @@
 .playersList {
   flex: 1;
-  min-width: var(--min-page-width);
-  line-height: var(--line-height-heading);
   display: flex;
   flex-direction: column;
 }
@@ -66,8 +64,10 @@
 
 .estimationStatusRevealedWithValue {
   text-align: center;
-  font-size: var(--font-size-l);
+  font-weight: bold;
   line-height: 1;
+  width: fit-content;
+  height: fit-content;
 }
 
 .estimationStatusRevealedWithoutValue {
