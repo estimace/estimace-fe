@@ -1,0 +1,15 @@
+.headerWrap {
+  display: flex;
+  justify-content: space-around;
+  padding: var(--spacing-m) 0;
+}
+
+.logoWrap {
+  width: 9em;
+}
+
+@media (max-width: 800px) {
+  .logoWrap {
+    width: 7em;
+  }
+}

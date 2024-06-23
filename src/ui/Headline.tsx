@@ -5,7 +5,7 @@ import styles from './Headline.module.css'
 
 type HeadlineProps = React.HTMLAttributes<HTMLHeadingElement> &
   React.HTMLAttributes<HTMLSpanElement> & {
-    tag: 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+    tag?: 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
     size?: 100 | 200 | 300 | 400 | 500 | 600
   }
 

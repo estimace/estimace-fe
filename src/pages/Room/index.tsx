@@ -1,9 +1,10 @@
 import { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { Page } from 'app/ui/layout/Page'
+import { Player, RoomInStorage } from 'app/types'
 import { Swiper } from 'app/ui/Swiper'
 import storage from 'app/utils/storage'
-import { Player, RoomInStorage } from 'app/types'
 
 import { JoinForm } from './JoinForm'
 import { PlayersInRoom } from './Players'
@@ -66,9 +67,7 @@ const RoomPage: FC = () => {
   }
 
   return (
-    <>
-      {roomQuery.isFetching && <div>Loading...</div>}
-
+    <Page shouldShowLoadingIndicator={roomQuery.isFetching}>
       {roomQuery.result?.errorType && (
         <div className={styles.errorMessage}>
           The room does not exist or has been deleted.
@@ -109,7 +108,7 @@ const RoomPage: FC = () => {
           </div>
         </section>
       )}
-    </>
+    </Page>
   )
 }
 
