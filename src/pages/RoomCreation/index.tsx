@@ -8,7 +8,6 @@ import api from 'app/utils/api'
 import { useMutation } from 'app/hooks/useAPI'
 import { getRelativeRoomURLInBase64 } from 'app/utils/url'
 import { Headline } from 'app/ui/Headline'
-import { Text } from 'app/ui/Text'
 
 import styles from './styles.module.css'
 import { RoomCreationForm } from './Form'
