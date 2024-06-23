@@ -85,5 +85,5 @@
 }
 
 .estimationStatusRevealedWithoutValue svg path {
-  color: var(--color-neutral-900);
+  fill: var(--color-neutral-900);
 }

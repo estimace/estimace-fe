@@ -178,8 +178,12 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --color-neutral-900: rgb(255, 255, 255);
+    --color-primary: rgb(255, 255, 255);
+    --color-primary-content: rgb(0, 0, 0, 1);
+    --color-secondary: rgb(0, 0, 0, 1);
+    --color-secondary-content: rgb(255, 255, 255);
+    --color-neutral-900: rgb(255, 255, 255);
     --color-neutral-500: rgb(127, 127, 127, 1);
-    --color-neutral-100: rgb(0, 0, 0, 1); */
+    --color-neutral-100: rgb(0, 0, 0, 1);
   }
 }

@@ -3,6 +3,8 @@
   border-radius: var(--border-radius-m);
   border: 2px solid var(--color-neutral-500);
   font: inherit;
+  background: inherit;
+  color: var(--color-neutral-900);
 }
 
 .textInput:focus-visible {
