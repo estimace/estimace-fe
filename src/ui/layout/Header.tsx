@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 
 import EstimaceLogo from 'app/assets/EstimaceLogo'
 
@@ -7,9 +8,9 @@ import styles from './Header.module.css'
 export const Header: FC = () => {
   return (
     <header className={styles.headerWrap}>
-      <div className={styles.logoWrap}>
+      <Link to="/" className={styles.logoLink}>
         <EstimaceLogo />
-      </div>
+      </Link>
     </header>
   )
 }
