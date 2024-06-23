@@ -5,12 +5,5 @@
   max-width: var(--page-max-width-narrow);
   align-self: center;
   padding-top: var(--spacing-m);
-}
-
-.wrap > h1 {
-  margin-bottom: var(--spacing-s);
-}
-
-.wrap > p {
-  margin-bottom: var(--spacing-m);
+  gap: var(--spacing-m);
 }

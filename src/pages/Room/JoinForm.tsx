@@ -9,10 +9,10 @@ import { TextInput } from 'app/ui/TextInput'
 import { Button } from 'app/ui/Button'
 import { Headline } from 'app/ui/Headline'
 import { Text } from 'app/ui/Text'
+import { FormField } from 'app/ui/FormField'
+import { RememberMe } from 'app/ui/RememberMe'
 
 import styles from './JoinForm.module.css'
-import { RememberMe } from './RememberMe'
-import { FormField } from 'app/ui/FormField'
 
 type Props = {
   roomId: Room['id']

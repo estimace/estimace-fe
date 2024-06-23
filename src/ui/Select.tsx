@@ -1,4 +1,6 @@
 import { FC, ReactElement } from 'react'
+import clsx from 'clsx'
+
 import styles from './Select.module.css'
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
@@ -21,26 +23,11 @@ const Option: OptionComponent = (props: OptionProps) => {
 }
 
 export const Select: SelectComponent = (props: SelectProps) => {
-  const {
-    name,
-    children,
-    defaultValue,
-    value,
-    onChange,
-    className,
-    ...restOfProps
-  } = props
+  const { children, className, ...restOfProps } = props
 
   return (
-    <div className={styles.wrap + ' ' + (className ?? '')}>
-      <select
-        name={name}
-        defaultValue={defaultValue}
-        value={value}
-        onChange={onChange}
-        className={styles.select}
-        {...restOfProps}
-      >
+    <div className={clsx(styles.wrap, className)}>
+      <select className={styles.select} {...restOfProps}>
         {Array.isArray(children)
           ? children.map((item) => (item.type === Select.Option ? item : null))
           : children}

@@ -4,12 +4,12 @@ import { Technique } from 'app/types'
 import { techniqueLabels } from 'app/config'
 import storage from 'app/utils/storage'
 
-import { RememberMe } from '../Room/RememberMe'
+import { Form } from 'app/ui/Form'
+import { FormField } from 'app/ui/FormField'
 import { TextInput } from 'app/ui/TextInput'
 import { Select } from 'app/ui/Select'
+import { RememberMe } from 'app/ui/RememberMe'
 import { Button } from 'app/ui/Button'
-
-import styles from 'app/pages/form.module.css'
 
 type Props = {
   onSubmit: SubmitHandler
@@ -51,8 +51,7 @@ export const RoomCreationForm: FC<Props> = (props) => {
   }
 
   return (
-    <form
-      className={styles.form}
+    <Form
       onSubmit={(event) => {
         event.preventDefault()
         if (rememberMeState[0]) {
@@ -64,14 +63,9 @@ export const RoomCreationForm: FC<Props> = (props) => {
         onSubmit({ name, email, technique })
       }}
     >
-      {isError && (
-        <div className={styles.errorMessageWrapper}>
-          Error happened: {JSON.stringify(error)}
-        </div>
-      )}
+      {isError && <div>Error happened: {JSON.stringify(error)}</div>}
 
-      <label>
-        <span>Name:</span>
+      <FormField label="Name">
         <TextInput
           name="name"
           type="text"
@@ -79,10 +73,9 @@ export const RoomCreationForm: FC<Props> = (props) => {
           value={name}
           onChange={handleFormInputChange}
         ></TextInput>
-      </label>
+      </FormField>
 
-      <label>
-        <span>Email:</span>
+      <FormField label="Email">
         <TextInput
           name="email"
           type="email"
@@ -90,12 +83,10 @@ export const RoomCreationForm: FC<Props> = (props) => {
           value={email}
           onChange={handleFormInputChange}
         ></TextInput>
-      </label>
+      </FormField>
 
-      <label>
-        <span> Technique:</span>
+      <FormField label="Technique">
         <Select
-          className={styles.formSelect}
           aria-hidden={true}
           name="techniqueSelection"
           value={technique}
@@ -109,11 +100,11 @@ export const RoomCreationForm: FC<Props> = (props) => {
             />
           ))}
         </Select>
-      </label>
-
-      <Button disabled={isLoading}>Create</Button>
+      </FormField>
 
       <RememberMe rememberMe={rememberMeState} />
-    </form>
+
+      <Button disabled={isLoading}>Create Room</Button>
+    </Form>
   )
 }
