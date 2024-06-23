@@ -8,12 +8,10 @@ export const RememberMe: React.FC<Props> = (props) => {
   const [rememberMe, setRememberMe] = props.rememberMe
 
   return (
-    <label>
-      <Checkbox
-        checked={rememberMe}
-        onChange={() => setRememberMe(!rememberMe)}
-      />
-      Remember Me
-    </label>
+    <Checkbox
+      label="Remember me on this browser"
+      checked={rememberMe}
+      onChange={() => setRememberMe(!rememberMe)}
+    />
   )
 }

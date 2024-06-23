@@ -11,6 +11,7 @@
 .size300 {
   font-weight: bold;
   font-size: var(--font-size-l);
+  line-height: 1.2;
 }
 
 .size400 {

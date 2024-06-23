@@ -1,19 +1,10 @@
-.checkbox {
-  background: var(--color-primary);
-  border: 1px solid var(--color-neutral);
-  border-radius: var(--border-radius-l);
-  cursor: pointer;
-  display: block;
-  min-width: var(--font-line-height-l);
-  min-height: var(--font-line-height-l);
-  line-height: var(--font-line-height-l);
-  padding: var(--spacing-xs);
+.wrap {
+  display: flex;
+  align-items: center;
 }
 
-.checkbox:hover {
-  transform: scale(1.02, 1.01);
-}
-
-.checkbox:focus-visible {
-  transform: scale(1.02, 1.01);
+.wrap input:focus-visible {
+  border: 2px solid var(--color-neutral-900);
+  outline: 2px dashed var(--color-neutral-500);
+  outline-offset: 1px;
 }

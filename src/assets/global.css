@@ -136,9 +136,8 @@ table {
   --color-neutral-500: rgb(127, 127, 127, 1);
   --color-neutral-100: rgb(255, 255, 255);
 
-  --page-max-width: 800px;
-  --paragraph-max-width: 600px;
-  --min-page-width: 390px;
+  --page-max-width-narrow: 600px;
+  --page-max-width-wide: 800px;
 
   --font-size-xs: 0.5rem;
   --font-size-s: 0.75rem;
@@ -165,21 +164,13 @@ table {
 
   --line-height-heading: 2;
 
-  --font-line-height-xs: 0.8;
-  --font-line-height-s: 1.2;
-  --font-line-height-m: 1.5;
-  --font-line-height-l: 1.75;
-  --font-line-height-xl: 2;
-
-  --break-point-m: 800px;
-
   --swiper-indicator-color: var(--color-neutral-100);
 }
 
 body {
   background-color: var(--color-neutral-100);
   color: var(--color-neutral-900);
-  max-width: var(--page-max-width);
+  max-width: var(--page-max-width-wide);
   margin: 0 auto;
   font-weight: normal;
   font-family: var(--font-family-text);

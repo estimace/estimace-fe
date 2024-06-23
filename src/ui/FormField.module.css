@@ -1,0 +1,11 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-right: var(--spacing-s);
+  flex-basis: 20%;
+  font-weight: bold;
+  margin-bottom: var(--spacing-xs);
+}
