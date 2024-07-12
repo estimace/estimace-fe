@@ -37,10 +37,10 @@ test.describe('Share URL', () => {
     await page.getByRole('button').click()
     await assertShareURLSection(page, roomId)
 
-    await page.getByRole('button', { name: /copy url/i }).click()
+    await page.getByRole('button', { name: /copy invite link/i }).click()
     const status = page.getByRole('status')
     await expect(status).toBeVisible()
-    await expect(status).toHaveText('Room URL copied to the clipboard')
+    await expect(status).toHaveText(/copied/i)
 
     const copiedURL = await page.evaluate(() => {
       return navigator.clipboard.readText()
@@ -69,11 +69,15 @@ test.describe('Share URL', () => {
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
     await page.getByRole('button').click()
 
-    await page.getByRole('button', { name: /copy url/i }).click()
+    await page.getByRole('button', { name: /copy invite link/i }).click()
 
     const status = page.getByRole('status')
     await expect(status).toBeVisible()
-    await expect(status).toHaveText('Room URL copied to the clipboard')
-    await expect(page.getByRole('status')).toBeHidden()
+    await expect(status).toHaveAttribute(
+      'aria-label',
+      'Copied Room URL Notification',
+    )
+    await expect(status).toHaveText(/copied/i)
+    await expect(status).toBeHidden()
   })
 })

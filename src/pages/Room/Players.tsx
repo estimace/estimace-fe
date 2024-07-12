@@ -22,8 +22,20 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
   return (
     <ul aria-label="Players' List" className={styles.playersList}>
       {players.map((player) => {
+        const listItemAriaLabel =
+          state === 'planning'
+            ? player.estimate === null
+              ? 'is estimating'
+              : 'estimated'
+            : player.estimate !== null
+            ? `estimated ${techniqueOptions[technique][player.estimate]}`
+            : 'did not estimate'
+
         return (
-          <li key={player.id}>
+          <li
+            key={player.id}
+            aria-label={`${player.name} ${listItemAriaLabel}`}
+          >
             {showPlayerPicture && player.pictureURL && (
               <img
                 src={player.pictureURL}
@@ -39,7 +51,7 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
                   styles.estimationStatusEstimating,
                 )}
               >
-                <Dots />
+                <Dots aria-hidden="true" role="img" />
               </span>
             )}
             {state === 'planning' && player.estimate !== null && (
@@ -49,7 +61,7 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
                   styles.estimationStatusEstimated,
                 )}
               >
-                <Check />
+                <Check aria-hidden="true" role="img" />
               </span>
             )}
             {state === 'revealed' && player.estimate !== null && (
@@ -72,7 +84,7 @@ export const PlayersInRoom: FC<Props> = (props: Props) => {
                   styles.estimationStatusRevealedWithoutValue,
                 )}
               >
-                <ExclamationMark />
+                <ExclamationMark aria-hidden="true" role="img" />
               </span>
             )}
           </li>

@@ -1,4 +1,4 @@
-const Dots: React.FC = () => {
+const Dots: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       width="50"
@@ -8,6 +8,7 @@ const Dots: React.FC = () => {
       fill="none"
       stroke="#000"
       strokeLinecap="round"
+      {...props}
     >
       <path strokeWidth="2" d="M5.99 12H6M11.99 12H12M17.99 12H18" />
     </svg>

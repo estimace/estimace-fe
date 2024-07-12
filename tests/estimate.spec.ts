@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test'
 import { Player } from 'app/types'
-import { assertStorageValues } from './utils/assertions'
+import {
+  assertPlayerEstimationStatus,
+  assertStorageValues,
+} from './utils/assertions'
 import wsMockServer from './utils/wsMockServer'
 import {
   mockCreatePlayerInRoomRequest,
@@ -106,7 +109,7 @@ test.describe('estimate', () => {
       const page = pages[i]
       await page.getByRole('textbox', { name: 'name' }).fill(players[i].name)
       await page.getByRole('textbox', { name: 'email' }).fill(playersEmails[i])
-      await page.getByRole('button', { name: /enter/i }).click()
+      await page.getByRole('button', { name: /enter room/i }).click()
     }
 
     for (const i of [0, 1]) {
@@ -118,46 +121,41 @@ test.describe('estimate', () => {
     }
 
     for (const page of pages) {
-      await expect(page.getByText(`${owner.name} is estimating`)).toBeVisible()
-      await expect(
-        page.getByText(`${players[0].name} is estimating`),
-      ).toBeVisible()
-      await expect(
-        page.getByText(`${players[1].name} is estimating`),
-      ).toBeVisible()
+      //locator('xpath=following-sibling::span')
+      assertPlayerEstimationStatus(page, owner.name, 'is estimating')
+      assertPlayerEstimationStatus(page, players[0].name, 'is estimating')
+      assertPlayerEstimationStatus(page, players[1].name, 'is estimating')
     }
+    //player-one estimates and the status of estimation icon for all pages change accordingly
 
     await pageOne.getByRole('button', { name: '8' }).click()
 
-    await expect(pageOne.getByText(`${owner.name} is estimating`)).toBeVisible()
-    await expect(pageTwo.getByText(`${owner.name} is estimating`)).toBeVisible()
-    await expect(
-      pageOne.getByText(`${players[0].name} estimated`),
-    ).toBeVisible()
-    await expect(
-      pageTwo.getByText(`${players[0].name} estimated`),
-    ).toBeVisible()
-    await expect(
-      pageOne.getByText(`${players[1].name} is estimating`),
-    ).toBeVisible()
-    await expect(
-      pageTwo.getByText(`${players[1].name} is estimating`),
-    ).toBeVisible()
+    assertPlayerEstimationStatus(pageOne, owner.name, 'is estimating')
+    assertPlayerEstimationStatus(pageTwo, owner.name, 'is estimating')
 
-    await pageTwo.getByRole('button', { name: '0.5' }).click()
-    await expect(pageOne.getByText(`${owner.name} is estimating`)).toBeVisible()
-    await expect(pageTwo.getByText(`${owner.name} is estimating`)).toBeVisible()
+    assertPlayerEstimationStatus(pageOne, players[0].name, 'estimated')
+    assertPlayerEstimationStatus(pageTwo, players[0].name, 'estimated')
+
+    assertPlayerEstimationStatus(pageOne, players[1].name, 'is estimating')
+    assertPlayerEstimationStatus(pageTwo, players[1].name, 'is estimating')
+    await expect(pageOne.getByRole('button', { name: '8' })).toBeFocused()
+
+    //player-two estimates and the status of estimation icon for all pages change accordingly
+    //getByRole('button', { name: '3' }) resolves to 2 elements, so we need to add exact:true to the locater
+
+    await pageTwo.getByRole('button', { name: '3', exact: true }).click()
+
+    assertPlayerEstimationStatus(pageOne, owner.name, 'is estimating')
+    assertPlayerEstimationStatus(pageTwo, owner.name, 'is estimating')
+
+    assertPlayerEstimationStatus(pageOne, players[0].name, 'estimated')
+    assertPlayerEstimationStatus(pageTwo, players[0].name, 'estimated')
+
+    assertPlayerEstimationStatus(pageOne, players[1].name, 'estimated')
+    assertPlayerEstimationStatus(pageTwo, players[1].name, 'estimated')
+
     await expect(
-      pageOne.getByText(`${players[0].name} estimated`),
-    ).toBeVisible()
-    await expect(
-      pageTwo.getByText(`${players[0].name} estimated`),
-    ).toBeVisible()
-    await expect(
-      pageOne.getByText(`${players[1].name} estimated`),
-    ).toBeVisible()
-    await expect(
-      pageTwo.getByText(`${players[1].name} estimated`),
-    ).toBeVisible()
+      pageTwo.getByRole('button', { name: '3', exact: true }),
+    ).toBeFocused()
   })
 })

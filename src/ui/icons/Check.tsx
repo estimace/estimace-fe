@@ -1,4 +1,4 @@
-const Check: React.FC = () => {
+const Check: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       width="50px"
@@ -6,6 +6,7 @@ const Check: React.FC = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fillRule="evenodd"

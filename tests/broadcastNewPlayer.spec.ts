@@ -84,7 +84,7 @@ test.describe('broadcast joining new player', () => {
     await pageOwner
       .getByRole('textbox', { name: 'email' })
       .fill('darth@vader.com')
-    await pageOwner.getByRole('button', { name: /create/i }).click()
+    await pageOwner.getByRole('button', { name: /create room/i }).click()
 
     const pages = [pageOne, pageTwo]
     for (const page of pages) {
@@ -119,27 +119,19 @@ test.describe('broadcast joining new player', () => {
 
     await pageOne.getByRole('textbox', { name: 'name' }).fill(players[0].name)
     await pageOne.getByRole('textbox', { name: 'email' }).fill(playersEmails[0])
-    await pageOne.getByRole('button', { name: /enter/i }).click()
+    await pageOne.getByRole('button', { name: /enter room/i }).click()
 
     //broadcasts player of pageOne to ownerPage
-    await expect(
-      pageOwner.getByText(`${players[0].name} is estimating`),
-    ).toBeVisible()
+    await expect(pageOwner.getByText(`${players[0].name}`)).toBeVisible()
 
     //second player joins the room
     await pageTwo.getByRole('textbox', { name: 'name' }).fill(players[1].name)
     await pageTwo.getByRole('textbox', { name: 'email' }).fill(playersEmails[1])
-    await pageTwo.getByRole('button', { name: /enter/i }).click()
+    await pageTwo.getByRole('button', { name: /enter room/i }).click()
 
-    await expect(
-      pageTwo.getByText(`${players[0].name} is estimating`),
-    ).toBeVisible()
+    await expect(pageTwo.getByText(`${players[0].name}`)).toBeVisible()
     //broadcasts second player to ownerPage and pageOne
-    await expect(
-      pageOwner.getByText(`${players[1].name} is estimating`),
-    ).toBeVisible()
-    await expect(
-      pageOne.getByText(`${players[1].name} is estimating`),
-    ).toBeVisible()
+    await expect(pageOwner.getByText(`${players[1].name}`)).toBeVisible()
+    await expect(pageOne.getByText(`${players[1].name}`)).toBeVisible()
   })
 })

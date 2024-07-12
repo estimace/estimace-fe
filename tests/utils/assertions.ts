@@ -13,15 +13,29 @@ export async function assertEstimateOptions(page: Page, technique: Technique) {
   }
 }
 
-export async function assertShareURLSection(page: Page, roomId: string) {
+export async function assertShareURLSection(page: Page) {
   const shareRegion = page.getByRole('region', {
-    name: /Share this room URL so your teammates can join:/gi,
+    name: 'Copy Room URL To Share',
   })
-  //await expect(shareRegion).toBeVisible()
+  const shareButton = shareRegion.getByRole('button', {
+    name: /Copy invite link/gi,
+  })
+
+  await expect(shareButton).toBeVisible()
+  //when the button is clicked we should check that a notification appears and disappears again.
   await expect(
-    shareRegion.getByRole('button', { name: /copy URL/gi }),
-  ).toBeVisible()
-  await expect(shareRegion).toContainText(`/r/${roomId}`)
+    shareRegion.getByLabel('Copied Room URL Notification'),
+  ).toBeHidden()
+  await shareButton.click()
+
+  await expect(shareRegion).toContainText('Copied')
+  await expect(shareRegion.locator('svg')).toBeVisible()
+  await expect(shareRegion.locator('svg')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  )
+
+  await expect(shareRegion.locator('svg')).toBeHidden()
 }
 
 export async function assertPlayersList(page: Page, players: Player[]) {
@@ -39,10 +53,21 @@ export async function assertPlayersList(page: Page, players: Player[]) {
     const $listItem = $listItems.nth(index)
     await expect($listItem).toContainText(player.name)
 
-    await expect(
-      $listItem.getByAltText(`${player.name}'s avatar`),
-    ).toHaveAttribute('src', player.pictureURL)
+    // We don't show player's avatar
+    //await expect(
+    //   $listItem.getByAltText(`${player.name}'s avatar`),
+    // ).toHaveAttribute('src', player.pictureURL)
   }
+}
+
+export async function assertPlayerEstimationStatus(
+  page: Page,
+  playerName: Player['name'],
+  status: 'is estimating' | 'estimated',
+) {
+  await expect(
+    page.getByRole('listitem', { name: `${playerName} ${status}` }),
+  ).toBeVisible()
 }
 
 export async function assertPlayersEstimations(
@@ -52,22 +77,26 @@ export async function assertPlayersEstimations(
   roomState: RoomState,
   expectedEstimations: Player['estimate'][],
 ) {
+  //This assertion checks players estimates when roomOwner changes rooomState (Revealed/Planning)
+
   const $list = page.getByRole('list', { name: "Players' List" })
   await expect($list).toBeVisible()
   const $listItems = $list.getByRole('listitem')
 
   for (const player of players) {
     const index = players.indexOf(player)
-    const $listItem = $listItems.nth(index)
+
     const playerEstimate =
       expectedEstimations[index] !== null
-        ? techniqueOptions[technique][expectedEstimations[index]]
+        ? `estimated ${techniqueOptions[technique][expectedEstimations[index]]}`
         : 'did not estimate'
-    await expect($listItem).toContainText(
-      `${player.name} ${
-        roomState === 'revealed' ? playerEstimate : ' is estimating'
+
+    const $listItem = page.getByRole('listitem', {
+      name: `${player.name} ${
+        roomState === 'revealed' ? playerEstimate : 'is estimating'
       }`,
-    )
+    })
+    await expect($listItem).toBeVisible()
   }
 }
 

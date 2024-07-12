@@ -32,7 +32,10 @@ export const ShareURL: React.FC<Props> = (props) => {
   }, [shouldShowURLCopiedNotification])
 
   return (
-    <section className={styles.shareRoomURLWrap}>
+    <section
+      aria-label="Copy Room URL To Share"
+      className={styles.shareRoomURLWrap}
+    >
       <CopyToClipboard
         text={roomURL}
         onCopy={() => setShouldShowURLCopiedNotification(true)}
@@ -41,6 +44,7 @@ export const ShareURL: React.FC<Props> = (props) => {
       </CopyToClipboard>
 
       <span
+        aria-label="Copied Room URL Notification"
         className={cls(styles.roomURLCopiedNotification, {
           [styles.roomURLCopiedVisibleNotification]:
             shouldShowURLCopiedNotification,
