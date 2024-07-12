@@ -1,7 +1,14 @@
 .textInput {
-  width: auto;
-  padding: var(--spacing-xs);
+  padding: var(--spacing-s);
   border-radius: var(--border-radius-m);
+  border: 2px solid var(--color-neutral-500);
   font: inherit;
-  border: 2px solid var(--color-neutral);
+  background: inherit;
+  color: var(--color-neutral-900);
+}
+
+.textInput:focus-visible {
+  border: 2px solid var(--color-neutral-900);
+  outline: 2px dashed var(--color-neutral-500);
+  outline-offset: 1px;
 }

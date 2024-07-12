@@ -24,23 +24,9 @@
   padding: 0;
   flex: 0 0 3.5rem;
   height: 3.5rem;
-  border: none;
-  border-radius: var(--border-radius-s);
-  font-size: var(--font-size-m);
-  font-weight: var(--font-weight-bold);
 }
 
-.estimationOptionsWrap button:hover {
-  transform: scale(1.05, 1.05);
-  border: 0.15rem solid var(--color-foreground);
-}
-
-.estimationOptionsWrap button:focus {
-  outline-color: var(--color-foreground);
-  border: 0.17rem solid var(--color-foreground);
-}
-
-@media (max-width: 850px) {
+@media (max-width: 800px) {
   .estimationDeck h1 {
     margin-bottom: var(--spacing-s);
   }
@@ -48,7 +34,6 @@
   .estimationOptionsWrap {
     width: 100%;
     flex-wrap: nowrap;
-    height: 5rem;
     padding: var(--spacing-xs);
   }
 

@@ -6,19 +6,20 @@
 .select {
   background-color: transparent;
   width: 100%;
-  cursor: pointer;
   font: inherit;
-  color: var(--color-primary);
-  padding: 0 var(--spacing-xs) 0 var(--spacing-s);
-  border: 1px solid var(--color-primary);
+  color: var(--color-neutral-900);
+  padding: var(--spacing-s);
+  border: 2px solid var(--color-neutral-500);
   border-radius: var(--border-radius-m);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
 }
 
-.select:focus {
-  outline: 1px solid var(--color-primary);
+.select:focus-visible {
+  border: 2px solid var(--color-neutral-900);
+  outline: 2px dashed var(--color-neutral-500);
+  outline-offset: 1px;
 }
 
 .wrap::after {
@@ -28,11 +29,9 @@
   height: 10px;
   border-right: 2px solid var(--color-primary);
   border-bottom: 2px solid var(--color-primary);
-  border-top-right-radius: var(--border-radius-s);
-  border-bottom-left-radius: var(--border-radius-s);
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: var(--spacing-s);
+  top: var(--spacing-s);
   transform: rotate(45deg);
   z-index: -1;
 }

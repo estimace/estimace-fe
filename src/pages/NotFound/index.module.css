@@ -1,6 +1,5 @@
 .notFoundPageWrapper {
-  max-width: var(--page-max-width);
-  line-height: var(--font-line-height-l);
+  max-width: var(--page-max-width-wide);
   display: flex;
   flex-direction: column;
   align-items: center;

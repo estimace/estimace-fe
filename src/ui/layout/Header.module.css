@@ -1,0 +1,25 @@
+.headerWrap {
+  display: flex;
+  justify-content: space-around;
+  padding: var(--spacing-m) 0;
+}
+
+.logoLink {
+  width: 9em;
+}
+
+.logoLink:focus-visible {
+  border-radius: var(--border-radius-s);
+  outline: 2px dashed var(--color-neutral-500);
+  outline-offset: var(--spacing-xs);
+}
+
+.logoLink svg path {
+  fill: var(--color-neutral-900);
+}
+
+@media (max-width: 800px) {
+  .logoLink {
+    width: 7em;
+  }
+}

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import cls from 'clsx'
 
 import { Room } from 'app/types'
 import { getRoomURLInBase64 } from 'app/utils/url'
+import CopyCheck from 'app/ui/icons/CopyCheck'
 
 import { Button } from 'app/ui/Button'
 import styles from './shareURL.module.css'
@@ -13,43 +15,46 @@ type Props = {
 
 export const ShareURL: React.FC<Props> = (props) => {
   const roomURL = getRoomURLInBase64(props.roomId)
-  const [urlCopied, setUrlCopied] = useState(false)
+  const [shouldShowURLCopiedNotification, setShouldShowURLCopiedNotification] =
+    useState(false)
   const copyURLTimeoutId = useRef<ReturnType<typeof setTimeout>>()
 
   useEffect(() => {
-    if (urlCopied) {
+    if (shouldShowURLCopiedNotification) {
       clearTimeout(copyURLTimeoutId.current)
       copyURLTimeoutId.current = setTimeout(() => {
-        setUrlCopied(false)
-      }, 3000)
+        setShouldShowURLCopiedNotification(false)
+      }, 1500)
     }
     return () => {
       clearTimeout(copyURLTimeoutId.current)
     }
-  }, [urlCopied])
+  }, [shouldShowURLCopiedNotification])
 
   return (
     <section
-      aria-labelledby="estimace-share-url-title"
+      aria-label="Copy Room URL To Share"
       className={styles.shareRoomURLWrap}
     >
-      <div id="estimace-share-url-title">
-        Share this room URL so your teammates can join:
-      </div>
-      <div aria-hidden={urlCopied}>
-        {roomURL.replace('https://', '').replace('http://', '')}
-      </div>
-      <div>
-        <CopyToClipboard text={roomURL} onCopy={() => setUrlCopied(true)}>
-          <Button>Copy URL</Button>
-        </CopyToClipboard>
-      </div>
+      <CopyToClipboard
+        text={roomURL}
+        onCopy={() => setShouldShowURLCopiedNotification(true)}
+      >
+        <Button variant="secondary">Copy invite link</Button>
+      </CopyToClipboard>
 
-      {urlCopied && (
-        <div role="status" className={styles.copiedRoomURLNotify}>
-          Room URL copied to the clipboard
-        </div>
-      )}
+      <span
+        aria-label="Copied Room URL Notification"
+        className={cls(styles.roomURLCopiedNotification, {
+          [styles.roomURLCopiedVisibleNotification]:
+            shouldShowURLCopiedNotification,
+        })}
+        role={shouldShowURLCopiedNotification ? 'status' : undefined}
+        aria-hidden={shouldShowURLCopiedNotification ? undefined : true}
+      >
+        <CopyCheck aria-hidden={true} />
+        <span className={styles.roomURLCopiedNotificationLabel}>Copied</span>
+      </span>
     </section>
   )
 }

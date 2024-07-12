@@ -43,6 +43,7 @@ function EstimationContent(props: Props): JSX.Element {
       {estimationOptions.map((option, index) => {
         return (
           <Button
+            variant={player.estimate === index ? 'primary' : 'secondary'}
             key={option}
             onClick={() => sendEstimate(index)}
             className={styles.estimationOptionsButton}

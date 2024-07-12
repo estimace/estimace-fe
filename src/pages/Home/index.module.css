@@ -1,38 +1,14 @@
 .homePageWrapper {
-  max-width: var(--page-max-width);
-  line-height: var(--font-line-height-l);
+  max-width: var(--page-max-width-wide);
   display: flex;
   flex-direction: column;
   margin: var(--spacing-l) var(--spacing-l) 0 var(--spacing-m);
 }
 
 .homePageWrapper h1 {
-  font-size: var(--font-size-xl);
   margin-bottom: var(--spacing-s);
 }
-.homePageWrapper h2 {
-  font-size: var(--font-size-m);
-  margin-bottom: var(--spacing-xs);
-}
+
 .homePageWrapper p {
-  margin: var(--spacing-s) 0;
-  max-width: 800px;
-}
-
-.homePageWrapper p strong {
-  font-weight: bold;
-}
-
-.homePageWrapper a {
-  background-color: var(--color-primary);
-  color: var(--color-neutral);
-  display: inline-block;
-  margin-left: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-s);
-  border-radius: var(--border-radius-s);
-  text-decoration: none;
-}
-
-.homePageWrapper a:hover {
-  transform: scaleX(105%) scaleY(105%);
+  margin-bottom: var(--spacing-s);
 }

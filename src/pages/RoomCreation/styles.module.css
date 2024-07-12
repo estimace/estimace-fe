@@ -1,0 +1,9 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--page-max-width-narrow);
+  align-self: center;
+  padding-top: var(--spacing-m);
+  gap: var(--spacing-m);
+}

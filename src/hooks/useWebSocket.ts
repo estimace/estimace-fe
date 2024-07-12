@@ -100,12 +100,6 @@ function createWebSocket() {
 }
 
 async function reconnectIfNeeded() {
-  console.log({
-    socket,
-    currentPlayerId,
-    currentPlayerAuthToken,
-    readyState: socket?.readyState,
-  })
   if (!isSocketOpen(socket) && currentPlayerId && currentPlayerAuthToken) {
     await createWebSocket()
   }

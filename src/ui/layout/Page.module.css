@@ -1,0 +1,29 @@
+.pageWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.pageWrap > main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.loadingIndicatorWrap {
+  position: absolute;
+  right: var(--spacing-xs);
+  top: var(--spacing-l);
+}
+
+@media (max-width: 800px) {
+  .pageWrap {
+    padding: 0 var(--spacing-s);
+  }
+
+  .loadingIndicatorWrap {
+    top: var(--spacing-m);
+    right: var(--spacing-m);
+  }
+}

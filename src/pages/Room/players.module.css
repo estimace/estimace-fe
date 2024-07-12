@@ -1,7 +1,5 @@
 .playersList {
   flex: 1;
-  min-width: var(--min-page-width);
-  line-height: var(--line-height-heading);
   display: flex;
   flex-direction: column;
 }
@@ -9,47 +7,83 @@
 .playersList li {
   display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-s);
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-neutral-900);
+  padding: var(--spacing-s) var(--spacing-xs);
 }
 
-.playersList li img {
-  width: 3rem;
-  height: 3rem;
-  border-radius: var(--border-radius-xl);
-  margin-right: var(--spacing-m);
-  flex-grow: 0;
-}
-
-.playersList span {
-  display: inline-block;
-  min-width: fit-content;
-  margin-right: var(--spacing-xs);
-  flex-grow: 0;
-  line-height: var(--line-height-heading);
-  align-self: center;
-}
-
-.isEstimating::before {
-  content: '...';
-  color: var(--color-primary);
-}
-
-.estimated::before,
-.revealedEstimation {
-  content: '✓';
-  background-color: var(--color-primary);
-  color: var(--color-neutral);
-}
-
-.isEstimating::before,
-.estimated::before,
-.revealedEstimation {
-  margin: auto var(--spacing-xs) auto var(--spacing-m);
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid var(--color-neutral);
+.playerAvatar {
+  border: 0px solid var(--color-neutral-900);
   border-radius: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: var(--spacing-s);
+  flex-grow: 0;
+}
+
+.playerName {
+  flex: 1;
+}
+
+.estimationStatus {
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: block;
+}
+
+.estimationStatusEstimating {
+  border: 1px solid var(--color-neutral-900);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estimationStatusEstimating svg {
+  stroke: var(--color-neutral-900);
+  display: block;
+  width: 100%;
+}
+
+.estimationStatusEstimated {
+  border: 1px solid var(--color-neutral-900);
+  border-radius: 50%;
+  background-color: var(--color-neutral-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estimationStatusEstimated svg path {
+  fill: var(--color-neutral-100);
+  display: block;
+  width: 100%;
+}
+
+.estimationStatusRevealedWithValue {
   text-align: center;
-  font-weight: var(--font-weight-bold);
+  font-weight: bold;
+  line-height: 1;
+  width: fit-content;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  line-height: 1.75rem;
+}
+
+.estimationStatusRevealedWithoutValue {
+  border: 1px solid var(--color-neutral-900);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estimationStatusRevealedWithoutValue svg {
+  width: 70%;
+}
+
+.estimationStatusRevealedWithoutValue svg path {
+  fill: var(--color-neutral-900);
 }

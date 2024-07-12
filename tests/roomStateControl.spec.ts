@@ -112,7 +112,7 @@ test.describe('room state', () => {
     await pageOwner
       .getByRole('textbox', { name: 'email' })
       .fill('darth@vader.com')
-    await pageOwner.getByRole('button', { name: /create/i }).click()
+    await pageOwner.getByRole('button', { name: /create room/i }).click()
 
     //the players[0] who created the room will get the other players via joinedPlayer broadcast
     //the players[1], who is pageOne's player, will get players[0] in room response and players[2] via joinedPlayer broadcast
@@ -146,7 +146,7 @@ test.describe('room state', () => {
         .getByRole('textbox', { name: 'name' })
         .fill(players[i + 1].name)
       await page.getByRole('textbox', { name: 'email' }).fill(playersEmails[i])
-      await page.getByRole('button', { name: /enter/i }).click()
+      await page.getByRole('button', { name: /enter room/i }).click()
     }
 
     for (const page of [pageOwner, pageOne, pageTwo]) {

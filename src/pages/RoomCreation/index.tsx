@@ -1,12 +1,15 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { Page } from 'app/ui/layout/Page'
 import storage from 'app/utils/storage'
 import { Technique } from 'app/types'
 import api from 'app/utils/api'
 import { useMutation } from 'app/hooks/useAPI'
 import { getRelativeRoomURLInBase64 } from 'app/utils/url'
+import { Headline } from 'app/ui/Headline'
 
+import styles from './styles.module.css'
 import { RoomCreationForm } from './Form'
 
 const RoomCreation: FC = () => {
@@ -32,17 +35,23 @@ const RoomCreation: FC = () => {
   )
 
   return (
-    <RoomCreationForm
-      isError={!!error}
-      isLoading={isMutating}
-      onSubmit={(item) => {
-        mutate(item)
-      }}
-      error={error as Error}
-      techniques={techniques}
-      name={storedPlayer?.name}
-      email={storedPlayer?.email}
-    />
+    <Page>
+      <div className={styles.wrap}>
+        <Headline tag="h1">Create an Estimace room</Headline>
+
+        <RoomCreationForm
+          isError={!!error}
+          isLoading={isMutating}
+          onSubmit={(item) => {
+            mutate(item)
+          }}
+          error={error as Error}
+          techniques={techniques}
+          name={storedPlayer?.name}
+          email={storedPlayer?.email}
+        />
+      </div>
+    </Page>
   )
 }
 

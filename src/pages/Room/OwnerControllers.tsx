@@ -2,7 +2,6 @@ import { Player, Room } from 'app/types'
 import { useSendRoomStateWSMessage } from './hooks/useSendRoomStateWSMessage'
 
 import { Button } from 'app/ui/Button'
-import styles from './ownerController.module.css'
 
 type Props = {
   player: Player
@@ -17,19 +16,11 @@ export const OwnerControllers: React.FC<Props> = (props) => {
   return (
     <>
       {roomState === 'planning' ? (
-        <Button
-          onClick={() => sendRoomState('revealed')}
-          className={styles.roomStateReveal}
-        >
-          Reveal
+        <Button onClick={() => sendRoomState('revealed')}>
+          Reveal Estimates
         </Button>
       ) : (
-        <Button
-          onClick={() => sendRoomState('planning')}
-          className={styles.roomStateReset}
-        >
-          Reset
-        </Button>
+        <Button onClick={() => sendRoomState('planning')}>Reset</Button>
       )}
     </>
   )

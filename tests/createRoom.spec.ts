@@ -28,7 +28,7 @@ test.describe('create new room', () => {
     await page.goto(`/r`)
     await expect(page.getByRole('textbox', { name: 'name' })).toHaveValue('')
     await expect(page.getByRole('textbox', { name: 'email' })).toHaveValue('')
-    const rememberMeBox = page.getByLabel(/remember me/i)
+    const rememberMeBox = page.getByLabel(/remember me on this browser/i)
     await expect(rememberMeBox).toBeChecked()
     await rememberMeBox.uncheck()
     await expect(rememberMeBox).not.toBeChecked()
@@ -53,7 +53,7 @@ test.describe('create new room', () => {
       'darth@vader.com',
     )
     await expect(
-      page.getByRole('checkbox', { name: /remember me/gi }),
+      page.getByRole('checkbox', { name: /remember me on this browser/gi }),
     ).toBeChecked()
   })
 
@@ -77,9 +77,11 @@ test.describe('create new room', () => {
     await page.getByRole('textbox', { name: 'Name' }).fill('Darth Vader')
     await page.getByRole('textbox', { name: 'Email' }).fill('darth@vader.com')
 
-    await page.getByRole('checkbox', { name: /remember me/i }).uncheck()
+    await page
+      .getByRole('checkbox', { name: /remember me on this browser/i })
+      .uncheck()
 
-    await page.getByRole('button', { name: /create/i }).click()
+    await page.getByRole('button', { name: /create room/i }).click()
 
     await assertStorageValues(page, roomId, { ...player, authToken }, false)
   })
@@ -91,8 +93,10 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'fibonacci')
-    await assertShareURLSection(page, roomId)
-    await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
+    await assertShareURLSection(page)
+    await expect(
+      page.getByRole('button', { name: /reveal estimates/i }),
+    ).toBeEnabled()
   })
 
   test('creates a room with tShirtSizing technique and shows a room ready to planning with selected planning technique and the room url to share with players', async ({
@@ -102,8 +106,10 @@ test.describe('create new room', () => {
 
     await assertPlayersList(page, [player])
     await assertEstimateOptions(page, 'tShirtSizing')
-    await assertShareURLSection(page, roomId)
-    await expect(page.getByRole('button', { name: /reveal/i })).toBeEnabled()
+    await assertShareURLSection(page)
+    await expect(
+      page.getByRole('button', { name: /reveal estimates/i }),
+    ).toBeEnabled()
   })
 
   async function createRoom(page: Page, technique: Technique) {
