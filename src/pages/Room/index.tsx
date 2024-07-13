@@ -87,7 +87,7 @@ const RoomPage: FC = () => {
             )}
           </aside>
           <div className={styles.room}>
-            <Swiper direction="vertical">
+            <Swiper direction="vertical" className={styles.playersWrapSwiper}>
               <div className={styles.playersWrap}>
                 <PlayersInRoom
                   players={room.players}

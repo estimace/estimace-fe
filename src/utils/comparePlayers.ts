@@ -16,11 +16,5 @@ function compareByEstimate(a: Player, b: Player) {
 }
 
 function compareByName(a: Player, b: Player) {
-  if (a.name < b.name) {
-    return -1
-  }
-  if (a.name > b.name) {
-    return 1
-  }
-  return 0
+  return a.name.localeCompare(b.name)
 }
