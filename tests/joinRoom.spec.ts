@@ -88,7 +88,7 @@ test.describe('new player enters the room via shared url', () => {
 
     await assertPlayersList(page, [owner, player])
     await assertEstimateOptions(page, 'fibonacci')
-    await assertShareURLSection(page, roomId)
+    await assertShareURLSection(page)
     await expect(page.getByRole('button', { name: /reveal/i })).toBeHidden()
     await assertStorageValues(page, roomId, {
       ...player,

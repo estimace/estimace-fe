@@ -1,6 +1,5 @@
 import { useWebSocket, MessageListener } from 'app/hooks/useWebSocket'
 import { Player, Room, RoomState } from 'app/types'
-import { sortPlayersByEstimations } from 'app/utils/sortPlayers'
 import { useEffect, useMemo } from 'react'
 
 type Params = {
@@ -30,9 +29,6 @@ export function useOnRoomStateUpdatedWSMessage(params: Params) {
           ...item,
           estimate: null,
         }))
-      }
-      if (roomState === 'revealed') {
-        sortPlayersByEstimations(nextState.players)
       }
       setRoom(nextState)
     },
