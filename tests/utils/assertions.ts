@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test'
 import { techniqueOptions } from 'app/config'
 import { Player, Room, RoomState, Technique } from 'app/types'
+import { playersCompare } from 'app/utils/comparePlayers'
 
 export async function assertEstimateOptions(page: Page, technique: Technique) {
   const estimateOptions = page.getByRole('region', {
@@ -45,7 +46,9 @@ export async function assertPlayersList(page: Page, players: Player[]) {
   await expect($listItems).toHaveCount(players.length)
 
   await expect($listItems).toHaveText(
-    players.map((item) => new RegExp(item.name, 'gi')),
+    players
+      .sort(playersCompare('name'))
+      .map((item) => new RegExp(item.name, 'gi')),
   )
 
   for (const player of players) {

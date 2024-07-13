@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 import { Player } from 'app/types'
-import { sortPlayersByEstimations } from 'app/utils/sortPlayers'
+import { playersCompare } from 'app/utils/comparePlayers'
 import { techniqueLabels } from 'app/config'
 
 import { assertPlayersEstimations } from './utils/assertions'
@@ -168,7 +168,7 @@ test.describe('room state', () => {
     players[2].estimate = 1
 
     for (const page of [pageOwner, pageOne, pageTwo]) {
-      sortPlayersByEstimations(players)
+      players.sort(playersCompare('estimate'))
       await assertPlayersEstimations(
         page,
         players,
@@ -287,7 +287,7 @@ test.describe('room state', () => {
 
     await page.getByRole('button', { name: /reveal/gi }).click()
 
-    sortPlayersByEstimations(players)
+    players.sort(playersCompare('estimate'))
 
     await expect(page.getByRole('button', { name: /reset/gi })).toBeVisible()
     await assertPlayersEstimations(page, players, 'fibonacci', 'revealed', [
