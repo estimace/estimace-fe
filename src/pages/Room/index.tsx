@@ -13,7 +13,7 @@ import { OwnerControllers } from './OwnerControllers'
 import { usePlayer } from './hooks/usePlayer'
 import { ShareURL } from './ShareURL'
 import { useRoom } from './hooks/useRoom'
-import { useOnTabFocus } from './hooks/useOnTabFocus'
+import { useOnTabVisible } from './hooks/useOnTabVisible'
 import { useOnNewPlayerJoinedWSMessage } from './hooks/useOnNewPlayerJoinedWSMessage'
 import { useOnEstimateUpdatedWSMessage } from './hooks/useOnEstimateUpdatedWSMessage'
 import { useOnRoomStateUpdatedWSMessage } from './hooks/useOnRoomStateUpdatedWSMessage'
@@ -33,7 +33,7 @@ const RoomPage: FC = () => {
    * background in their mobile device. In both scenarios, the websocket
    * connection is terminated, leading to outdated data upon the user's return
    * to the page.*/
-  useOnTabFocus(roomQuery.refresh)
+  useOnTabVisible(roomQuery.refresh)
 
   const { player, setPlayer } = usePlayer(room, roomInStorage)
 
