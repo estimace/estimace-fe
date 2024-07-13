@@ -2,13 +2,12 @@
   max-width: var(--page-max-width-wide);
   display: flex;
   flex-direction: column;
-  margin: var(--spacing-l) var(--spacing-l) 0 var(--spacing-m);
 }
 
 .homePageWrapper h1 {
-  margin-bottom: var(--spacing-s);
+  margin-bottom: var(--spacing-m);
 }
 
 .homePageWrapper p {
-  margin-bottom: var(--spacing-s);
+  margin-bottom: var(--spacing-m);
 }
