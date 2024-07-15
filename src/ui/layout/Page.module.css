@@ -18,8 +18,20 @@
 }
 
 @media (max-width: 800px) {
+  body {
+    /* Using 100vh in Safari iOS browser is problematic; Initial view height is
+    calculated without taking the address bar into account.  */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+  }
+
   .pageWrap {
     padding: 0 var(--spacing-s);
+    height: 100%;
   }
 
   .loadingIndicatorWrap {
