@@ -7,22 +7,13 @@ import cls from 'clsx'
 
 import styles from './Link.module.css'
 
-type LinkProps = RouterLinkProps & {
-  variant?: 'primary' | 'secondary'
-}
+type LinkProps = RouterLinkProps
 
 export const Link: FC<LinkProps> = (props: LinkProps) => {
-  const { children, variant = 'primary', className, ...restProps } = props
+  const { children, className, ...restProps } = props
 
   return (
-    <RouterLink
-      className={cls(
-        styles.link,
-        variant === 'primary' ? styles.primaryLink : styles.secondaryLink,
-        className,
-      )}
-      {...restProps}
-    >
+    <RouterLink className={cls(styles.link, className)} {...restProps}>
       {children}
     </RouterLink>
   )
