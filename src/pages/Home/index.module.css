@@ -1,13 +1,22 @@
 .homePageWrapper {
-  max-width: var(--page-max-width-narrow);
+  max-width: var(--page-max-width-medium);
   align-self: center;
   display: flex;
   flex-direction: column;
-  padding-top: var(--spacing-m);
+  margin-top: var(--spacing-m);
+}
+
+.homePageWrapper section {
+  margin-bottom: var(--spacing-m);
 }
 
 .homePageWrapper h1 {
   margin-bottom: var(--spacing-m);
+}
+
+.homePageWrapper h2 {
+  margin-top: var(--spacing-m);
+  margin-bottom: var(--spacing-s);
 }
 
 .homePageWrapper p {

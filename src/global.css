@@ -137,6 +137,7 @@ table {
   --color-neutral-100: rgb(255, 255, 255);
 
   --page-max-width-narrow: 400px;
+  --page-max-width-medium: 600px;
   --page-max-width-wide: 800px;
 
   --font-size-xs: 0.5rem;
@@ -179,6 +180,20 @@ body {
 #root {
   height: 100%;
   overflow: auto;
+}
+
+@media (max-width: 800px) {
+  body {
+    /* Using 100vh in Safari iOS browser is problematic; Initial view height is
+    calculated without taking the address bar into account.  */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    overflow: auto;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

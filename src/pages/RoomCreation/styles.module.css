@@ -4,6 +4,7 @@
   width: 100%;
   max-width: var(--page-max-width-narrow);
   align-self: center;
-  padding-top: var(--spacing-m);
+  margin-top: var(--spacing-m);
+  margin-bottom: var(--spacing-m);
   gap: var(--spacing-m);
 }
