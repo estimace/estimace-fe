@@ -1,7 +1,9 @@
 .homePageWrapper {
-  max-width: var(--page-max-width-wide);
+  max-width: var(--page-max-width-narrow);
+  align-self: center;
   display: flex;
   flex-direction: column;
+  padding-top: var(--spacing-m);
 }
 
 .homePageWrapper h1 {
