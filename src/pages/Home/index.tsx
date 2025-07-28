@@ -13,15 +13,19 @@ const HomePage: FC = () => {
     <Page>
       <div className={styles.homePageWrapper}>
         <section>
-          <Headline tag="h1">Estimace: a minimal planning poker app</Headline>
+          <Headline tag="h1" size={300}>Estimace: A lightweight tool for agile story point estimation</Headline>
+          <Headline tag="h2" size={200}>Built for distributed teams who want to estimate and move on.</Headline>
           <Text tag="p">
-            For estimating stories and tasks in your Agile team, give Estimace a
-            try! It's a fast, real-time, and open-source tool that hones in on
-            the essentials, creating a collaborative space known as a "room."
-            Team members can easily join the room using a shared URL. Right now,
-            Estimace offers support for two popular estimation techniques:
+            Estimace is a fast, real-time, and open-source estimation tool for agile teams. 
+            It helps you estimate stories and tasks with minimal friction and zero distractions.</Text> 
+            <Text tag="p">
+            Create a collaborative space called a "room" where team members can join instantly using a simple URL.
+            Estimace offers support for two widely used estimation techniques:
             Fibonacci and T-Shirt sizing.
           </Text>
+          <Text tag="p">
+            Stay focused on what matters. Skip the boards. Forget the clutter. 
+            just clean, and collaborative estimation.</Text>
           <LinkButton to="/r">Create A Room</LinkButton>
         </section>
         <section>
@@ -29,24 +33,18 @@ const HomePage: FC = () => {
             About Estimace
           </Headline>
           <Text tag="p">
-            I'm Tahereh Pourkhalil, the creator of Estimace. I wanted to try
-            some new programming tools for a side project and thought a planning
-            poker app would be a great idea. Keeping it simple and minimalistic
-            was my goal, and that's how Estimace came to be. Thanks for using
-            it! I hope you enjoy it as much as I enjoyed making it. If you did,
-            I'd really appreciate it if you could spread the word about
-            Estimace, both offline and online.
+            Hi, I’m Tahereh Pourkhalil, the developer behind Estimace.{' '} 
+            I built this tool as a side project while exploring new programming stacks.{' '}
+            I wanted to create something simple, useful, and focused for distributed dev teams.{' '}
           </Text>
           <Text tag="p">
             Estimace is an MIT licensed open-source project (
-            <Link to="https://github.com/estimace/">GitHub</Link>), so feel free
-            to fork it or host it yourself. You can follow me on{' '}
-            <Link to="https://github.com/taherehpourkhalil">GitHub</Link> or{' '}
-            <Link to="https://x.com/iamyaghish">Twitter (X)</Link>, and you're
-            always welcome to reach out via email at
-            taherehpourkhalil.m@gmail.com.
+            <Link to="https://github.com/estimace/">GitHub</Link>){' '}<br />
+            You can check out the code on GitHub, fork it, or even self-host it.{' '}
+            If you find Estimace helpful, feel free to share it with others.{' '}
+            You can also reach me anytime at taherehpourkhalil.m@gmail.com. or, follow me on <Link to="https://github.com/taherehpourkhalil">GitHub</Link>{' '}
             <br />
-            Looking forward to connecting!
+            I’d love to hear your feedback.
           </Text>
         </section>
       </div>
