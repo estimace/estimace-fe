@@ -110,6 +110,9 @@ test.describe('estimate', () => {
       await page.getByRole('textbox', { name: 'name' }).fill(players[i].name)
       await page.getByRole('textbox', { name: 'email' }).fill(playersEmails[i])
       await page.getByRole('button', { name: /enter room/i }).click()
+      await expect(
+        page.getByRole('button', { name: 'Copy invite link' }),
+      ).toBeVisible()
     }
 
     for (const i of [0, 1]) {

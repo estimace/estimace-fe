@@ -120,6 +120,10 @@ test.describe('new player enters the room via shared url', () => {
     ).not.toBeChecked()
     await page.getByRole('button', { name: /enter/i }).click()
 
+    await expect(
+      page.getByRole('button', { name: 'Copy invite link' }),
+    ).toBeVisible()
+
     await assertStorageValues(
       page,
       roomId,
