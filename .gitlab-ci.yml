@@ -3,14 +3,14 @@ stages:
 
 linter:
   stage: test
-  image: node:20.11-alpine
+  image: node:20-alpine
   script:
     - yarn --frozen-lockfile
     - yarn run lint
 
 types check:
   stage: test
-  image: node:20.11-alpine
+  image: node:20-alpine
   script:
     - yarn --frozen-lockfile
     - yarn run tsc
