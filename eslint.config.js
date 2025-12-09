@@ -41,6 +41,10 @@ export default [
       ...jsxA11y.configs.recommended.rules,
       ...tanstackQuery.configs.recommended.rules,
       ...playwright.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { caughtErrorsIgnorePattern: '^_' },
+      ],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
