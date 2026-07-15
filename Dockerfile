@@ -1,4 +1,8 @@
-FROM node:20-alpine AS base
+# Build stages run on the native build platform (e.g. arm64 on Apple Silicon)
+# so esbuild/Vite don't crash under QEMU emulation. The dist output is static
+# and architecture-independent, so only the final nginx stage targets the
+# requested --platform. This enables building deploying the app from Macs.
+FROM --platform=$BUILDPLATFORM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
