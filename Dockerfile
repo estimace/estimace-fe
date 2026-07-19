@@ -24,7 +24,7 @@ ENV API_URL=$API_URL
 RUN yarn build
 
 # Production image, copy all the files and run the app
-FROM nginx:1.25-alpine
+FROM nginx:1.31-alpine
 WORKDIR /opt/app
 
 RUN rm /etc/nginx/conf.d/default.conf
