@@ -16,7 +16,7 @@ Create a copy of .env.sample file and call it .env; the default backend API URL 
 cp .env.sample .env
 ```
 
-You have to setup [Estimace backend](https://gitlab.com/estimace/estimace-be) project and make sure the server and DB is up and running; The instruction to set it up is provided in its README file.
+You have to setup [Estimace backend](https://github.com/estimace/estimace-be) project and make sure the server and DB is up and running; The instruction to set it up is provided in its README file.
 
 ## Deployment
 Application can be deployed using Docker. clone the repo and run the docker build command inside the project's directory.
@@ -37,7 +37,7 @@ then create a container from the created image.
  - **ESLint**: The project utilizes ESLint for static code analysis, helping catch potential issues and enforcing coding standards.
  - **Docker**: The React app is containerized using Docker, providing consistency in deployment across various environments.
  - **Nginx**: A high-performance web server used to serve the React app, ensuring efficient handling of HTTP requests
- - **Gitlab CI**: Used gitlab continuous integration service to make the app's pipeline to ensure the app is in ready for production after each development change.
+ - **GitHub Actions**: Used GitHub's continuous integration service to make the app's pipeline to ensure the app is in ready for production after each development change.
 
 ## Configuration
 The `.env.sample` file gives you the default port for the frontend and the `API-URL`. Just copy it, rename the copy to `.env`, and you're good to go. If you've tweaked the backend app's config, remember to update the environmental config in the frontend's `.env` file.
@@ -46,7 +46,7 @@ The `.env.sample` file gives you the default port for the frontend and the `API-
 
 Playwright is used to add integration testing; duo to the app's modest scale it is opted for the integration tests only, therefore no unit testing is done. Before running the tests, make sure you have the necessary dependencies installed.
 
-Since the CI/CD service provided by Gitlab automatically sets the env.CI variable, this variable appropriately is used in the Playwright's config file to trigger the correct mode for Playwright tests. If you are using another CI/CD service make sure this environment variable is present.
+Since GitHub Actions automatically sets the env.CI variable, this variable appropriately is used in the Playwright's config file to trigger the correct mode for Playwright tests. If you are using another CI/CD service make sure this environment variable is present.
 
 ### running headless integration tests:
 
