@@ -123,15 +123,20 @@ export async function assertStorageValues(
     })
   }
 
-  const roomsInStorage = await page.evaluate(() =>
-    window.localStorage.getItem('rooms'),
-  )
-  expect(roomsInStorage).toBeDefined()
-  expect(JSON.parse(roomsInStorage as string)).toStrictEqual({
-    [roomId]: {
-      id: roomId,
-      playerId: player.id,
-      playerAuthToken: player.authToken,
-    },
-  })
+  // rooms is written only after the create-room response resolves, so poll
+  // instead of reading once right after the submit click.
+  await expect
+    .poll(async () => {
+      const roomsInStorage = await page.evaluate(() =>
+        window.localStorage.getItem('rooms'),
+      )
+      return JSON.parse(roomsInStorage as string)
+    })
+    .toStrictEqual({
+      [roomId]: {
+        id: roomId,
+        playerId: player.id,
+        playerAuthToken: player.authToken,
+      },
+    })
 }
