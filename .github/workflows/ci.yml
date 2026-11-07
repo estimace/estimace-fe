@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn --frozen-lockfile
+      - run: yarn run lint
+
+  types-check:
+    name: types check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn --frozen-lockfile
+      - run: yarn run tsc
+
+  integration-tests:
+    name: integration tests
+    runs-on: ubuntu-latest
+    container:
+      # Keep the tag in sync with the @playwright/test version in package.json.
+      image: mcr.microsoft.com/playwright:v1.57.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn --frozen-lockfile
+      - run: yarn run test:integration
